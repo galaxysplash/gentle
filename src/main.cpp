@@ -52,16 +52,18 @@ make_src_directory(const std::filesystem::path &project_path) noexcept
   return make_directory(project_path, SRC_DIR_NAME);
 }
 
+namespace content {
 [[nodiscard]] consteval auto get_main_cpp() noexcept -> std::string_view {
-  return R"(
-// main.cpp
-
-#include <print>
-
-auto main(const int argc, const char *const *const argv) noexcept -> int {
-  std::println("hello world!");
-}
-)";
+  return "// main.cpp\n"
+         "\n"
+         "#include <print>\n"
+         "\n"
+         "\n"
+         "auto main(const int argc, const char *const *const argv) noexcept -> "
+         "int {\n"
+         "  std::println(\"hello world!\");\n"
+         "}\n"
+         "\n";
 }
 
 [[nodiscard]] auto
@@ -82,6 +84,7 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
 
   return ret;
 }
+} // namespace content
 
 template <typename T>
 concept StringLike =
@@ -90,13 +93,15 @@ concept StringLike =
 template <typename ContentType>
   requires StringLike<ContentType>
 struct File {
-  explicit inline File<ContentType>(const std::filesystem::path &path,
+  explicit inline File<ContentType>(const std::string_view name,
+                                    const std::filesystem::path &path,
                                     ContentType &&content) noexcept
-      : path(path), content(content) {}
+      : name(name), path(path), content(content) {}
 
   File<ContentType>(const File<ContentType> &) = delete;
   explicit inline File<ContentType>(File<ContentType> &&) noexcept = default;
 
+  std::string_view name;
   std::filesystem::path path;
   ContentType content;
 };
@@ -110,7 +115,7 @@ write_files(const std::initializer_list<File<ContentType>> &files) noexcept
     for (const File<ContentType> &file : files) {
       std::println("creating file '{}' in '{}'...",
                    file.path.filename().string(), file.path.string());
-      std::ofstream ofstream{file.path};
+      std::ofstream ofstream{file.path / file.name};
       ofstream << file.content;
     }
   } catch (const std::exception &e) {
@@ -150,11 +155,12 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
 
   std::println("src_directory: {}", src_directory.string());
 
-  const auto static_files = {
-      File<std::string_view>{src_directory, get_main_cpp()}};
+  const auto static_files = {File<std::string_view>{"main.cpp", src_directory,
+                                                    content::get_main_cpp()}};
 
   const auto dynamic_files = {
-      File<std::string>{project_directory, get_cmake_lists_txt(project_name)}};
+      File<std::string>{"CMakeLists.txt", project_directory,
+                        content::get_cmake_lists_txt(project_name)}};
 
   std::println("\ncreating files...");
 
