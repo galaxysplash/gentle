@@ -124,7 +124,8 @@ write_files(const std::initializer_list<File<ContentType>> &files) noexcept
   return {};
 }
 
-auto main(const int argc, const char *const *const argv) noexcept -> int {
+static auto generate_project(const int argc,
+                             const char *const *const argv) noexcept -> void {
   const auto project_name_result = get_project_name(argc, argv);
 
   if (!project_name_result) {
@@ -178,4 +179,8 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
     std::println("{}", write_dynamic_files_result.error());
     std::terminate();
   }
+}
+
+auto main(const int argc, const char *const *const argv) noexcept -> int {
+  generate_project(argc, argv);
 }
