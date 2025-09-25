@@ -1,11 +1,14 @@
+// main.cpp
+
 #include <cstdint>
 #include <exception>
 #include <expected>
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <initializer_list>
 #include <print>
-#include <sstream>
+#include <string>
 #include <string_view>
 
 constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
@@ -19,6 +22,11 @@ constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
 
   return argv[1];
 }
+
+[[nodiscard]] auto make_directory(const std::string_view name) noexcept
+    -> std::expected<std::filesystem::path, std::string_view> {
+  name;
+    }
 
 [[nodiscard]] auto
 make_project_directory(const std::string_view &project_name) noexcept
@@ -68,6 +76,40 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
 
   return ret;
 }
+
+template <typename T>
+concept StringLike =
+    std::is_same_v<std::string, T> || std::is_same_v<std::string_view, T>;
+
+template <typename ContentType>
+  requires StringLike<ContentType>
+struct File {
+  explicit inline File<ContentType>(const std::filesystem::path &path,
+                                    ContentType &&content) noexcept
+      : path(path), content(content) {}
+
+  File<ContentType>(const File<ContentType> &) = delete;
+  explicit inline File<ContentType>(File<ContentType> &&) noexcept = default;
+
+  std::filesystem::path path;
+  ContentType content;
+};
+
+template <typename ContentType>
+  requires StringLike<ContentType>
+[[nodiscard]] auto
+write_files(std::initializer_list<File<ContentType> &&> &&files) noexcept
+    -> std::expected<std::ofstream, std::string_view> {
+  try {
+    for (const File<ContentType> &file : files) {
+      std::ofstream ofstream{file.path};
+      ofstream << file.content;
+    }
+  } catch (const std::exception &e) {
+    return std::unexpected{e.what()};
+  }
+}
+
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto project_name_result = get_project_name(argc, argv);
 
@@ -84,13 +126,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
     std::terminate();
   }
 
-  std::ofstream ofstream;
-
-  ofstream.open(project_path_result.value());
-
-  const std::string_view main_cpp = get_main_cpp();
+  const File<std::string_view> main_cpp{get_main_cpp()};
   const std::string cmake_lists_txt =
       get_cmake_lists_txt(project_name_result.value());
-
-  ofstream << main_cpp;
 }
