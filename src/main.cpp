@@ -15,8 +15,8 @@
 constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
 constexpr std::string_view SRC_DIR_NAME = "src";
 
-[[nodiscard]] auto get_project_name(const int argc,
-                                    const char *const *const argv) noexcept
+[[nodiscard]] static auto
+get_project_name(const int argc, const char *const *const argv) noexcept
     -> std::expected<std::string_view, std::string_view> {
   if (argc < MIN_ARGS_TO_GENERATE_PROJECT_NAME) {
     return std::unexpected{"no arguments given."};
@@ -25,8 +25,8 @@ constexpr std::string_view SRC_DIR_NAME = "src";
   return argv[1];
 }
 
-[[nodiscard]] auto make_directory(const std::filesystem::path &base_path,
-                                  const std::string_view name) noexcept
+[[nodiscard]] static auto make_directory(const std::filesystem::path &base_path,
+                                         const std::string_view name) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
   const auto new_path = base_path / name;
   if (!std::filesystem::create_directory(new_path)) {
@@ -40,13 +40,13 @@ constexpr std::string_view SRC_DIR_NAME = "src";
   return new_path;
 }
 
-[[nodiscard]] auto
+[[nodiscard]] static auto
 make_project_directory(const std::string_view &project_name) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
   return make_directory(std::filesystem::current_path(), project_name);
 }
 
-[[nodiscard]] auto
+[[nodiscard]] static auto
 make_src_directory(const std::filesystem::path &project_path) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
   return make_directory(project_path, SRC_DIR_NAME);
@@ -65,7 +65,7 @@ namespace content {
          "}\n";
 }
 
-[[nodiscard]] auto
+[[nodiscard]] static auto
 get_cmake_lists_txt(const std::string_view project_name) noexcept
     -> std::string {
   std::string ret;
@@ -107,7 +107,7 @@ struct File {
 
 template <typename ContentType>
   requires StringLike<ContentType>
-[[nodiscard]] auto
+[[nodiscard]] static auto
 write_files(const std::initializer_list<File<ContentType>> &files) noexcept
     -> std::expected<std::ofstream, std::string_view> {
   try {
