@@ -4,18 +4,28 @@
 #include "keyword_binding.h"
 #include "project_gen.h"
 
+#include <expected>
 #include <print>
+#include <ranges>
+#include <string_view>
+
+auto get_modifier_argument() noexcept
+    -> std::expected<std::string_view, std::string_view> {
+  return {};
+}
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
+  const auto keyword_bindings = {
+      KeywordBinding{"proj", [&]() {}, "my_proj_name"},
+      KeywordBinding{"mod", [&]() {},
+
+                     "my_mod_name"}};
+
   if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) {
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
     for (std::uint8_t i = 0;
-         const KeywordBinding &keyword_binding :
-         std::initializer_list{KeywordBinding{"proj", [&]() {}, "my_proj_name"},
-                               KeywordBinding{"mod", [&]() {},
-
-                                              "my_mod_name"}}) {
+         const KeywordBinding &keyword_binding : keyword_bindings) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
       if (i != 0) [[unlikely]] {
         std::println("or");
@@ -25,5 +35,11 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
     }
     std::terminate();
   }
+
+  keyword_bindings |
+      std::ranges::views::filter(
+          [&argv](const KeywordBinding &keyword_binding) -> bool {
+            return keyword_binding.keyword_name == argv[1];
+          });
   generate_project(argc, argv);
 }
