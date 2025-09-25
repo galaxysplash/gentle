@@ -12,7 +12,7 @@
 #include <string_view>
 #include <utility>
 
-constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
+constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 3;
 constexpr std::string_view SRC_DIR_NAME = "src";
 
 [[nodiscard]] static auto
