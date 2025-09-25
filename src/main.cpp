@@ -175,7 +175,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
 
                                               "my_mod_name"}}) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
-      if (i != 0) [[likely]] {
+      if (i != 0) [[unlikely]] {
         std::println("or");
       }
       std::println("expected: \"gentle {} {}\"", keyword_binding.keyword_name,
