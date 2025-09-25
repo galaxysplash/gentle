@@ -108,6 +108,8 @@ write_files(const std::initializer_list<File<ContentType>> &files) noexcept
     -> std::expected<std::ofstream, std::string_view> {
   try {
     for (const File<ContentType> &file : files) {
+      std::println("creating file '{}' in '{}'...",
+                   file.path.filename().string(), file.path.string());
       std::ofstream ofstream{file.path};
       ofstream << file.content;
     }
@@ -127,15 +129,18 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   }
   const auto project_name = project_name_result.value();
 
+  std::println("creating folders...\n");
+
   const auto project_path_result = make_project_directory(project_name);
 
   if (!project_path_result) {
     std::println("{}", project_path_result.error());
     std::terminate();
   }
-  const auto project_path = project_path_result.value();
+  const auto project_directory = project_path_result.value();
 
-  const auto src_directory_result = make_src_directory(project_path);
+  std::println("project_directory: {}", project_directory.string());
+  const auto src_directory_result = make_src_directory(project_directory);
 
   if (!src_directory_result) {
     std::println("{}", project_path_result.error());
@@ -143,11 +148,15 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   }
   const auto src_directory = src_directory_result.value();
 
+  std::println("src_directory: {}", src_directory.string());
+
   const auto static_files = {
       File<std::string_view>{src_directory, get_main_cpp()}};
 
   const auto dynamic_files = {
-      File<std::string>{project_path, get_cmake_lists_txt(project_name)}};
+      File<std::string>{project_directory, get_cmake_lists_txt(project_name)}};
+
+  std::println("creating files...");
 
   const auto write_static_files_result =
       write_files<std::string_view>(std::move(static_files));
