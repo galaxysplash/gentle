@@ -149,5 +149,19 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto dynamic_files = {
       File<std::string>{project_path, get_cmake_lists_txt(project_name)}};
 
-  write_files<std::string_view>(std::move(static_files));
+  const auto write_static_files_result =
+      write_files<std::string_view>(std::move(static_files));
+
+  if (!write_static_files_result) {
+    std::println("{}", write_static_files_result.error());
+    std::terminate();
+  }
+
+  const auto write_dynamic_files_result =
+      write_files<std::string>(std::move(dynamic_files));
+
+  if (!write_dynamic_files_result) {
+    std::println("{}", write_dynamic_files_result.error());
+    std::terminate();
+  }
 }
