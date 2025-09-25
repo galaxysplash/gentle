@@ -10,8 +10,10 @@
 #include <print>
 #include <string>
 #include <string_view>
+#include <utility>
 
 constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
+constexpr std::string_view SRC_DIR_NAME = "src";
 
 [[nodiscard]] auto get_project_name(const int argc,
                                     const char *const *const argv) noexcept
@@ -23,27 +25,31 @@ constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
   return argv[1];
 }
 
-[[nodiscard]] auto make_directory(const std::string_view name) noexcept
+[[nodiscard]] auto make_directory(const std::filesystem::path &base_path,
+                                  const std::string_view name) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
-  name;
+  const auto new_path = base_path / name;
+  if (!std::filesystem::create_directory(new_path)) {
+    return std::unexpected{std::format(
+        "Failed to create project directory '{}' in path '{}'.\n\n"
+        "Hint: Ensure your Operating System gives the proper permissions so "
+        "it is allowed to create files and folders.",
+        name, base_path.string())};
+  }
+
+  return new_path;
 }
 
 [[nodiscard]] auto
 make_project_directory(const std::string_view &project_name) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
+  return make_directory(std::filesystem::current_path(), project_name);
+}
 
-  std::filesystem::path current_path = std::filesystem::current_path();
-  const bool creation_success =
-      std::filesystem::create_directories(project_name);
-
-  if (!creation_success) {
-    std::unexpected{
-        "Failed to create project directory.\n\n"
-        "Hint: Ensure your Operating System gives the proper permissions so "
-        "it is allowed to create files and folders."};
-  }
-
-  return current_path / project_name;
+[[nodiscard]] auto
+make_src_directory(const std::filesystem::path &project_path) noexcept
+    -> std::expected<std::filesystem::path, std::string_view> {
+  return make_directory(project_path, SRC_DIR_NAME);
 }
 
 [[nodiscard]] consteval auto get_main_cpp() noexcept -> std::string_view {
@@ -98,7 +104,7 @@ struct File {
 template <typename ContentType>
   requires StringLike<ContentType>
 [[nodiscard]] auto
-write_files(std::initializer_list<File<ContentType> &&> &&files) noexcept
+write_files(const std::initializer_list<File<ContentType>> &files) noexcept
     -> std::expected<std::ofstream, std::string_view> {
   try {
     for (const File<ContentType> &file : files) {
@@ -108,6 +114,8 @@ write_files(std::initializer_list<File<ContentType> &&> &&files) noexcept
   } catch (const std::exception &e) {
     return std::unexpected{e.what()};
   }
+
+  return {};
 }
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
@@ -117,16 +125,29 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
     std::println("{}", project_name_result.error());
     std::terminate();
   }
+  const auto project_name = project_name_result.value();
 
-  const auto project_path_result =
-      make_project_directory(project_name_result.value());
+  const auto project_path_result = make_project_directory(project_name);
 
   if (!project_path_result) {
     std::println("{}", project_path_result.error());
     std::terminate();
   }
+  const auto project_path = project_path_result.value();
 
-  const File<std::string_view> main_cpp{get_main_cpp()};
-  const std::string cmake_lists_txt =
-      get_cmake_lists_txt(project_name_result.value());
+  const auto src_directory_result = make_src_directory(project_path);
+
+  if (!src_directory_result) {
+    std::println("{}", project_path_result.error());
+    std::terminate();
+  }
+  const auto src_directory = src_directory_result.value();
+
+  const auto static_files = {
+      File<std::string_view>{src_directory, get_main_cpp()}};
+
+  const auto dynamic_files = {
+      File<std::string>{project_path, get_cmake_lists_txt(project_name)}};
+
+  write_files<std::string_view>(std::move(static_files));
 }
