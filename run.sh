@@ -1,4 +1,5 @@
 clear
+
 rm -rf tests
 cmake . -B build
 make -C build
