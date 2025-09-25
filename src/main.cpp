@@ -129,7 +129,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   }
   const auto project_name = project_name_result.value();
 
-  std::println("creating folders...\n");
+  std::println("creating directories...");
 
   const auto project_path_result = make_project_directory(project_name);
 
@@ -156,7 +156,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto dynamic_files = {
       File<std::string>{project_directory, get_cmake_lists_txt(project_name)}};
 
-  std::println("creating files...");
+  std::println("\ncreating files...");
 
   const auto write_static_files_result =
       write_files<std::string_view>(std::move(static_files));
