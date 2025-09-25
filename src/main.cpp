@@ -62,8 +62,7 @@ namespace content {
          "auto main(const int argc, const char *const *const argv) noexcept -> "
          "int {\n"
          "  std::println(\"hello world!\");\n"
-         "}\n"
-         "\n";
+         "}\n";
 }
 
 [[nodiscard]] auto
