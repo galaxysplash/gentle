@@ -22,7 +22,7 @@ get_project_name(const int argc, const char *const *const argv) noexcept
     return std::unexpected{"no arguments given."};
   }
 
-  return argv[1];
+  return argv[2];
 }
 
 [[nodiscard]] static auto make_directory(const std::filesystem::path &base_path,
