@@ -26,7 +26,7 @@ constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 2;
 [[nodiscard]] auto make_directory(const std::string_view name) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
   name;
-    }
+}
 
 [[nodiscard]] auto
 make_project_directory(const std::string_view &project_name) noexcept
