@@ -2,6 +2,7 @@
 
 #include "content.h"
 #include "defer.h"
+#include "keyword_binding.h"
 
 #include <cstdint>
 #include <exception>
@@ -9,24 +10,11 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
-#include <functional>
 #include <initializer_list>
 #include <print>
 #include <string>
 #include <string_view>
 #include <utility>
-
-struct KeywordBinding {
-  explicit inline KeywordBinding(
-      const std::string_view keyword_name, std::function<void()> &&lambda,
-      const std::string_view err_msg_example_name) noexcept
-      : keyword_name(keyword_name), lambda(lambda),
-        err_msg_example_name(err_msg_example_name) {}
-
-  const std::string_view keyword_name;
-  const std::function<void()> lambda;
-  const std::string_view err_msg_example_name;
-};
 
 constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 3;
 constexpr std::string_view SRC_DIR_NAME = "src";
