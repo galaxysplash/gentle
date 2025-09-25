@@ -1,16 +1,32 @@
 // main.cpp
 
+#include "content.h"
+#include "defer.h"
+
 #include <cstdint>
 #include <exception>
 #include <expected>
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <functional>
 #include <initializer_list>
 #include <print>
 #include <string>
 #include <string_view>
 #include <utility>
+
+struct KeywordBinding {
+  explicit inline KeywordBinding(
+      const std::string_view keyword_name, std::function<void()> &&lambda,
+      const std::string_view err_msg_example_name) noexcept
+      : keyword_name(keyword_name), lambda(lambda),
+        err_msg_example_name(err_msg_example_name) {}
+
+  const std::string_view keyword_name;
+  const std::function<void()> lambda;
+  const std::string_view err_msg_example_name;
+};
 
 constexpr std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 3;
 constexpr std::string_view SRC_DIR_NAME = "src";
@@ -51,39 +67,6 @@ make_src_directory(const std::filesystem::path &project_path) noexcept
     -> std::expected<std::filesystem::path, std::string_view> {
   return make_directory(project_path, SRC_DIR_NAME);
 }
-
-namespace content {
-[[nodiscard]] consteval auto get_main_cpp() noexcept -> std::string_view {
-  return "// main.cpp\n"
-         "\n"
-         "#include <print>\n"
-         "\n"
-         "\n"
-         "auto main(const int argc, const char *const *const argv) noexcept -> "
-         "int {\n"
-         "  std::println(\"hello world!\");\n"
-         "}\n";
-}
-
-[[nodiscard]] static auto
-get_cmake_lists_txt(const std::string_view project_name) noexcept
-    -> std::string {
-  std::string ret;
-
-  ret += "cmake_minimum_required(VERSION 3.30)\n"
-         "project(";
-  ret += project_name;
-  ret += ")\n"
-         "\n"
-         "set(CMAKE_CXX_STANDARD 26)\n"
-         "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
-         "\n"
-         "file(GLOB SOURCES src/*.cpp)\n"
-         "add_executable(${PROJECT_NAME} ${SOURCES})\n";
-
-  return ret;
-}
-} // namespace content
 
 template <typename T>
 concept StringLike =
@@ -182,5 +165,23 @@ static auto generate_project(const int argc,
 }
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
+  if (argc < MIN_ARGS_TO_GENERATE_PROJECT_NAME) {
+    std::println("{} args are required!\n",
+                 MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
+    for (std::uint8_t i = 0;
+         const KeywordBinding &keyword_binding :
+         std::initializer_list{KeywordBinding{"proj", [&]() {}, "my_proj_name"},
+                               KeywordBinding{"mod", [&]() {},
+
+                                              "my_mod_name"}}) {
+      const auto defer_increment = Defer{[&i]() { ++i; }};
+      if (i != 0) [[likely]] {
+        std::println("or");
+      }
+      std::println("expected: \"gentle {} {}\"", keyword_binding.keyword_name,
+                   keyword_binding.err_msg_example_name);
+    }
+    std::terminate();
+  }
   generate_project(argc, argv);
 }
