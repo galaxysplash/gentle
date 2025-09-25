@@ -1,9 +1,6 @@
-TEST_FOLDER = tests
-PROGRAM_NAME = gentle
-
-rm -rf $TEST_FOLDER
+rm -rf tests
 cmake . -B build
 make -C build
-mkdir $TEST_FOLDER
-cd $TEST_FOLDER
-./../build/$PROGRAM_NAME test_project
+mkdir tests
+cd tests
+./../build/gentle test_project
