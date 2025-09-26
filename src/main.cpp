@@ -5,7 +5,6 @@
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
-#include <exception>
 #include <expected>
 #include <format>
 #include <print>
