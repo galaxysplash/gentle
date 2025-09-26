@@ -23,20 +23,20 @@ generate_project(const int argc, const char *const *const argv) noexcept
 
   std::println("creating directories...");
 
-  const auto project_path_result =
+  const auto directory_result =
       core_utils::CoreUtils::make_project_directory(name);
 
-  if (!project_path_result) [[unlikely]] {
-    return std::unexpected{project_path_result.error()};
+  if (!directory_result) [[unlikely]] {
+    return std::unexpected{directory_result.error()};
   }
-  const auto &project_directory = project_path_result.value();
+  const auto &directory = directory_result.value();
 
-  std::println("project_directory: {}", project_directory.string());
+  std::println("project_directory: {}", directory.string());
   const auto src_directory_result =
-      core_utils::CoreUtils::make_src_directory(project_directory);
+      core_utils::CoreUtils::make_src_directory(directory);
 
   if (!src_directory_result) [[unlikely]] {
-    return std::unexpected{project_path_result.error()};
+    return std::unexpected{directory_result.error()};
   }
   const auto &src_directory = src_directory_result.value();
 
@@ -46,7 +46,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
       "main.cpp", src_directory, content::get_main_cpp()}};
 
   const auto dynamic_files = {core_utils::File<std::string>{
-      "CMakeLists.txt", project_directory, content::get_cmake_lists_txt(name)}};
+      "CMakeLists.txt", directory, content::get_cmake_lists_txt(name)}};
 
   std::println("\ncreating files...");
 
