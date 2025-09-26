@@ -2,6 +2,9 @@
 // core_utils.cpp
 
 #include "core_utils.h"
+#include <cctype>
+#include <cstddef>
+#include <cstdint>
 #include <exception>
 #include <expected>
 #include <format>
@@ -54,6 +57,27 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
 
 [[nodiscard]] auto core_utils::CoreUtils::snake_case_to_upper_case(
     const std::string_view &snake_case_str) noexcept -> std::string {
+  std::string ret;
 
-  return {};
+  for (bool previous_was_underscore = false, first_time = true;
+       const auto &snake_case_char : snake_case_str) {
+    if (previous_was_underscore || first_time) [[unlikely]] {
+      ret += std::toupper(snake_case_char);
+      continue;
+    }
+
+    if (snake_case_char == '_') [[unlikely]] {
+      previous_was_underscore = true;
+      continue;
+    }
+
+    ret += snake_case_char;
+    previous_was_underscore = false;
+
+    if (first_time) [[unlikely]] {
+      first_time = false;
+    }
+  }
+
+  return ret;
 }
