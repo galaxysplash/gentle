@@ -68,17 +68,19 @@ create_mod_directory(const std::filesystem::path &base_path,
 
   std::println("creating mod_directory...");
 
+  const auto upper_case_module_name =
+      core_utils::CoreUtils::snake_case_to_upper_case(module_name);
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
               std::format("{}.h", module_name),
               mod_directory,
-              content::get_mod_h(, module_name),
+              content::get_mod_h(upper_case_module_name, module_name),
           },
           core_utils::File<std::string>{
               std::format("{}.cpp", module_name),
               mod_directory,
-              content::get_mod_cpp(, module_name),
+              content::get_mod_cpp(upper_case_module_name, module_name),
           }});
 
   if (!write_files_result) {
