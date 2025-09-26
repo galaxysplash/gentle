@@ -4,6 +4,7 @@
 #include "core_utils.h"
 #include <exception>
 #include <expected>
+#include <format>
 #include <string_view>
 
 [[nodiscard]] auto
@@ -32,7 +33,7 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
     }
     return new_path;
   } catch (const std::exception &e) {
-    return std::unexpected{std::string{ERR_MSG}};
+    return std::unexpected{std::format("C++ err: {}. {}", e.what(), ERR_MSG)};
   }
 }
 
