@@ -1,8 +1,8 @@
 // copyright© marcel hajek, all rights reserved.
 // main.cpp
 
-#include "generate_module.h"
-#include "generate_project.h"
+#include "generate/generate_module.h"
+#include "generate/generate_project.h"
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
