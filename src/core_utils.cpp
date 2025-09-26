@@ -2,10 +2,7 @@
 // core_utils.cpp
 
 #include "core_utils.h"
-#include "defer.h"
 #include <cctype>
-#include <cstddef>
-#include <cstdint>
 #include <exception>
 #include <expected>
 #include <format>
