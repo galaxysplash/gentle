@@ -24,13 +24,13 @@
     auto unexpected_ret = std::string{};
     for (std::uint8_t i = 0;
          const KeywordBinding &keyword_binding : keyword_bindings) {
-      const auto defer_increment = Defer{[&i]() { ++i; }};
       if (i != 0) [[likely]] {
         unexpected_ret += " or ";
       }
       unexpected_ret += std::format("expected: \"gentle {} {}\"",
                                     keyword_binding.keyword_name,
                                     keyword_binding.err_msg_example_name);
+      ++i;
     }
     return std::unexpected{unexpected_ret};
   }
