@@ -80,6 +80,7 @@ create_mod_directory(const std::filesystem::path &base_path,
               mod_directory,
               content::get_mod_cpp(module_name, HEADER_NAME),
           }});
+
   if (!write_files_result) {
     return std::unexpected{write_files_result.error()};
   }
