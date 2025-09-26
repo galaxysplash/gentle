@@ -52,7 +52,7 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
   ret += "class ";
   ret += module_name;
   ret += " final {\n"
-         "public:"
+         "public:\n"
          "  static auto run() noexcept -> void;\n"
          "};\n";
   return ret;
