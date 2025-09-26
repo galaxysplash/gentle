@@ -78,7 +78,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
+  ret += "add_library(${PROJECT_NAME} ${SOURCES})\n";
 
   return ret;
 }
