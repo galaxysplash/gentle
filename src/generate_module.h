@@ -20,15 +20,14 @@ constexpr inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
 create_or_get_lib_directory(const std::filesystem::path &base_path) noexcept
     -> std::expected<std::filesystem::path, std::string> {
 
-  const auto lib_dir = base_path / LIB_DIRECTORY_NAME;
-
-  if (std::filesystem::exists(lib_dir)) [[likely]] {
-    std::println("already exists ('{}')", lib_dir.string());
-    return lib_dir;
+  if (std::filesystem::exists(base_path)) [[likely]] {
+    std::println("already exists ('{}')", base_path.string());
+    return base_path;
   }
 
-  std::println("creating directory '{}'", lib_dir.string());
-  return core_utils::CoreUtils::make_directory(base_path, LIB_DIRECTORY_NAME);
+  std::println("creating directory '{}'", base_path.string());
+  return core_utils::CoreUtils::make_directory(base_path.parent_path(),
+                                               base_path.filename().string());
 }
 
 [[nodiscard]] inline auto
@@ -59,7 +58,8 @@ create_mod_directory(const std::filesystem::path &base_path,
   const auto &directory = directory_result.value();
 
   std::println("base_path: {}", directory.string());
-  const auto lib_directory_result = create_or_get_lib_directory(directory);
+  const auto lib_directory_result =
+      create_or_get_lib_directory(directory / LIB_DIRECTORY_NAME);
 
   if (!lib_directory_result) [[unlikely]] {
     return std::unexpected{lib_directory_result.error()};
