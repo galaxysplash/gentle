@@ -11,7 +11,7 @@
 namespace generate_module {
 constexpr static inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
 
-class GenerateModule final {
+class Funcs final {
 public:
   [[nodiscard]] static auto run(const int argc,
                                 const char *const *const argv) noexcept

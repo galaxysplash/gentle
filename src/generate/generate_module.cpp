@@ -9,9 +9,9 @@
 #include <format>
 #include <print>
 
-using generate_module::GenerateModule;
+using generate_module::Funcs;
 
-[[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
+[[nodiscard]] auto Funcs::create_or_get_lib_directory(
     const std::filesystem::path &base_path) noexcept
     -> std::expected<std::filesystem::path, std::string> {
 
@@ -26,14 +26,14 @@ using generate_module::GenerateModule;
 }
 
 [[nodiscard]] auto
-GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
-                                     const std::string_view &name)
+Funcs::create_mod_directory(const std::filesystem::path &base_path,
+                            const std::string_view &name)
     -> std::expected<std::filesystem::path, std::string> {
   return core_utils::CoreUtils::make_directory(base_path, name);
 }
 
-[[nodiscard]] auto GenerateModule::run(const int argc,
-                                       const char *const *const argv) noexcept
+[[nodiscard]] auto Funcs::run(const int argc,
+                              const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
   std::println("generate module...");
 
