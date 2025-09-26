@@ -73,7 +73,7 @@ create_mod_directory(const std::filesystem::path &base_path,
           core_utils::File<std::string>{
               std::format("{}.h", module_name),
               mod_directory,
-              content::get_mod_h(std::uppercase(module_name), module_name),
+              content::get_mod_h(, module_name),
           },
           core_utils::File<std::string>{
               std::format("{}.cpp", module_name),
