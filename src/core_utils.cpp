@@ -62,11 +62,6 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
 
   for (bool first_time = true, previous_was_underscore = false;
        const auto &snake_case_char : snake_case_str) {
-    const auto defer = Defer{[&]() {
-      if (first_time) [[unlikely]] {
-        first_time = false;
-      }
-    }};
     if (previous_was_underscore || first_time) [[unlikely]] {
       ret += std::toupper(snake_case_char);
       continue;
@@ -79,6 +74,10 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
 
     ret += snake_case_char;
     previous_was_underscore = false;
+
+    if (first_time) [[unlikely]] {
+      first_time = false;
+    }
   }
 
   return ret;
