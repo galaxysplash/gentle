@@ -5,16 +5,18 @@
 #include "content.h"
 #include "core_utils.h"
 
+#include <expected>
 #include <print>
+#include <string_view>
 
-inline auto generate_project(const int argc,
-                             const char *const *const argv) noexcept -> void {
+[[nodiscard]] inline auto
+generate_project(const int argc, const char *const *const argv) noexcept
+    -> std::expected<void, std::string_view> {
   const auto project_name_result =
       core_utils::CoreUtils::get_project_name(argc, argv);
 
   if (!project_name_result) [[unlikely]] {
-    std::println("{}", project_name_result.error());
-    std::terminate();
+    return std::unexpected{project_name_result.error()};
   }
   const auto project_name = project_name_result.value();
 
@@ -24,8 +26,7 @@ inline auto generate_project(const int argc,
       core_utils::CoreUtils::make_project_directory(project_name);
 
   if (!project_path_result) [[unlikely]] {
-    std::println("{}", project_path_result.error());
-    std::terminate();
+    return std::unexpected{project_path_result.error()};
   }
   const auto project_directory = project_path_result.value();
 
@@ -34,8 +35,7 @@ inline auto generate_project(const int argc,
       core_utils::CoreUtils::make_src_directory(project_directory);
 
   if (!src_directory_result) [[unlikely]] {
-    std::println("{}", project_path_result.error());
-    std::terminate();
+    return std::unexpected{project_path_result.error()};
   }
   const auto src_directory = src_directory_result.value();
 
@@ -55,15 +55,15 @@ inline auto generate_project(const int argc,
           std::move(static_files));
 
   if (!write_static_files_result) [[unlikely]] {
-    std::println("{}", write_static_files_result.error());
-    std::terminate();
+    return std::unexpected{write_static_files_result.error()};
   }
 
   const auto write_dynamic_files_result =
       core_utils::CoreUtils::write_files<std::string>(std::move(dynamic_files));
 
   if (!write_dynamic_files_result) [[unlikely]] {
-    std::println("{}", write_dynamic_files_result.error());
-    std::terminate();
+    return std::unexpected{write_dynamic_files_result.error()};
   }
+
+  return {};
 }

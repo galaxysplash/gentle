@@ -3,7 +3,8 @@
 #include <expected>
 #include <string_view>
 
-auto inline generate_module() noexcept
+[[nodiscard]] auto inline generate_module(
+    const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string_view> {
 
   return {};

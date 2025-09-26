@@ -6,7 +6,6 @@
 #include "defer.h"
 #include "keyword_binding.h"
 
-#include <exception>
 #include <expected>
 #include <format>
 #include <print>
@@ -30,16 +29,20 @@ match_keyword(const int argc, const char *const *const argv,
   if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
+    auto unexpected_ret = std::string_view{};
     for (std::uint8_t i = 0;
          const KeywordBinding &keyword_binding : keyword_bindings) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
       if (i != 0) [[unlikely]] {
         std::println("or");
       }
-      std::println("expected: \"gentle {} {}\"", keyword_binding.keyword_name,
-                   keyword_binding.err_msg_example_name);
+      unexpected_ret =
+          std::move(std::format("expected: \"gentle {} {}\"",
+                                keyword_binding.keyword_name,
+                                keyword_binding.err_msg_example_name)
+                        .c_str());
     }
-    std::terminate();
+    return std::unexpected{unexpected_ret};
   }
 
   const auto get_modifier_argument_result = get_modifier_argument(argc, argv);
@@ -55,7 +58,7 @@ match_keyword(const int argc, const char *const *const argv,
                    const KeywordBinding &keyword_binding) -> bool {
                  return keyword_binding.keyword_name == modifier_argument;
                })) {
-    matched_bindings.lambda();
+    return matched_bindings.lambda();
   }
 
   return {};
