@@ -1,7 +1,5 @@
 // core_utils.cpp
 
-#pragma once
-
 #include "core_utils.h"
 
 [[nodiscard]] auto
@@ -45,11 +43,11 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
 
 template <typename ContentType>
   requires core_utils::StringLike<ContentType>
-[[nodiscard]] auto core_utils::CoreUtils::write_files(
-    const std::initializer_list<File<ContentType>> &files) noexcept
+[[nodiscard]] static auto write_files(
+    const std::initializer_list<core_utils::File<ContentType>> &files) noexcept
     -> std::expected<std::ofstream, std::string_view> {
   try {
-    for (const File<ContentType> &file : files) {
+    for (const core_utils::File<ContentType> &file : files) {
       std::println("creating file '{}' in '{}'...",
                    file.path.filename().string(), file.path.string());
       std::ofstream ofstream{file.path / file.name};
