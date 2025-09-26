@@ -4,7 +4,6 @@
 #pragma once
 
 #include "core_utils.h"
-#include "defer.h"
 #include "keyword_binding.h"
 
 #include <expected>
