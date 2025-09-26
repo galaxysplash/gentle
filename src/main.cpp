@@ -5,23 +5,27 @@
 #include "project_gen.h"
 
 #include <expected>
+#include <format>
 #include <print>
 #include <ranges>
 #include <string_view>
 
-auto get_modifier_argument() noexcept
+auto get_modifier_argument(const int argc,
+                           const char *const *const argv) noexcept
     -> std::expected<std::string_view, std::string_view> {
-  return {};
+  if (argc < 2) [[unlikely]] {
+    return std::unexpected{std::format(
+        "cannot get 'modifier_argument', argc is to small. ({})", argc)};
+  }
+  return argv[1];
 }
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto keyword_bindings = {
       KeywordBinding{"proj", [&]() {}, "my_proj_name"},
-      KeywordBinding{"mod", [&]() {},
+      KeywordBinding{"mod", [&]() {}, "my_mod_name"}};
 
-                     "my_mod_name"}};
-
-  if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) {
+  if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
     for (std::uint8_t i = 0;
