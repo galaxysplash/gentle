@@ -87,7 +87,7 @@ auto content::ClassGen::get_cpp_file(const std::string_view &name) noexcept
 
   ret += "// ";
   ret += name;
-  ret += "\n\n";
+  ret += ".cpp\n\n";
   ret += "#include \"";
   ret += name;
   ret += ".h\"\n\n";

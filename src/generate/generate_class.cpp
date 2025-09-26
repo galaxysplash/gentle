@@ -25,12 +25,14 @@ auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
       core_utils::File<std::string>{
           std::format("{}.cpp", class_name),
           src_dir,
-          content::ClassGen::get_cpp_file(class_name),
+          content::ClassGen::get_cpp_file(
+              core_utils::CoreUtils::snake_case_to_upper_case(class_name)),
       },
       core_utils::File<std::string>{
           std::format("{}.h", class_name),
           src_dir,
-          content::ClassGen::get_h_file(class_name),
+          content::ClassGen::get_h_file(
+              core_utils::CoreUtils::snake_case_to_upper_case(class_name)),
       },
   });
 
