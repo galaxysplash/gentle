@@ -41,7 +41,7 @@ match_keyword(const int argc, const char *const *const argv,
                                    keyword_binding.keyword_name,
                                    keyword_binding.err_msg_example_name);
     }
-    return std::unexpected{std::move(unexpected_ret)};
+    return std::unexpected{unexpected_ret};
   }
 
   const auto get_modifier_argument_result = get_modifier_argument(argc, argv);
