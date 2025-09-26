@@ -4,6 +4,7 @@
 #include "generate_class.h"
 #include "content.h"
 #include "core_utils.h"
+#include <expected>
 #include <filesystem>
 #include <format>
 
@@ -20,7 +21,7 @@ auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
   const auto src_dir =
       std::filesystem::current_path() / core_utils::SRC_DIR_NAME;
 
-  const auto files = {
+  const auto write_result = core_utils::CoreUtils::write_files({
       core_utils::File<std::string>{
           std::format("{}.cpp", class_name),
           src_dir,
@@ -31,6 +32,11 @@ auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
           src_dir,
           content::ClassGen::get_h_file(class_name),
       },
-  };
+  });
+
+  if (!write_result) [[unlikely]] {
+    return std::unexpected{write_result.error()};
+  }
+
   return {};
 }
