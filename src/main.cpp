@@ -4,6 +4,7 @@
 #include "keyword_binding.h"
 #include "project_gen.h"
 
+#include <algorithm>
 #include <exception>
 #include <expected>
 #include <format>
@@ -11,8 +12,8 @@
 #include <ranges>
 #include <string_view>
 
-auto get_modifier_argument(const int argc,
-                           const char *const *const argv) noexcept
+[[nodiscard]] auto get_modifier_argument(const int argc,
+                                         const char *const *const argv) noexcept
     -> std::expected<std::string_view, std::string_view> {
   if (argc < 2) [[unlikely]] {
     return std::unexpected{std::format(
@@ -21,10 +22,16 @@ auto get_modifier_argument(const int argc,
   return argv[1];
 }
 
+[[nodiscard]] auto match_keyword() noexcept
+    -> std::expected<void, std::string_view> {
+  return {};
+}
+
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto keyword_bindings = {
-      KeywordBinding{"proj", [&]() {}, "my_proj_name"},
-      KeywordBinding{"mod", [&]() {}, "my_mod_name"}};
+      KeywordBinding{"proj", [&argc, &argv]() { generate_project(argc, argv); },
+                     "my_proj_name"},
+      KeywordBinding{"mod", [&argc, &argv]() {}, "my_mod_name"}};
 
   if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
     std::println("{} args are required!\n",
@@ -48,10 +55,13 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   }
   const auto modifier_argument = get_modifier_argument_result.value();
 
-  keyword_bindings |
-      std::ranges::views::filter(
-          [&modifier_argument](const KeywordBinding &keyword_binding) -> bool {
-            return keyword_binding.keyword_name == modifier_argument;
-          });
-  generate_project(argc, argv);
+  for (const KeywordBinding &matched_bindings :
+       keyword_bindings |
+           std::ranges::views::filter(
+               [&modifier_argument](
+                   const KeywordBinding &keyword_binding) -> bool {
+                 return keyword_binding.keyword_name == modifier_argument;
+               })) {
+    matched_bindings.lambda();
+  }
 }
