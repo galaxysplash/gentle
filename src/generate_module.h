@@ -61,7 +61,7 @@ create_mod_directory(const std::filesystem::path &base_path,
 
   const auto mod_directory_result =
       create_mod_directory(lib_directory, module_name);
-  if (!mod_directory_result) {
+  if (!mod_directory_result) [[unlikely]] {
     return std::unexpected{mod_directory_result.error()};
   }
   const auto &mod_directory = mod_directory_result.value();
