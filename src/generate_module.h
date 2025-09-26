@@ -49,17 +49,17 @@ create_mod_directory(const std::filesystem::path &base_path,
   }
   const auto name = name_result.value();
 
-  const auto directory_result =
-      core_utils::CoreUtils::make_project_directory(name);
+  const auto directory_result = core_utils::CoreUtils::make_directory(
+      std::filesystem::current_path() / LIB_DIRECTORY_NAME, name);
 
   if (!directory_result) [[unlikely]] {
     return std::unexpected{directory_result.error()};
   }
   const auto &directory = directory_result.value();
-
   std::println("base_path: {}", directory.string());
-  const auto lib_directory_result =
-      create_or_get_lib_directory(directory / LIB_DIRECTORY_NAME);
+
+  /*
+  const auto lib_directory_result = create_or_get_lib_directory(directory);
 
   if (!lib_directory_result) [[unlikely]] {
     return std::unexpected{lib_directory_result.error()};
@@ -91,5 +91,7 @@ create_mod_directory(const std::filesystem::path &base_path,
   if (!write_files_result) {
     return std::unexpected{write_files_result.error()};
   }
+  return {};
+  */
   return {};
 }
