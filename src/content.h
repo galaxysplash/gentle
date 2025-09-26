@@ -18,9 +18,7 @@ struct ProjGen {
            "\n"
            "#include <print>\n"
            "\n"
-           "auto main(const int argc, const char *const *const argv) noexcept "
-           "-> "
-           "int {\n"
+           "auto main(const int argc, const char *const *const argv) -> int {\n"
            "  std::println(\"hello world!\");\n"
            "}\n";
   }

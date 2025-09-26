@@ -14,7 +14,7 @@
 
 using generate_module::GenerateModule;
 
-auto main(const int argc, const char *const *const argv) noexcept -> int {
+auto main(const int argc, const char *const *const argv) -> int {
   const auto match_keyword_result = KeywordMatcher::match_keyword(
       argc, argv,
       {KeywordBinding{
