@@ -74,20 +74,20 @@ create_mod_directory(const std::filesystem::path &base_path,
           core_utils::File<std::string>{
               std::format("{}.h", module_name),
               mod_directory,
-              content::module_gen::get_mod_h(upper_case_module_name,
-                                             module_name),
+              content::ModuleGen::get_mod_h(upper_case_module_name,
+                                            module_name),
           },
           core_utils::File<std::string>{
               std::format("{}.cpp", module_name),
               mod_directory,
-              content::module_gen::get_mod_cpp(upper_case_module_name,
-                                               module_name),
+              content::ModuleGen::get_mod_cpp(upper_case_module_name,
+                                              module_name),
           },
           core_utils::File<std::string>{
               "CMakeLists.txt",
               mod_directory,
-              content::module_gen::get_mod_cpp(upper_case_module_name,
-                                               module_name),
+              content::ModuleGen::get_mod_cpp(upper_case_module_name,
+                                              module_name),
           },
       });
 

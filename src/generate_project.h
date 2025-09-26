@@ -56,11 +56,11 @@ generate_project(const int argc, const char *const *const argv) noexcept
   std::println("src_directory: {}", src_directory.string());
 
   const auto static_files = {core_utils::File<std::string_view>{
-      "main.cpp", src_directory, content::proj_gen::get_main_cpp()}};
+      "main.cpp", src_directory, content::ProjGen::get_main_cpp()}};
 
   const auto dynamic_files = {core_utils::File<std::string>{
       "CMakeLists.txt", directory,
-      content::proj_gen::get_proj_cmake_lists_txt(name)}};
+      content::ProjGen::get_proj_cmake_lists_txt(name)}};
 
   std::println("\ncreating files...");
 
