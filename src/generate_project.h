@@ -1,4 +1,5 @@
-// project_gen.h
+// copyright© galaxysplash
+// generate_project.h
 
 #pragma once
 
@@ -12,18 +13,17 @@
 [[nodiscard]] inline auto
 generate_project(const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string_view> {
-  const auto project_name_result =
-      core_utils::CoreUtils::get_project_name(argc, argv);
+  const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
 
-  if (!project_name_result) [[unlikely]] {
-    return std::unexpected{project_name_result.error()};
+  if (!name_result) [[unlikely]] {
+    return std::unexpected{name_result.error()};
   }
-  const auto project_name = project_name_result.value();
+  const auto name = name_result.value();
 
   std::println("creating directories...");
 
   const auto project_path_result =
-      core_utils::CoreUtils::make_project_directory(project_name);
+      core_utils::CoreUtils::make_project_directory(name);
 
   if (!project_path_result) [[unlikely]] {
     return std::unexpected{project_path_result.error()};
@@ -45,8 +45,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
       "main.cpp", src_directory, content::get_main_cpp()}};
 
   const auto dynamic_files = {core_utils::File<std::string>{
-      "CMakeLists.txt", project_directory,
-      content::get_cmake_lists_txt(project_name)}};
+      "CMakeLists.txt", project_directory, content::get_cmake_lists_txt(name)}};
 
   std::println("\ncreating files...");
 

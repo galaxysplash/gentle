@@ -1,3 +1,4 @@
+// copyright© galaxysplash
 // content.h
 
 #pragma once

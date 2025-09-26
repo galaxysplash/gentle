@@ -1,10 +1,11 @@
+// copyright© galaxysplash
 // core_utils.cpp
 
 #include "core_utils.h"
 
 [[nodiscard]] auto
-core_utils::CoreUtils::get_project_name(const int argc,
-                                        const char *const *const argv) noexcept
+core_utils::CoreUtils::get_name(const int argc,
+                                const char *const *const argv) noexcept
     -> std::expected<std::string_view, std::string_view> {
   if (argc < MIN_ARGS_TO_GENERATE_PROJECT_NAME) {
     return std::unexpected{"no arguments given."};

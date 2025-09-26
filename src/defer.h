@@ -1,3 +1,4 @@
+// copyright© galaxysplash
 // defer.h
 
 #pragma once

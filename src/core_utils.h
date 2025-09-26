@@ -1,3 +1,4 @@
+// copyright© galaxysplash
 // core_utils.h
 
 #pragma once
@@ -37,8 +38,8 @@ struct File {
 
 class CoreUtils final {
 public:
-  [[nodiscard]] static auto
-  get_project_name(const int argc, const char *const *const argv) noexcept
+  [[nodiscard]] static auto get_name(const int argc,
+                                     const char *const *const argv) noexcept
       -> std::expected<std::string_view, std::string_view>;
 
   [[nodiscard]] static auto
