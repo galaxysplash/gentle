@@ -37,6 +37,8 @@ create_mod_directory(const std::filesystem::path &base_path,
 [[nodiscard]] auto inline generate_module(
     const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
+  std::println("generate module...");
+
   const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!name_result) [[unlikely]] {
