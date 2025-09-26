@@ -15,18 +15,29 @@
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto match_keyword_result = KeywordMatcher::run(
       argc, argv,
-      {KeywordBinding{
-           "proj",
-           [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-             return GenerateProject::run(argc, argv);
-           },
-           "my_proj_name"},
-       KeywordBinding{
-           "mod",
-           [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-             return GenerateModule::run(argc, argv);
-           },
-           "my_mod_name"}});
+      {
+          KeywordBinding{
+              "proj",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return GenerateProject::run(argc, argv);
+              },
+              "my_proj_name",
+          },
+          KeywordBinding{
+              "mod",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return GenerateModule::run(argc, argv);
+              },
+              "my_mod_name",
+          },
+          KeywordBinding{
+              "class",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return {};
+              },
+              "my_class_name",
+          },
+      });
 
   if (!match_keyword_result) {
     std::println("{}", match_keyword_result.error());
