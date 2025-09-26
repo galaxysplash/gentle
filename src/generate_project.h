@@ -36,7 +36,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
       core_utils::CoreUtils::make_src_directory(directory);
 
   if (!src_directory_result) [[unlikely]] {
-    return std::unexpected{directory_result.error()};
+    return std::unexpected{src_directory_result.error()};
   }
   const auto &src_directory = src_directory_result.value();
 
