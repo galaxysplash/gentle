@@ -33,6 +33,7 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
     if (!std::filesystem::create_directory(new_path)) {
       return std::unexpected{std::format(ERR_MSG, name, base_path.string())};
     }
+
     return new_path;
   } catch (const std::exception &e) {
     return std::unexpected{
