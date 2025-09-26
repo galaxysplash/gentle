@@ -52,6 +52,8 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
   return make_directory(project_path, SRC_DIR_NAME);
 }
 
-[[nodiscard]] auto snake_case_to_upper_case() noexcept -> std::string {
+[[nodiscard]] auto core_utils::CoreUtils::snake_case_to_upper_case(
+    const std::string_view &snake_case_str) noexcept -> std::string {
+
   return {};
 }
