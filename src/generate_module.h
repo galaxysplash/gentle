@@ -20,10 +20,14 @@ constexpr inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
 create_or_get_lib_directory(const std::filesystem::path &base_path) noexcept
     -> std::expected<std::filesystem::path, std::string> {
 
-  if (std::filesystem::exists(std::filesystem::path{LIB_DIRECTORY_NAME}))
-      [[likely]] {
-    return base_path / LIB_DIRECTORY_NAME;
+  const auto lib_dir = base_path / LIB_DIRECTORY_NAME;
+
+  if (std::filesystem::exists(lib_dir)) [[likely]] {
+    std::println("already exists ('{}')", lib_dir.string());
+    return lib_dir;
   }
+
+  std::println("creating directory '{}'", lib_dir.string());
   return core_utils::CoreUtils::make_directory(base_path, LIB_DIRECTORY_NAME);
 }
 
