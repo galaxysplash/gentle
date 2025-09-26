@@ -6,4 +6,8 @@ mkdir tests
 cd tests
 echo ""
 echo ""
-./../build/gentle test_project
+./../build/gentle proj test_project
+echo ""
+echo ""
+cd test_project
+./../../build/gentle mod hey
