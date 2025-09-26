@@ -13,7 +13,7 @@
 #include <string_view>
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
-  const auto match_keyword_result = match_keyword(
+  const auto match_keyword_result = KeywordMatcher::match_keyword(
       argc, argv,
       {KeywordBinding{
            "proj",
