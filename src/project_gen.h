@@ -10,7 +10,7 @@ static auto generate_project(const int argc,
   const auto project_name_result =
       core_utils::CoreUtils::get_project_name(argc, argv);
 
-  if (!project_name_result) {
+  if (!project_name_result) [[unlikely]] {
     std::println("{}", project_name_result.error());
     std::terminate();
   }
@@ -21,7 +21,7 @@ static auto generate_project(const int argc,
   const auto project_path_result =
       core_utils::CoreUtils::make_project_directory(project_name);
 
-  if (!project_path_result) {
+  if (!project_path_result) [[unlikely]] {
     std::println("{}", project_path_result.error());
     std::terminate();
   }
@@ -31,7 +31,7 @@ static auto generate_project(const int argc,
   const auto src_directory_result =
       core_utils::CoreUtils::make_src_directory(project_directory);
 
-  if (!src_directory_result) {
+  if (!src_directory_result) [[unlikely]] {
     std::println("{}", project_path_result.error());
     std::terminate();
   }
@@ -52,7 +52,7 @@ static auto generate_project(const int argc,
       core_utils::CoreUtils::write_files<std::string_view>(
           std::move(static_files));
 
-  if (!write_static_files_result) {
+  if (!write_static_files_result) [[unlikely]] {
     std::println("{}", write_static_files_result.error());
     std::terminate();
   }
@@ -60,7 +60,7 @@ static auto generate_project(const int argc,
   const auto write_dynamic_files_result =
       core_utils::CoreUtils::write_files<std::string>(std::move(dynamic_files));
 
-  if (!write_dynamic_files_result) {
+  if (!write_dynamic_files_result) [[unlikely]] {
     std::println("{}", write_dynamic_files_result.error());
     std::terminate();
   }

@@ -4,6 +4,7 @@
 #include "keyword_binding.h"
 #include "project_gen.h"
 
+#include <exception>
 #include <expected>
 #include <format>
 #include <print>
@@ -40,10 +41,17 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
     std::terminate();
   }
 
+  const auto get_modifier_argument_result = get_modifier_argument(argc, argv);
+  if (!get_modifier_argument_result) [[unlikely]] {
+    std::println("{}", get_modifier_argument_result.error());
+    std::terminate();
+  }
+  const auto modifier_argument = get_modifier_argument_result.value();
+
   keyword_bindings |
       std::ranges::views::filter(
-          [&argv](const KeywordBinding &keyword_binding) -> bool {
-            return keyword_binding.keyword_name == argv[1];
+          [&modifier_argument](const KeywordBinding &keyword_binding) -> bool {
+            return keyword_binding.keyword_name == modifier_argument;
           });
   generate_project(argc, argv);
 }
