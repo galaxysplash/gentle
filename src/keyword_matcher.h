@@ -25,7 +25,7 @@
     for (std::uint8_t i = 0;
          const KeywordBinding &keyword_binding : keyword_bindings) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
-      if (i != 0) [[unlikely]] {
+      if (i != 0) [[likely]] {
         std::println("or");
       }
       unexpected_ret = std::format("expected: \"gentle {} {}\"",

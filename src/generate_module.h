@@ -72,9 +72,9 @@ create_mod_directory(const std::filesystem::path &base_path,
   if (!mod_directory_result) {
     return std::unexpected{mod_directory_result.error()};
   }
-  std::println("creating mod_directory...");
-
   const auto &mod_directory = mod_directory_result.value();
+
+  std::println("creating mod_directory...");
 
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
