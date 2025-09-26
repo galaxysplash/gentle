@@ -8,11 +8,10 @@
 #include <string>
 #include <string_view>
 
-namespace generate_module {
-constexpr static inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
-
-class Funcs final {
+class GenerateModule final {
 public:
+  constexpr static inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
+
   [[nodiscard]] static auto run(const int argc,
                                 const char *const *const argv) noexcept
       -> std::expected<void, std::string>;
@@ -27,4 +26,3 @@ private:
                        const std::string_view &name)
       -> std::expected<std::filesystem::path, std::string>;
 };
-} // namespace generate_module
