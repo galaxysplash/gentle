@@ -10,11 +10,11 @@
 #include <filesystem>
 #include <format>
 #include <initializer_list>
+#include <ios>
 #include <print>
 #include <string>
 #include <string_view>
 
-constexpr inline auto HEADER_NAME = std::string_view{"mod"};
 constexpr inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
 
 [[nodiscard]] inline auto
@@ -71,14 +71,14 @@ create_mod_directory(const std::filesystem::path &base_path,
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
-              std::format("{}.h", HEADER_NAME),
+              std::format("{}.h", module_name),
               mod_directory,
-              content::get_mod_h(module_name, HEADER_NAME),
+              content::get_mod_h(std::uppercase(module_name), module_name),
           },
           core_utils::File<std::string>{
-              std::format("{}.cpp", HEADER_NAME),
+              std::format("{}.cpp", module_name),
               mod_directory,
-              content::get_mod_cpp(module_name, HEADER_NAME),
+              content::get_mod_cpp(, module_name),
           }});
 
   if (!write_files_result) {
