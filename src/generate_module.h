@@ -71,12 +71,12 @@ create_mod_directory(const std::filesystem::path &base_path,
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
-              std::format("{}.h", module_name),
+              std::format("{}.h", HEADER_NAME),
               mod_directory,
               content::get_mod_h(module_name, HEADER_NAME),
           },
           core_utils::File<std::string>{
-              std::format("{}.cpp", module_name),
+              std::format("{}.cpp", HEADER_NAME),
               mod_directory,
               content::get_mod_cpp(module_name, HEADER_NAME),
           }});
