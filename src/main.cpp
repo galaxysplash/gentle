@@ -21,21 +21,18 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return GenerateProject::run(argc, argv);
               },
-              "my_proj_name",
           },
           KeywordBinding{
               "mod",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return GenerateModule::run(argc, argv);
               },
-              "my_mod_name",
           },
           KeywordBinding{
               "class",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return {};
               },
-              "my_class_name",
           },
       });
 

@@ -2,6 +2,7 @@
 // keyword_matcher.cpp
 
 #include "keyword_matcher.h"
+#include "content.h"
 #include "core_utils.h"
 
 #include <format>
@@ -25,7 +26,8 @@
       }
       unexpected_ret +=
           std::format("\"gentle {} {}\"", keyword_binding.keyword_name,
-                      keyword_binding.err_msg_example_name);
+                      content::Matcher::get_err_msg_example_name(
+                          keyword_binding.keyword_name));
       ++i;
     }
     return std::unexpected{unexpected_ret};
