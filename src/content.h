@@ -16,7 +16,7 @@ namespace content {
          "}\n";
 }
 
-[[nodiscard]] static auto
+[[nodiscard]] inline auto
 get_cmake_lists_txt(const std::string_view project_name) noexcept
     -> std::string {
   std::string ret;
