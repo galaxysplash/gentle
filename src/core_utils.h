@@ -44,7 +44,7 @@ public:
 
   [[nodiscard]] static auto
   make_directory(const std::filesystem::path &base_path,
-                 const std::string_view name) noexcept
+                 const std::string_view &name) noexcept
       -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto

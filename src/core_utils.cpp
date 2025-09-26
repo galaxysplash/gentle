@@ -16,7 +16,7 @@ core_utils::CoreUtils::get_name(const int argc,
 
 [[nodiscard]] auto
 core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
-                                      const std::string_view name) noexcept
+                                      const std::string_view &name) noexcept
     -> std::expected<std::filesystem::path, std::string> {
   const auto new_path = base_path / name;
   if (!std::filesystem::create_directory(new_path)) {
