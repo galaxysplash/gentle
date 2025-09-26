@@ -7,7 +7,25 @@
 #include <string_view>
 
 namespace content {
-#pragma region PROGRAM_GEN
+namespace base {
+[[nodiscard]] inline auto
+get_cmake_lists_txt(const std::string_view &name) noexcept -> std::string {
+  std::string ret;
+
+  ret += "cmake_minimum_required(VERSION 3.30)\n"
+         "project(";
+  ret += name;
+  ret += ")\n"
+         "\n"
+         "set(CMAKE_CXX_STANDARD 26)\n"
+         "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
+         "\n"
+         "file(GLOB SOURCES src/*.cpp)\n";
+
+  return ret;
+}
+} // namespace base
+namespace proj_gen {
 [[nodiscard]] consteval auto get_main_cpp() noexcept -> std::string_view {
   return "// main.cpp\n"
          "\n"
@@ -20,26 +38,17 @@ namespace content {
 }
 
 [[nodiscard]] inline auto
-get_cmake_lists_txt(const std::string_view project_name) noexcept
-    -> std::string {
+get_proj_cmake_lists_txt(const std::string_view &name) noexcept -> std::string {
   std::string ret;
 
-  ret += "cmake_minimum_required(VERSION 3.30)\n"
-         "project(";
-  ret += project_name;
-  ret += ")\n"
-         "\n"
-         "set(CMAKE_CXX_STANDARD 26)\n"
-         "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
-         "\n"
-         "file(GLOB SOURCES src/*.cpp)\n"
-         "add_executable(${PROJECT_NAME} ${SOURCES})\n";
+  ret += base::get_cmake_lists_txt(name);
+  ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
 
   return ret;
 }
-#pragma endregion
+} // namespace proj_gen
 
-#pragma region MODULES_GEN
+namespace module_gen {
 [[nodiscard]] inline auto
 get_mod_h(const std::string_view &module_name,
           const std::string_view &header_name) noexcept -> std::string {
@@ -77,5 +86,16 @@ get_mod_cpp(const std::string_view &module_name,
          "}\n";
   return ret;
 }
-#pragma endregion
+
+[[nodiscard]] inline auto
+get_module_cmake_lists_txt(const std::string_view &name) noexcept
+    -> std::string {
+  std::string ret;
+
+  ret += base::get_cmake_lists_txt(name);
+  ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
+
+  return ret;
+}
+} // namespace module_gen
 } // namespace content
