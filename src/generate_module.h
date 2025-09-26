@@ -52,8 +52,11 @@ create_mod_directory(const std::filesystem::path &base_path,
   }
   const auto mod_directory = mod_directory_result.value();
 
-  const auto write_files_result = core_utils::CoreUtils::write_files(
-      std::initializer_list<core_utils::File<std::string>>{});
+  const auto write_files_result =
+      core_utils::CoreUtils::write_files({core_utils::File<std::string>{
+          "mod.cpp", mod_directory,
+          "// "
+          }});
   if (!write_files_result) {
   }
   return {};

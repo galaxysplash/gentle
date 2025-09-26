@@ -7,6 +7,7 @@
 #include <string_view>
 
 namespace content {
+#pragma region PROGRAM_GEN
 [[nodiscard]] consteval auto get_main_cpp() noexcept -> std::string_view {
   return "// main.cpp\n"
          "\n"
@@ -37,4 +38,23 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
 
   return ret;
 }
+#pragma endregion
+
+#pragma region MODULES_GEN
+[[nodiscard]] inline auto get_mod_h(const std::string_view module_name) noexcept
+    -> std::string {
+  std::string ret;
+
+  ret = "// ";
+  ret += module_name;
+  ret += ".h\n\n";
+
+  ret += "class ";
+  ret += module_name;
+  ret += " final {\n"
+         "  static auto run() noexcept -> void;\n"
+         "};\n";
+  return ret;
+}
+#pragma endregion
 } // namespace content
