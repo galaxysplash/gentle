@@ -9,24 +9,15 @@
 
 #include <expected>
 #include <format>
+#include <initializer_list>
 #include <print>
 #include <ranges>
 #include <string_view>
 
-[[nodiscard]] inline auto
-get_modifier_argument(const int argc, const char *const *const argv) noexcept
+[[nodiscard]] inline auto get_modifier_argument(
+    const int argc, const char *const *const argv,
+    const std::initializer_list<KeywordBinding> &keyword_bindings) noexcept
     -> std::expected<std::string, std::string> {
-  if (argc < 2) [[unlikely]] {
-    return std::unexpected{std::format(
-        "cannot get 'modifier_argument', argc is to small. ({})", argc)};
-  }
-  return argv[1];
-}
-
-[[nodiscard]] inline auto
-match_keyword(const int argc, const char *const *const argv,
-              std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
-    -> std::expected<void, std::string> {
   if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
@@ -44,12 +35,22 @@ match_keyword(const int argc, const char *const *const argv,
     return std::unexpected{unexpected_ret};
   }
 
-  const auto get_modifier_argument_result = get_modifier_argument(argc, argv);
+  return argv[1];
+}
+
+[[nodiscard]] inline auto
+match_keyword(const int argc, const char *const *const argv,
+              std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
+    -> std::expected<void, std::string> {
+  // security check
+  const auto get_modifier_argument_result =
+      get_modifier_argument(argc, argv, keyword_bindings);
   if (!get_modifier_argument_result) [[unlikely]] {
     return std::unexpected{get_modifier_argument_result.error()};
   }
   const auto modifier_argument = get_modifier_argument_result.value();
 
+  // match
   for (const KeywordBinding &matched_bindings :
        keyword_bindings |
            std::ranges::views::filter(
