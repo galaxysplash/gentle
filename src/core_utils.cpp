@@ -25,7 +25,8 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
   constexpr auto ERR_MSG = std::string_view{
       "Failed to create project directory '{}' in path '{}'.\n\n"
       "Hint: Ensure your Operating System gives the proper permissions so "
-      "it is allowed to create files and folders."};
+      "it is allowed to create files and folders. OR You're in the right "
+      "directory."};
   try {
     const auto new_path = base_path / name;
     if (!std::filesystem::create_directory(new_path)) {
@@ -33,7 +34,9 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
     }
     return new_path;
   } catch (const std::exception &e) {
-    return std::unexpected{std::format("C++ err: {}. {}", e.what(), ERR_MSG)};
+    return std::unexpected{
+        std::format("C++ err: {}.\n\n{}", e.what(),
+                    std::format(ERR_MSG, name, base_path.string()))};
   }
 }
 
