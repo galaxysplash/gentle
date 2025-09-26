@@ -8,7 +8,6 @@
 #include <expected>
 #include <format>
 #include <print>
-#include <ranges>
 #include <string_view>
 
 auto main(const int argc, const char *const *const argv) noexcept -> int {
