@@ -48,6 +48,7 @@ match_keyword(const int argc, const char *const *const argv,
   if (!get_modifier_argument_result) [[unlikely]] {
     return std::unexpected{get_modifier_argument_result.error()};
   }
+
   const auto modifier_argument = get_modifier_argument_result.value();
 
   // match
