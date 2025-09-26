@@ -8,4 +8,4 @@ echo ""
 echo ""
 ./../build/gentle proj test_project
 cd test_project
-./../build/gentle mod hey
+./../../build/gentle mod hey
