@@ -15,7 +15,7 @@
 
 [[nodiscard]] inline auto
 get_modifier_argument(const int argc, const char *const *const argv) noexcept
-    -> std::expected<std::string_view, std::string_view> {
+    -> std::expected<std::string, std::string> {
   if (argc < 2) [[unlikely]] {
     return std::unexpected{std::format(
         "cannot get 'modifier_argument', argc is to small. ({})", argc)};
@@ -26,24 +26,22 @@ get_modifier_argument(const int argc, const char *const *const argv) noexcept
 [[nodiscard]] inline auto
 match_keyword(const int argc, const char *const *const argv,
               std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
-    -> std::expected<void, std::string_view> {
+    -> std::expected<void, std::string> {
   if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
-    auto unexpected_ret = std::string_view{};
+    auto unexpected_ret = std::string{};
     for (std::uint8_t i = 0;
          const KeywordBinding &keyword_binding : keyword_bindings) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
       if (i != 0) [[unlikely]] {
         std::println("or");
       }
-      unexpected_ret =
-          std::move(std::format("expected: \"gentle {} {}\"",
-                                keyword_binding.keyword_name,
-                                keyword_binding.err_msg_example_name)
-                        .c_str());
+      unexpected_ret = std::format("expected: \"gentle {} {}\"",
+                                   keyword_binding.keyword_name,
+                                   keyword_binding.err_msg_example_name);
     }
-    return std::unexpected{unexpected_ret};
+    return std::unexpected{std::move(unexpected_ret)};
   }
 
   const auto get_modifier_argument_result = get_modifier_argument(argc, argv);

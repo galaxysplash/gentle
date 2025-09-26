@@ -40,27 +40,26 @@ class CoreUtils final {
 public:
   [[nodiscard]] static auto get_name(const int argc,
                                      const char *const *const argv) noexcept
-      -> std::expected<std::string_view, std::string_view>;
+      -> std::expected<std::string, std::string>;
 
   [[nodiscard]] static auto
   make_directory(const std::filesystem::path &base_path,
                  const std::string_view name) noexcept
-      -> std::expected<std::filesystem::path, std::string_view>;
+      -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto
   make_project_directory(const std::string_view &project_name) noexcept
-      -> std::expected<std::filesystem::path, std::string_view>;
+      -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto
   make_src_directory(const std::filesystem::path &project_path) noexcept
-      -> std::expected<std::filesystem::path, std::string_view>;
+      -> std::expected<std::filesystem::path, std::string>;
 
   template <typename ContentType>
     requires StringLike<ContentType>
   [[nodiscard]] static inline auto
-  write_files(const std::initializer_list<core_utils::File<ContentType>>
-                  &files) noexcept
-      -> std::expected<std::ofstream, std::string_view> {
+  write_files(const std::initializer_list<core_utils::File<ContentType>> &
+                  files) noexcept -> std::expected<std::ofstream, std::string> {
     try {
       for (const core_utils::File<ContentType> &file : files) {
         std::println("creating file '{}' in '{}'...",

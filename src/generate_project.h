@@ -12,7 +12,7 @@
 
 [[nodiscard]] inline auto
 generate_project(const int argc, const char *const *const argv) noexcept
-    -> std::expected<void, std::string_view> {
+    -> std::expected<void, std::string> {
   const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!name_result) [[unlikely]] {

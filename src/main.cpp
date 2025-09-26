@@ -14,18 +14,16 @@
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   if (const auto match_keyword_result = match_keyword(
           argc, argv,
-          {KeywordBinding{
-               "proj",
-               [&argc, &argv]() -> std::expected<void, std::string_view> {
-                 return generate_project(argc, argv);
-               },
-               "my_proj_name"},
-           KeywordBinding{
-               "mod",
-               [&argc, &argv]() -> std::expected<void, std::string_view> {
-                 return generate_module(argc, argv);
-               },
-               "my_mod_name"}});
+          {KeywordBinding{"proj",
+                          [&argc, &argv]() -> std::expected<void, std::string> {
+                            return generate_project(argc, argv);
+                          },
+                          "my_proj_name"},
+           KeywordBinding{"mod",
+                          [&argc, &argv]() -> std::expected<void, std::string> {
+                            return generate_module(argc, argv);
+                          },
+                          "my_mod_name"}});
       !match_keyword_result) {
     std::println("{}", match_keyword_result.error());
     return -1;
