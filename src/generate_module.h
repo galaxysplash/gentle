@@ -7,6 +7,7 @@
 
 #include <expected>
 #include <filesystem>
+#include <initializer_list>
 #include <string_view>
 
 constexpr inline auto LIB_DIRECTORY_NAME = "lib";
@@ -51,5 +52,9 @@ create_mod_directory(const std::filesystem::path &base_path,
   }
   const auto mod_directory = mod_directory_result.value();
 
+  const auto write_files_result = core_utils::CoreUtils::write_files(
+      std::initializer_list<core_utils::File<std::string>>{});
+  if (!write_files_result) {
+  }
   return {};
 }
