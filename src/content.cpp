@@ -21,16 +21,6 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   return ret;
 }
 
-auto content::Matcher::get_err_msg_example_name(
-    const std::string_view &name) noexcept -> std::string {
-  std::string ret;
-  ret += "my_";
-  ret += name;
-  ret += "_name";
-
-  return ret;
-}
-
 [[nodiscard]] auto content::ProjGen::get_proj_cmake_lists_txt(
     const std::string_view &name) noexcept -> std::string {
   std::string ret;

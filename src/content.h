@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <format>
 #include <string>
 #include <string_view>
 
@@ -12,9 +13,11 @@ struct Base {
   get_cmake_lists_txt(const std::string_view &name) noexcept -> std::string;
 };
 struct Matcher {
-  [[nodiscard]] static auto
+  [[nodiscard]] constexpr static inline auto
   get_err_msg_example_name(const std::string_view &name) noexcept
-      -> std::string;
+      -> std::string {
+    return std::format("my_{}_name", name);
+  }
 };
 struct ProjGen {
   [[nodiscard]] consteval static inline auto get_main_cpp() noexcept
