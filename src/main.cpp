@@ -1,8 +1,10 @@
 // copyright© marcel hajek, all rights reserved.
 // main.cpp
 
+#include "generate/generate_class.h"
 #include "generate/generate_module.h"
 #include "generate/generate_project.h"
+
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
@@ -31,7 +33,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
           KeywordBinding{
               "class",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-                return {};
+                return GenerateClass::run(argc, argv);
               },
           },
       });
