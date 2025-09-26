@@ -11,6 +11,11 @@ struct Base {
   [[nodiscard]] static auto
   get_cmake_lists_txt(const std::string_view &name) noexcept -> std::string;
 };
+struct Matcher {
+  [[nodiscard]] static auto
+  get_err_msg_example_name(const std::string_view &name) noexcept
+      -> std::string;
+};
 struct ProjGen {
   [[nodiscard]] consteval static inline auto get_main_cpp() noexcept
       -> std::string_view {

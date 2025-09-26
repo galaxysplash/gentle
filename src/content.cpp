@@ -2,6 +2,7 @@
 // content.cpp
 
 #include "content.h"
+#include <string_view>
 
 auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
     -> std::string {
@@ -16,6 +17,16 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
          "\n"
          "file(GLOB SOURCES src/*.cpp)\n";
+
+  return ret;
+}
+
+auto content::Matcher::get_err_msg_example_name(
+    const std::string_view &name) noexcept -> std::string {
+  std::string ret;
+  ret += "my_";
+  ret += name;
+  ret += "_name";
 
   return ret;
 }
