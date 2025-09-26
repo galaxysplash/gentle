@@ -26,11 +26,11 @@
          const KeywordBinding &keyword_binding : keyword_bindings) {
       const auto defer_increment = Defer{[&i]() { ++i; }};
       if (i != 0) [[likely]] {
-        std::println("or");
+        unexpected_ret += " or ";
       }
-      unexpected_ret = std::format("expected: \"gentle {} {}\"",
-                                   keyword_binding.keyword_name,
-                                   keyword_binding.err_msg_example_name);
+      unexpected_ret += std::format("expected: \"gentle {} {}\"",
+                                    keyword_binding.keyword_name,
+                                    keyword_binding.err_msg_example_name);
     }
     return std::unexpected{unexpected_ret};
   }
