@@ -41,6 +41,7 @@ create_mod_directory(const std::filesystem::path &base_path,
 
   const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
 
+  
   if (!name_result) [[unlikely]] {
     return std::unexpected{name_result.error()};
   }
