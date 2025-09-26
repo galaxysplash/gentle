@@ -34,7 +34,7 @@
   return argv[1];
 }
 
-[[nodiscard]] auto KeywordMatcher::match_keyword(
+[[nodiscard]] auto KeywordMatcher::run(
     const int argc, const char *const *const argv,
     std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
     -> std::expected<void, std::string> {

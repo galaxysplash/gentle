@@ -15,8 +15,8 @@ public:
       const std::initializer_list<KeywordBinding> &keyword_bindings) noexcept
       -> std::expected<std::string, std::string>;
 
-  [[nodiscard]] static auto match_keyword(
-      const int argc, const char *const *const argv,
+  [[nodiscard]] static auto
+  run(const int argc, const char *const *const argv,
       std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
       -> std::expected<void, std::string>;
 };
