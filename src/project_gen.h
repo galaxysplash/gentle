@@ -5,7 +5,7 @@
 
 #include <print>
 
-static auto generate_project(const int argc,
+inline auto generate_project(const int argc,
                              const char *const *const argv) noexcept -> void {
   const auto project_name_result =
       core_utils::CoreUtils::get_project_name(argc, argv);

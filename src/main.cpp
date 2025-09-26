@@ -4,7 +4,6 @@
 #include "keyword_binding.h"
 #include "project_gen.h"
 
-#include <algorithm>
 #include <exception>
 #include <expected>
 #include <format>
