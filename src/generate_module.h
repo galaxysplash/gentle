@@ -60,9 +60,15 @@ create_mod_directory(const std::filesystem::path &base_path,
           core_utils::File<std::string>{
               name,
               mod_directory,
+              std::move(content::get_mod_h(name, HEADER_NAME)),
+          },
+          core_utils::File<std::string>{
+              name,
+              mod_directory,
               std::move(content::get_mod_cpp(name, HEADER_NAME)),
           }});
   if (!write_files_result) {
+    return std::unexpected{write_files_result.error()};
   }
   return {};
 }
