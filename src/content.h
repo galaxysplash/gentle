@@ -12,8 +12,18 @@ struct Base {
   get_cmake_lists_txt(const std::string_view &name) noexcept -> std::string;
 };
 struct ProjGen {
-  [[nodiscard]] static consteval auto get_main_cpp() noexcept
-      -> std::string_view;
+  [[nodiscard]] consteval static inline auto get_main_cpp() noexcept
+      -> std::string_view {
+    return "// main.cpp\n"
+           "\n"
+           "#include <print>\n"
+           "\n"
+           "auto main(const int argc, const char *const *const argv) noexcept "
+           "-> "
+           "int {\n"
+           "  std::println(\"hello world!\");\n"
+           "}\n";
+  }
 
   [[nodiscard]] static auto
   get_proj_cmake_lists_txt(const std::string_view &name) noexcept
