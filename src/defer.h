@@ -1,4 +1,4 @@
-// copyright© galaxysplash
+// copyright© marcel hajek, all rights reserved.
 // defer.h
 
 #pragma once

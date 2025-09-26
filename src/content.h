@@ -1,4 +1,4 @@
-// copyright© galaxysplash
+// copyright© marcel hajek, all rights reserved.
 // content.h
 
 #pragma once

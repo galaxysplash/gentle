@@ -1,3 +1,4 @@
+// copyright© marcel hajek, all rights reserved.
 // main.cpp
 
 #include "generate_module.h"

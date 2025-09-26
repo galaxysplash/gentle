@@ -1,4 +1,4 @@
-// copyright© galaxysplash
+// copyright© marcel hajek, all rights reserved.
 // generate_module.h
 
 #pragma once

@@ -1,4 +1,4 @@
-// copyright© galaxysplash
+// copyright© marcel hajek, all rights reserved.
 // keyword_binding.h
 
 #pragma once

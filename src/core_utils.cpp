@@ -1,4 +1,4 @@
-// copyright© galaxysplash
+// copyright© marcel hajek, all rights reserved.
 // core_utils.cpp
 
 #include "core_utils.h"
