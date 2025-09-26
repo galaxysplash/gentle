@@ -13,7 +13,6 @@ namespace content {
          "\n"
          "#include <print>\n"
          "\n"
-         "\n"
          "auto main(const int argc, const char *const *const argv) noexcept -> "
          "int {\n"
          "  std::println(\"hello world!\");\n"
