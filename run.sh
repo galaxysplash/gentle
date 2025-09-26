@@ -7,5 +7,5 @@ cd tests
 echo ""
 echo ""
 ./../build/gentle proj test_project
-cd proj
+cd test_project
 ./../build/gentle mod hey
