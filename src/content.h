@@ -70,7 +70,7 @@ get_mod_cpp(const std::string_view &module_name,
 
   ret += "#include \"";
   ret += header_name;
-  ret += ".h\"";
+  ret += ".h\"\n\n";
   ret += "auto ";
   ret += module_name;
   ret += "::run() noexcept -> void {\n"

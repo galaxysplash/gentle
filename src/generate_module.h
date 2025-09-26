@@ -8,6 +8,7 @@
 
 #include <expected>
 #include <filesystem>
+#include <format>
 #include <initializer_list>
 #include <print>
 #include <string>
@@ -42,24 +43,15 @@ create_mod_directory(const std::filesystem::path &base_path,
     -> std::expected<void, std::string> {
   std::println("generate module...");
 
-  const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
+  const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
-  if (!name_result) [[unlikely]] {
-    return std::unexpected{name_result.error()};
+  if (!module_name_result) [[unlikely]] {
+    return std::unexpected{module_name_result.error()};
   }
-  const auto name = name_result.value();
+  const auto module_name = module_name_result.value();
 
-  const auto directory_result =
-      core_utils::CoreUtils::make_project_directory(name);
-
-  if (!directory_result) [[unlikely]] {
-    return std::unexpected{directory_result.error()};
-  }
-  const auto &directory = directory_result.value();
-
-  std::println("base_path: {}", directory.string());
-  const auto lib_directory_result =
-      create_or_get_lib_directory(directory / LIB_DIRECTORY_NAME);
+  const auto lib_directory_result = create_or_get_lib_directory(
+      std::filesystem::current_path() / LIB_DIRECTORY_NAME);
 
   if (!lib_directory_result) [[unlikely]] {
     return std::unexpected{lib_directory_result.error()};
@@ -67,8 +59,8 @@ create_mod_directory(const std::filesystem::path &base_path,
   const auto lib_directory = lib_directory_result.value();
   std::println("created lib directory.");
 
-  const auto mod_directory_result = create_mod_directory(
-      std::filesystem::current_path() / LIB_DIRECTORY_NAME, name);
+  const auto mod_directory_result =
+      create_mod_directory(lib_directory, module_name);
   if (!mod_directory_result) {
     return std::unexpected{mod_directory_result.error()};
   }
@@ -79,14 +71,14 @@ create_mod_directory(const std::filesystem::path &base_path,
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
-              name,
+              std::format("{}.h", module_name),
               mod_directory,
-              std::move(content::get_mod_h(name, HEADER_NAME)),
+              content::get_mod_h(module_name, HEADER_NAME),
           },
           core_utils::File<std::string>{
-              name,
+              std::format("{}.cpp", module_name),
               mod_directory,
-              std::move(content::get_mod_cpp(name, HEADER_NAME)),
+              content::get_mod_cpp(module_name, HEADER_NAME),
           }});
   if (!write_files_result) {
     return std::unexpected{write_files_result.error()};
