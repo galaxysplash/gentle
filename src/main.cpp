@@ -14,7 +14,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
   auto keyword_bindings = {
       KeywordBinding{"proj", [&argc, &argv]() { generate_project(argc, argv); },
                      "my_proj_name"},
-      KeywordBinding{"mod", [&argc, &argv]() {}, "my_mod_name"}};
+      KeywordBinding{"mod", [&argc, &argv]() {  }, "my_mod_name"}};
 
   const auto match_keyword_result =
       match_keyword(argc, argv, std::move(keyword_bindings));
