@@ -41,12 +41,13 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
 #pragma endregion
 
 #pragma region MODULES_GEN
-[[nodiscard]] inline auto get_mod_h(const std::string_view module_name) noexcept
-    -> std::string {
+[[nodiscard]] inline auto
+get_mod_h(const std::string_view &module_name,
+          const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
 
   ret = "// ";
-  ret += module_name;
+  ret += header_name;
   ret += ".h\n\n";
 
   ret += "class ";
@@ -55,6 +56,26 @@ get_cmake_lists_txt(const std::string_view project_name) noexcept
          "public:\n"
          "  static auto run() noexcept -> void;\n"
          "};\n";
+  return ret;
+}
+
+[[nodiscard]] inline auto
+get_mod_cpp(const std::string_view &module_name,
+            const std::string_view &header_name) noexcept -> std::string {
+  std::string ret;
+
+  ret = "// ";
+  ret += header_name;
+  ret += ".cpp\n\n";
+
+  ret += "#include \"";
+  ret += header_name;
+  ret += ".h\"";
+  ret += "auto ";
+  ret += module_name;
+  ret += "::run() noexcept -> void {\n"
+         "  // insert code here...\n"
+         "}\n";
   return ret;
 }
 #pragma endregion

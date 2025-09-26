@@ -3,14 +3,17 @@
 
 #pragma once
 
+#include "content.h"
 #include "core_utils.h"
 
 #include <expected>
 #include <filesystem>
 #include <initializer_list>
+#include <string>
 #include <string_view>
 
-constexpr inline auto LIB_DIRECTORY_NAME = "lib";
+constexpr inline auto HEADER_NAME = std::string_view{"mod"};
+constexpr inline auto LIB_DIRECTORY_NAME = std::string_view{"lib"};
 
 [[nodiscard]] inline auto
 create_or_get_lib_directory(const std::filesystem::path &base_path) noexcept
@@ -50,12 +53,14 @@ create_mod_directory(const std::filesystem::path &base_path,
   if (!mod_directory_result) {
     return std::unexpected{mod_directory_result.error()};
   }
-  const auto mod_directory = mod_directory_result.value();
+  const auto &mod_directory = mod_directory_result.value();
 
-  const auto write_files_result =
-      core_utils::CoreUtils::write_files({core_utils::File<std::string>{
-          "mod.cpp", mod_directory,
-          "// "
+  const auto write_files_result = core_utils::CoreUtils::write_files(
+      std::initializer_list<core_utils::File<std::string>>{
+          core_utils::File<std::string>{
+              name,
+              mod_directory,
+              std::move(content::get_mod_cpp(name, HEADER_NAME)),
           }});
   if (!write_files_result) {
   }

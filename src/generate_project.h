@@ -18,7 +18,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
   if (!name_result) [[unlikely]] {
     return std::unexpected{name_result.error()};
   }
-  const auto name = name_result.value();
+  const auto &name = name_result.value();
 
   std::println("creating directories...");
 
@@ -28,7 +28,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
   if (!project_path_result) [[unlikely]] {
     return std::unexpected{project_path_result.error()};
   }
-  const auto project_directory = project_path_result.value();
+  const auto &project_directory = project_path_result.value();
 
   std::println("project_directory: {}", project_directory.string());
   const auto src_directory_result =
@@ -37,7 +37,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
   if (!src_directory_result) [[unlikely]] {
     return std::unexpected{project_path_result.error()};
   }
-  const auto src_directory = src_directory_result.value();
+  const auto &src_directory = src_directory_result.value();
 
   std::println("src_directory: {}", src_directory.string());
 

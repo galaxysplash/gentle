@@ -23,7 +23,7 @@ concept StringLike =
 template <typename ContentType>
   requires StringLike<ContentType>
 struct File {
-  explicit inline File<ContentType>(const std::string_view name,
+  explicit inline File<ContentType>(const std::string_view &name,
                                     const std::filesystem::path &path,
                                     ContentType &&content) noexcept
       : name(name), path(path), content(content) {}
