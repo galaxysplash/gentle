@@ -1,1 +1,3 @@
-git commit -a -m "..." && git push && inst.sh
+git commit -a -m "..."
+git push
+./inst.sh
