@@ -79,8 +79,7 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
           core_utils::File<std::string>{
               "CMakeLists.txt",
               mod_directory,
-              content::ModuleGen::get_mod_cpp(upper_case_module_name,
-                                              module_name),
+              content::ModuleGen::get_module_cmake_lists_txt(module_name),
           },
       });
 

@@ -41,6 +41,8 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
   ret += header_name;
   ret += ".h\n\n";
 
+  ret += "#pragma once\n\n";
+
   ret += "class ";
   ret += module_name;
   ret += " final {\n"
