@@ -45,11 +45,13 @@ create_mod_directory(const std::filesystem::path &base_path,
     return std::unexpected{name_result.error()};
   }
   const auto name = name_result.value();
+
   const auto lib_directory_result = create_or_get_lib_directory(name);
   if (!lib_directory_result) [[unlikely]] {
     return std::unexpected{lib_directory_result.error()};
   }
   const auto lib_directory = lib_directory_result.value();
+  std::println("created lib directory.");
 
   const auto mod_directory_result = create_mod_directory(
       std::filesystem::current_path() / LIB_DIRECTORY_NAME, name);
