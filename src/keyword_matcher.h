@@ -22,14 +22,15 @@
     std::println("{} args are required!\n",
                  core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
     auto unexpected_ret = std::string{};
+    std::println("expected: ");
     for (std::uint8_t i = 0;
          const KeywordBinding &keyword_binding : keyword_bindings) {
       if (i != 0) [[likely]] {
-        unexpected_ret += " or ";
+        unexpected_ret += "\n or \n";
       }
-      unexpected_ret += std::format("expected: \"gentle {} {}\"",
-                                    keyword_binding.keyword_name,
-                                    keyword_binding.err_msg_example_name);
+      unexpected_ret +=
+          std::format("\"gentle {} {}\"", keyword_binding.keyword_name,
+                      keyword_binding.err_msg_example_name);
       ++i;
     }
     return std::unexpected{unexpected_ret};
