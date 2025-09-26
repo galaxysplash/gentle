@@ -80,3 +80,13 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
 
   return ret;
 }
+
+auto content::ClassGen::get_cpp_file(const std::string_view &name) noexcept
+    -> std::string {
+  return {};
+}
+
+auto content::ClassGen::get_h_file(const std::string_view &name) noexcept
+    -> std::string {
+  return {};
+}

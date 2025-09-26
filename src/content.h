@@ -49,4 +49,10 @@ struct ModuleGen {
   get_module_cmake_lists_txt(const std::string_view &name) noexcept
       -> std::string;
 };
+struct ClassGen final {
+  [[nodiscard]] static auto get_cpp_file(const std::string_view &name) noexcept
+      -> std::string;
+  [[nodiscard]] static auto get_h_file(const std::string_view &name) noexcept
+      -> std::string;
+};
 } // namespace content

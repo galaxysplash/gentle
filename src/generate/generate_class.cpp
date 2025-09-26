@@ -2,8 +2,35 @@
 // generate_class.cpp
 
 #include "generate_class.h"
+#include "content.h"
+#include "core_utils.h"
+#include <filesystem>
+#include <format>
 
 auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
+
+  const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
+
+  if (!module_name_result) [[unlikely]] {
+    return std::unexpected{module_name_result.error()};
+  }
+  const auto class_name = module_name_result.value();
+
+  const auto src_dir =
+      std::filesystem::current_path() / core_utils::SRC_DIR_NAME;
+
+  const auto files = {
+      core_utils::File<std::string>{
+          std::format("{}.cpp", class_name),
+          src_dir,
+          content::ClassGen::get_cpp_file(class_name),
+      },
+      core_utils::File<std::string>{
+          std::format("{}.h", class_name),
+          src_dir,
+          content::ClassGen::get_h_file(class_name),
+      },
+  };
   return {};
 }
