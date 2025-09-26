@@ -81,32 +81,33 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
   return ret;
 }
 
-auto content::ClassGen::get_cpp_file(const std::string_view &name) noexcept
-    -> std::string {
+auto content::ClassGen::get_cpp_file(
+    const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
 
   ret += "// ";
-  ret += name;
+  ret += header_name;
   ret += ".cpp\n\n";
   ret += "#include \"";
-  ret += name;
+  ret += header_name;
   ret += ".h\"\n\n";
 
   return ret;
 }
 
-auto content::ClassGen::get_h_file(const std::string_view &name) noexcept
+auto content::ClassGen::get_h_file(const std::string_view &class_name,
+                                   const std::string_view &header_name) noexcept
     -> std::string {
   std::string ret;
 
   ret += "// ";
-  ret += name;
+  ret += header_name;
   ret += ".h\n\n";
 
   ret += "#pragma once\n\n";
 
   ret += "class ";
-  ret += name;
+  ret += class_name;
   ret += " {\n"
          "  \n"
          "};\n";
