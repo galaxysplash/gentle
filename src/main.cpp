@@ -24,7 +24,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
        KeywordBinding{
            "mod",
            [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-             return generate_module(argc, argv);
+             return GenerateModule::generate_module(argc, argv);
            },
            "my_mod_name"}});
 
