@@ -2,6 +2,9 @@
 // core_utils.cpp
 
 #include "core_utils.h"
+#include <exception>
+#include <expected>
+#include <string_view>
 
 [[nodiscard]] auto
 core_utils::CoreUtils::get_name(const int argc,
@@ -18,16 +21,19 @@ core_utils::CoreUtils::get_name(const int argc,
 core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
                                       const std::string_view &name) noexcept
     -> std::expected<std::filesystem::path, std::string> {
-  const auto new_path = base_path / name;
-  if (!std::filesystem::create_directory(new_path)) {
-    return std::unexpected{std::format(
-        "Failed to create project directory '{}' in path '{}'.\n\n"
-        "Hint: Ensure your Operating System gives the proper permissions so "
-        "it is allowed to create files and folders.",
-        name, base_path.string())};
+  constexpr auto ERR_MSG = std::string_view{
+      "Failed to create project directory '{}' in path '{}'.\n\n"
+      "Hint: Ensure your Operating System gives the proper permissions so "
+      "it is allowed to create files and folders."};
+  try {
+    const auto new_path = base_path / name;
+    if (!std::filesystem::create_directory(new_path)) {
+      return std::unexpected{std::format(ERR_MSG, name, base_path.string())};
+    }
+    return new_path;
+  } catch (const std::exception &e) {
+    return std::unexpected{std::string{ERR_MSG}};
   }
-
-  return new_path;
 }
 
 [[nodiscard]] auto core_utils::CoreUtils::make_project_directory(
