@@ -40,22 +40,3 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
     -> std::expected<std::filesystem::path, std::string_view> {
   return make_directory(project_path, SRC_DIR_NAME);
 }
-
-template <typename ContentType>
-  requires core_utils::StringLike<ContentType>
-[[nodiscard]] static auto write_files(
-    const std::initializer_list<core_utils::File<ContentType>> &files) noexcept
-    -> std::expected<std::ofstream, std::string_view> {
-  try {
-    for (const core_utils::File<ContentType> &file : files) {
-      std::println("creating file '{}' in '{}'...",
-                   file.path.filename().string(), file.path.string());
-      std::ofstream ofstream{file.path / file.name};
-      ofstream << file.content;
-    }
-  } catch (const std::exception &e) {
-    return std::unexpected{e.what()};
-  }
-
-  return {};
-}
