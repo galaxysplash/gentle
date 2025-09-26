@@ -41,18 +41,6 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
   }
 }
 
-[[nodiscard]] auto core_utils::CoreUtils::make_project_directory(
-    const std::string_view &project_name) noexcept
-    -> std::expected<std::filesystem::path, std::string> {
-  return make_directory(std::filesystem::current_path(), project_name);
-}
-
-[[nodiscard]] auto core_utils::CoreUtils::make_src_directory(
-    const std::filesystem::path &project_path) noexcept
-    -> std::expected<std::filesystem::path, std::string> {
-  return make_directory(project_path, SRC_DIR_NAME);
-}
-
 [[nodiscard]] auto core_utils::CoreUtils::snake_case_to_upper_case(
     const std::string_view &snake_case_str) noexcept -> std::string {
   std::string ret;

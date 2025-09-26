@@ -10,11 +10,26 @@
 #include <print>
 #include <string_view>
 
+using core_utils::CoreUtils;
+
+[[nodiscard]] auto inline make_project_directory(
+    const std::string_view &project_name) noexcept
+    -> std::expected<std::filesystem::path, std::string> {
+  return CoreUtils::make_directory(std::filesystem::current_path(),
+                                   project_name);
+}
+
+[[nodiscard]] auto inline make_src_directory(
+    const std::filesystem::path &project_path) noexcept
+    -> std::expected<std::filesystem::path, std::string> {
+  return CoreUtils::make_directory(project_path, core_utils::SRC_DIR_NAME);
+}
+
 [[nodiscard]] inline auto
 generate_project(const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
   std::println("generate project...");
-  const auto name_result = core_utils::CoreUtils::get_name(argc, argv);
+  const auto name_result = CoreUtils::get_name(argc, argv);
 
   if (!name_result) [[unlikely]] {
     return std::unexpected{name_result.error()};
@@ -23,8 +38,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
 
   std::println("creating directories...");
 
-  const auto directory_result =
-      core_utils::CoreUtils::make_project_directory(name);
+  const auto directory_result = make_project_directory(name);
 
   if (!directory_result) [[unlikely]] {
     return std::unexpected{directory_result.error()};
@@ -32,8 +46,7 @@ generate_project(const int argc, const char *const *const argv) noexcept
   const auto &directory = directory_result.value();
 
   std::println("project_directory: {}", directory.string());
-  const auto src_directory_result =
-      core_utils::CoreUtils::make_src_directory(directory);
+  const auto src_directory_result = make_src_directory(directory);
 
   if (!src_directory_result) [[unlikely]] {
     return std::unexpected{src_directory_result.error()};

@@ -48,14 +48,6 @@ public:
       -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto
-  make_project_directory(const std::string_view &project_name) noexcept
-      -> std::expected<std::filesystem::path, std::string>;
-
-  [[nodiscard]] static auto
-  make_src_directory(const std::filesystem::path &project_path) noexcept
-      -> std::expected<std::filesystem::path, std::string>;
-
-  [[nodiscard]] static auto
   snake_case_to_upper_case(const std::string_view &snake_case_str) noexcept
       -> std::string;
 
