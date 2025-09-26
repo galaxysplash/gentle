@@ -18,7 +18,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
       {KeywordBinding{
            "proj",
            [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-             return generate_project(argc, argv);
+             return GenerateProject::run(argc, argv);
            },
            "my_proj_name"},
        KeywordBinding{

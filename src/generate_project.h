@@ -12,72 +12,77 @@
 
 using core_utils::CoreUtils;
 
-[[nodiscard]] auto inline make_project_directory(
-    const std::string_view &project_name) noexcept
-    -> std::expected<std::filesystem::path, std::string> {
-  return CoreUtils::make_directory(std::filesystem::current_path(),
-                                   project_name);
-}
+class GenerateProject final {
+public:
+  [[nodiscard]] static auto run(const int argc,
+                                const char *const *const argv) noexcept
+      -> std::expected<void, std::string> {
+    std::println("generate project...");
+    const auto name_result = CoreUtils::get_name(argc, argv);
 
-[[nodiscard]] auto inline make_src_directory(
-    const std::filesystem::path &project_path) noexcept
-    -> std::expected<std::filesystem::path, std::string> {
-  return CoreUtils::make_directory(project_path, core_utils::SRC_DIR_NAME);
-}
+    if (!name_result) [[unlikely]] {
+      return std::unexpected{name_result.error()};
+    }
+    const auto &name = name_result.value();
 
-[[nodiscard]] inline auto
-generate_project(const int argc, const char *const *const argv) noexcept
-    -> std::expected<void, std::string> {
-  std::println("generate project...");
-  const auto name_result = CoreUtils::get_name(argc, argv);
+    std::println("creating directories...");
 
-  if (!name_result) [[unlikely]] {
-    return std::unexpected{name_result.error()};
-  }
-  const auto &name = name_result.value();
+    const auto directory_result = make_project_directory(name);
 
-  std::println("creating directories...");
+    if (!directory_result) [[unlikely]] {
+      return std::unexpected{directory_result.error()};
+    }
+    const auto &directory = directory_result.value();
 
-  const auto directory_result = make_project_directory(name);
+    std::println("project_directory: {}", directory.string());
+    const auto src_directory_result = make_src_directory(directory);
 
-  if (!directory_result) [[unlikely]] {
-    return std::unexpected{directory_result.error()};
-  }
-  const auto &directory = directory_result.value();
+    if (!src_directory_result) [[unlikely]] {
+      return std::unexpected{src_directory_result.error()};
+    }
+    const auto &src_directory = src_directory_result.value();
 
-  std::println("project_directory: {}", directory.string());
-  const auto src_directory_result = make_src_directory(directory);
+    std::println("src_directory: {}", src_directory.string());
 
-  if (!src_directory_result) [[unlikely]] {
-    return std::unexpected{src_directory_result.error()};
-  }
-  const auto &src_directory = src_directory_result.value();
+    const auto static_files = {core_utils::File<std::string_view>{
+        "main.cpp", src_directory, content::ProjGen::get_main_cpp()}};
 
-  std::println("src_directory: {}", src_directory.string());
+    const auto dynamic_files = {core_utils::File<std::string>{
+        "CMakeLists.txt", directory,
+        content::ProjGen::get_proj_cmake_lists_txt(name)}};
 
-  const auto static_files = {core_utils::File<std::string_view>{
-      "main.cpp", src_directory, content::ProjGen::get_main_cpp()}};
+    std::println("\ncreating files...");
 
-  const auto dynamic_files = {core_utils::File<std::string>{
-      "CMakeLists.txt", directory,
-      content::ProjGen::get_proj_cmake_lists_txt(name)}};
+    const auto write_static_files_result =
+        core_utils::CoreUtils::write_files<std::string_view>(
+            std::move(static_files));
 
-  std::println("\ncreating files...");
+    if (!write_static_files_result) [[unlikely]] {
+      return std::unexpected{write_static_files_result.error()};
+    }
 
-  const auto write_static_files_result =
-      core_utils::CoreUtils::write_files<std::string_view>(
-          std::move(static_files));
+    const auto write_dynamic_files_result =
+        core_utils::CoreUtils::write_files<std::string>(
+            std::move(dynamic_files));
 
-  if (!write_static_files_result) [[unlikely]] {
-    return std::unexpected{write_static_files_result.error()};
-  }
+    if (!write_dynamic_files_result) [[unlikely]] {
+      return std::unexpected{write_dynamic_files_result.error()};
+    }
 
-  const auto write_dynamic_files_result =
-      core_utils::CoreUtils::write_files<std::string>(std::move(dynamic_files));
-
-  if (!write_dynamic_files_result) [[unlikely]] {
-    return std::unexpected{write_dynamic_files_result.error()};
+    return {};
   }
 
-  return {};
-}
+private:
+  [[nodiscard]] auto static make_project_directory(
+      const std::string_view &project_name) noexcept
+      -> std::expected<std::filesystem::path, std::string> {
+    return CoreUtils::make_directory(std::filesystem::current_path(),
+                                     project_name);
+  }
+
+  [[nodiscard]] auto static make_src_directory(
+      const std::filesystem::path &project_path) noexcept
+      -> std::expected<std::filesystem::path, std::string> {
+    return CoreUtils::make_directory(project_path, core_utils::SRC_DIR_NAME);
+  }
+};
