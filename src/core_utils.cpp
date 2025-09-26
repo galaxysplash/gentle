@@ -59,7 +59,7 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
     const std::string_view &snake_case_str) noexcept -> std::string {
   std::string ret;
 
-  for (bool previous_was_underscore = false, first_time = true;
+  for (bool first_time = true, previous_was_underscore = false;
        const auto &snake_case_char : snake_case_str) {
     if (previous_was_underscore || first_time) [[unlikely]] {
       ret += std::toupper(snake_case_char);
