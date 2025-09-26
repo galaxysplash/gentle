@@ -13,48 +13,17 @@ struct Base {
 };
 struct ProjGen {
   [[nodiscard]] static consteval auto get_main_cpp() noexcept
-      -> std::string_view {
-    return "// main.cpp\n"
-           "\n"
-           "#include <print>\n"
-           "\n"
-           "auto main(const int argc, const char *const *const argv) noexcept "
-           "-> "
-           "int {\n"
-           "  std::println(\"hello world!\");\n"
-           "}\n";
-  }
+      -> std::string_view;
 
   [[nodiscard]] static auto
   get_proj_cmake_lists_txt(const std::string_view &name) noexcept
-      -> std::string {
-    std::string ret;
-
-    ret += Base::get_cmake_lists_txt(name);
-    ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
-
-    return ret;
-  }
+      -> std::string;
 };
 
 struct ModuleGen {
   [[nodiscard]] static auto
   get_mod_h(const std::string_view &module_name,
-            const std::string_view &header_name) noexcept -> std::string {
-    std::string ret;
-
-    ret = "// ";
-    ret += header_name;
-    ret += ".h\n\n";
-
-    ret += "class ";
-    ret += module_name;
-    ret += " final {\n"
-           "public:\n"
-           "  static auto run() noexcept -> void;\n"
-           "};\n";
-    return ret;
-  }
+            const std::string_view &header_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
   get_mod_cpp(const std::string_view &module_name,

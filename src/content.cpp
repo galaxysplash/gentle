@@ -19,3 +19,45 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
 
   return ret;
 }
+
+[[nodiscard]] consteval auto content::ProjGen::get_main_cpp() noexcept
+    -> std::string_view {
+  return "// main.cpp\n"
+         "\n"
+         "#include <print>\n"
+         "\n"
+         "auto main(const int argc, const char *const *const argv) noexcept "
+         "-> "
+         "int {\n"
+         "  std::println(\"hello world!\");\n"
+         "}\n";
+}
+
+[[nodiscard]] auto content::ProjGen::get_proj_cmake_lists_txt(
+    const std::string_view &name) noexcept -> std::string {
+  std::string ret;
+
+  ret += Base::get_cmake_lists_txt(name);
+  ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
+
+  return ret;
+}
+
+[[nodiscard]] auto
+content::ModuleGen::get_mod_h(const std::string_view &module_name,
+                              const std::string_view &header_name) noexcept
+    -> std::string {
+  std::string ret;
+
+  ret = "// ";
+  ret += header_name;
+  ret += ".h\n\n";
+
+  ret += "class ";
+  ret += module_name;
+  ret += " final {\n"
+         "public:\n"
+         "  static auto run() noexcept -> void;\n"
+         "};\n";
+  return ret;
+}
