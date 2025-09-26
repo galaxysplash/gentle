@@ -12,6 +12,8 @@
 #include <string>
 #include <string_view>
 
+using generate_module::GenerateModule;
+
 auto main(const int argc, const char *const *const argv) noexcept -> int {
   const auto match_keyword_result = KeywordMatcher::match_keyword(
       argc, argv,
@@ -24,7 +26,7 @@ auto main(const int argc, const char *const *const argv) noexcept -> int {
        KeywordBinding{
            "mod",
            [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-             return GenerateModule::generate_module(argc, argv);
+             return GenerateModule::run(argc, argv);
            },
            "my_mod_name"}});
 
