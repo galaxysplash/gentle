@@ -137,7 +137,7 @@ auto content::ClassGen::get_h_file(const std::string_view &class_name,
   ret += "(const ";
   ret += class_name;
   ret += " &) = delete;\n";
-  ret += "\n};\n";
+  ret += "};\n";
 
   return ret;
 }
