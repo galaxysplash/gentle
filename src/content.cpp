@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // content.cpp
 
 #include "content.h"
@@ -85,6 +84,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
 }
 
 auto content::ClassGen::get_cpp_file(
+    const std::string_view &class_name,
     const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
 
@@ -94,6 +94,12 @@ auto content::ClassGen::get_cpp_file(
   ret += "#include \"";
   ret += header_name;
   ret += ".h\"\n\n";
+  ret += "auto \n";
+  ret += class_name;
+  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
+         "  // insert code here...\n"
+         "  return {};\n"
+         "}\n";
 
   return ret;
 }
@@ -111,9 +117,23 @@ auto content::ClassGen::get_h_file(const std::string_view &class_name,
 
   ret += "class ";
   ret += class_name;
-  ret += " {\n"
-         "  \n"
-         "};\n";
+  ret += " final {\n"
+         "public:\n"
+         "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
+         "std::string>\n"
+         "\n"
+         "  \n";
+
+  // delete ctor
+  ret += class_name;
+  ret += "() = delete;\n\n";
+
+  // delete copy ctor
+  ret += class_name;
+  ret += "(const ";
+  ret += class_name;
+  ret += " &) = delete;\n";
+  ret += "\n};\n";
 
   return ret;
 }

@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // generate_class.cpp
 
 #include "generate_class.h"
@@ -21,18 +20,18 @@ auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
   const auto src_dir =
       std::filesystem::current_path() / core_utils::SRC_DIR_NAME;
 
+  const auto class_name =
+      core_utils::CoreUtils::snake_case_to_upper_case(header_name);
   const auto write_result = core_utils::CoreUtils::write_files({
       core_utils::File<std::string>{
           std::format("{}.cpp", header_name),
           src_dir,
-          content::ClassGen::get_cpp_file(header_name),
+          content::ClassGen::get_cpp_file(class_name, header_name),
       },
       core_utils::File<std::string>{
           std::format("{}.h", header_name),
           src_dir,
-          content::ClassGen::get_h_file(
-              core_utils::CoreUtils::snake_case_to_upper_case(header_name),
-              header_name),
+          content::ClassGen::get_h_file(class_name, header_name),
       },
   });
 

@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // core_utils.h
 
 #pragma once

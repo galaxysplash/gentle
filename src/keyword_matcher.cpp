@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // keyword_matcher.cpp
 
 #include "keyword_matcher.h"

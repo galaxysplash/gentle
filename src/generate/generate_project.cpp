@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // generate_project.cpp
 
 #include "generate_project.h"

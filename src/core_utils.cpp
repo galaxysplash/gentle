@@ -1,4 +1,3 @@
-// copyright© marcel hajek, all rights reserved.
 // core_utils.cpp
 
 #include "core_utils.h"
@@ -44,6 +43,7 @@ core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
 [[nodiscard]] auto core_utils::CoreUtils::snake_case_to_upper_case(
     const std::string_view &snake_case_str) noexcept -> std::string {
   std::string ret;
+  ret.reserve(snake_case_str.size());
 
   for (bool first_time = true, previous_was_underscore = false;
        const auto &snake_case_char : snake_case_str) {
