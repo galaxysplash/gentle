@@ -115,10 +115,11 @@ auto content::ClassGen::get_h_file(const std::string_view &class_name,
 
   ret += "#pragma once\n\n";
 
-  ret += "class ";
-  ret += class_name;
   ret += "#include <expected>\n";
   ret += "#include <string>\n\n";
+
+  ret += "class ";
+  ret += class_name;
   ret += " final {\n"
          "public:\n"
          "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
