@@ -94,7 +94,7 @@ auto content::ClassGen::get_cpp_file(
   ret += "#include \"";
   ret += header_name;
   ret += ".h\"\n\n";
-  ret += "auto \n";
+  ret += "auto ";
   ret += class_name;
   ret += "::run() noexcept -> std::expected<void, std::string> {\n"
          "  // insert code here...\n"
@@ -117,18 +117,21 @@ auto content::ClassGen::get_h_file(const std::string_view &class_name,
 
   ret += "class ";
   ret += class_name;
+  ret += "#include <expected>\n";
+  ret += "#include <string>\n\n";
   ret += " final {\n"
          "public:\n"
          "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
-         "std::string>\n"
-         "\n"
+         "std::string>;\n"
          "  \n";
 
   // delete ctor
+  ret += "  ";
   ret += class_name;
-  ret += "() = delete;\n\n";
+  ret += "() = delete;\n";
 
   // delete copy ctor
+  ret += "  ";
   ret += class_name;
   ret += "(const ";
   ret += class_name;
