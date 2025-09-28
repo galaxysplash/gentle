@@ -4,6 +4,7 @@
 #include "content.h"
 #include "core_utils.h"
 
+#include <cstddef>
 #include <format>
 #include <print>
 #include <ranges>
@@ -13,9 +14,7 @@
     const int argc, const char *const *const argv,
     const std::initializer_list<KeywordBinding> &keyword_bindings) noexcept
     -> std::expected<std::string, std::string> {
-  if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
-    std::println("{} args are required!\n",
-                 core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME - 1);
+  const auto f = [&]() {
     auto unexpected_ret = std::string{};
     std::println("expected: ");
     for (std::uint8_t i = 0;
@@ -30,6 +29,26 @@
       ++i;
     }
     return std::unexpected{unexpected_ret};
+  };
+
+  if (argc < core_utils::MIN_ARGS_TO_GENERATE_PROJECT_NAME) [[unlikely]] {
+    return f();
+  }
+
+  bool one_was_fitting = false;
+  for (std::size_t i = 0; i < argc; ++i) {
+    for (const auto &binding : keyword_bindings) {
+      if (std::string_view{argv[i]} == binding.keyword_name) {
+        one_was_fitting = true;
+        break;
+      }
+    }
+    if (one_was_fitting) {
+      break;
+    }
+  }
+  if (!one_was_fitting) {
+    return f();
   }
 
   return argv[1];
