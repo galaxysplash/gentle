@@ -9,7 +9,8 @@ auto Build::run() noexcept -> std::expected<void, std::string> {
   if (std::system("cmake . -B build")) {
     return std::unexpected{"cmake generation command failed."};
   }
-  if (const auto make_build_cmd = "make -C build";
+  if (const auto make_build_cmd = "make -C build -DCMAKE_CXX_STANDARD=23 "
+                                  "-DCMAKE_BUILD_TYPE=\"Release\"";
       std::system(make_build_cmd)) {
     std::println("make build command \"{}\" failed. falling back "
                  "to ninja",
