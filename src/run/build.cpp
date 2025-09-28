@@ -7,9 +7,6 @@
 #include <print>
 
 auto Build::run() noexcept -> std::expected<void, std::string> {
-  if (std::filesystem::exists("build")) {
-    std::filesystem::remove_all("build");
-  }
   if (std::system("cmake . -B build")) {
     return std::unexpected{"cmake generation command failed."};
   }
