@@ -31,13 +31,6 @@ auto main(const int argc, const char *const *const argv) -> int {
       } else {
         return 0;
       }
-    } else [[likely]] {
-      std::println("either \"gentle build\" or \"gentle run\"");
-      std::println(
-          "or just give gentle one more argument, regardless what it \n"
-          "is and it will tell you what it actually expected. or just \n"
-          "no arg than it will also do that.");
-      return -1;
     }
   }
 
