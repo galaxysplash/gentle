@@ -58,7 +58,6 @@
     const int argc, const char *const *const argv,
     std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
     -> std::expected<void, std::string> {
-  // security check
   const auto get_modifier_argument_result =
       get_modifier_argument(argc, argv, keyword_bindings);
   if (!get_modifier_argument_result) [[unlikely]] {
@@ -66,7 +65,6 @@
   }
   const auto modifier_argument = get_modifier_argument_result.value();
 
-  // match
   for (const KeywordBinding &matched_bindings :
        keyword_bindings |
            std::ranges::views::filter(
