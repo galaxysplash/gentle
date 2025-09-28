@@ -28,7 +28,7 @@
                           keyword_binding.keyword_name));
       ++i;
     }
-    unexpected_ret += " \nor\n\"gentle run\"\nor\n\"gentle build\"\n";
+    unexpected_ret += "\nor\n\"gentle run\"\nor\n\"gentle build\"\n";
     return std::unexpected{unexpected_ret};
   };
 
