@@ -45,6 +45,8 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
 
   ret += "class ";
   ret += module_name;
+  ret += "#include <expected>\n";
+  ret += "#include <string>\n";
   ret += " final {\n"
          "public:\n"
          "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
