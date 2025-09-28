@@ -37,6 +37,7 @@ auto main(const int argc, const char *const *const argv) -> int {
           "or just give gentle one more argument, regardless what it \n"
           "is and it will tell you what it actually expected. or just \n"
           "no arg than it will also do that.");
+      return -1;
     }
   }
 
