@@ -24,4 +24,8 @@ private:
   create_mod_directory(const std::filesystem::path &base_path,
                        const std::string_view &name)
       -> std::expected<std::filesystem::path, std::string>;
+
+  [[nodiscard]] static auto
+  get_previous_content(const std::filesystem::path &path) noexcept
+      -> std::expected<std::string, std::string>;
 };

@@ -5,8 +5,11 @@
 #include "content.h"
 #include "core_utils.h"
 
+#include <exception>
+#include <expected>
 #include <filesystem>
 #include <format>
+#include <fstream>
 #include <print>
 #include <string>
 
@@ -66,6 +69,14 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
 
   const auto owning_project_name =
       std::filesystem::current_path().filename().string();
+  const auto previous_content_result =
+      get_previous_content(lib_directory / "CMakeLists.txt");
+
+  if (!previous_content_result) {
+    return std::unexpected{previous_content_result.error()};
+  }
+  const auto previous_content = previous_content_result.value();
+
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
@@ -88,15 +99,30 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
           core_utils::File<std::string>{
               "CMakeLists.txt",
               lib_directory.parent_path(),
-              std::format("\n\n# {}\n"
-                          "add_subdirectory(lib/{})\n"
-                          "target_link_libraries({} PRIVATE {})\n",
-                          module_name, module_name, owning_project_name,
-                          module_name),
+              previous_content +
+                  std::format("\n\n# {}\n"
+                              "add_subdirectory(lib/{})\n"
+                              "target_link_libraries({} PRIVATE {})\n",
+                              module_name, module_name, owning_project_name,
+                              module_name),
           }});
 
   if (!write_files_result) {
     return std::unexpected{write_files_result.error()};
   }
   return {};
+}
+
+[[nodiscard]] auto
+GenerateModule::get_previous_content(const std::filesystem::path &path) noexcept
+    -> std::expected<std::string, std::string> {
+  try {
+    std::ifstream ifstream;
+    std::string ret;
+    ifstream.open(path);
+    ifstream >> ret;
+    return ret;
+  } catch (const std::exception &e) {
+    return std::unexpected{e.what()};
+  }
 }
