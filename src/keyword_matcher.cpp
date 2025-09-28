@@ -28,6 +28,7 @@
                           keyword_binding.keyword_name));
       ++i;
     }
+    unexpected_ret += " \nor\n\"gentle run\"\nor\ngentle build\n";
     return std::unexpected{unexpected_ret};
   };
 
