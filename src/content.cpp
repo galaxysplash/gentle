@@ -14,6 +14,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "\n"
          "set(CMAKE_CXX_STANDARD 23)\n"
          "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
+         "add_compile_options(-Wall - Wpedantic - Wextra - Werror)\n"
          "\n";
 
   return ret;
