@@ -100,11 +100,11 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
               "CMakeLists.txt",
               lib_directory.parent_path(),
               previous_content +
-                  std::format("\n\n# {}\n"
-                              "add_subdirectory(lib/{})\n"
-                              "target_link_libraries({} PRIVATE {})\n",
-                              module_name, module_name, owning_project_name,
-                              module_name),
+                  std::format(
+                      "\n\n# {}\n"
+                      "add_subdirectory(lib/{})\n"
+                      "target_link_libraries(${{PROJECT_NAME}} PRIVATE {})\n",
+                      module_name, module_name, module_name),
           }});
 
   if (!write_files_result) {
