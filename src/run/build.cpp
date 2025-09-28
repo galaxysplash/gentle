@@ -2,12 +2,15 @@
 
 #include "build.h"
 
+#include <filesystem>
 #include <format>
 #include <print>
 
 auto Build::run() noexcept -> std::expected<void, std::string> {
-  if (std::system("cmake . -B build -DCMAKE_CXX_STANDARD=23 "
-                  "-DCMAKE_BUILD_TYPE=\"Release\"")) {
+  if (std::filesystem::exists("build")) {
+    std::filesystem::remove_all("build");
+  }
+  if (std::system("cmake . -B build")) {
     return std::unexpected{"cmake generation command failed."};
   }
   if (const auto make_build_cmd = "make -C build";
