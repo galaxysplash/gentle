@@ -12,7 +12,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += name;
   ret += ")\n"
          "\n"
-         "set(CMAKE_CXX_STANDARD 26)\n"
+         "set(CMAKE_CXX_STANDARD 23)\n"
          "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
          "\n";
 

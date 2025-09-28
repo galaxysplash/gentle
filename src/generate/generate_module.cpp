@@ -119,8 +119,17 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   try {
     std::ifstream ifstream;
     std::string ret;
+    ret.reserve(40);
     ifstream.open(proj_path / "CMakeLists.txt");
-    ifstream >> ret;
+    while (true) {
+      const char c = ifstream.get();
+      if (c != ifstream.eof()) {
+        ret += c;
+        continue;
+      }
+
+      break;
+    }
     return ret;
   } catch (const std::exception &e) {
     return std::unexpected{e.what()};
