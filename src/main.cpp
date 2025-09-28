@@ -63,6 +63,12 @@ auto main(const int argc, const char *const *const argv) -> int {
                 return Run::run(argc, argv);
               },
           },
+          KeywordBinding{
+              "build",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return Build::run();
+              },
+          },
       });
 
   if (!match_keyword_result) {
