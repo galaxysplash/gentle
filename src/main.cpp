@@ -21,11 +21,15 @@ auto main(const int argc, const char *const *const argv) -> int {
       if (const auto result = Run::run(argc, argv); !result) {
         std::println("{}", result.error());
         return -1;
+      } else {
+        return 0;
       }
     } else if (std::string_view{argv[1]} == "build") [[unlikely]] {
       if (const auto result = Build::run(); !result) {
         std::println("{}", result.error());
         return -1;
+      } else {
+        return 0;
       }
     } else [[likely]] {
       std::println("either \"gentle build\" or \"gentle run\"");
