@@ -57,8 +57,8 @@ public:
                   files) noexcept -> std::expected<std::ofstream, std::string> {
     try {
       for (const core_utils::File<ContentType> &file : files) {
-        std::println("creating file '{}' in '{}'...",
-                     file.path.filename().string(), file.path.string());
+        std::println("creating file '{}' in '{}'...", file.name,
+                     file.path.string());
         std::ofstream ofstream{file.path / file.name};
         ofstream << file.content;
       }
