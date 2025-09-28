@@ -101,7 +101,7 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
               lib_directory.parent_path(),
               previous_content +
                   std::format(
-                      "\n\n# {}\n"
+                      "\n# {}\n"
                       "add_subdirectory(lib/{})\n"
                       "target_link_libraries(${{PROJECT_NAME}} PRIVATE {})\n",
                       module_name, module_name, module_name),
