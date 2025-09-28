@@ -8,10 +8,7 @@
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
-#include <cstddef>
-#include <cstdint>
 #include <expected>
-#include <filesystem>
 #include <format>
 #include <print>
 #include <string>
