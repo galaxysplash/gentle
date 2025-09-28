@@ -6,11 +6,11 @@
 #include <print>
 
 auto Build::run() noexcept -> std::expected<void, std::string> {
-  if (std::system("cmake . -B build")) {
+  if (std::system("cmake . -B build -DCMAKE_CXX_STANDARD=23 "
+                  "-DCMAKE_BUILD_TYPE=\"Release\"")) {
     return std::unexpected{"cmake generation command failed."};
   }
-  if (const auto make_build_cmd = "make -C build -DCMAKE_CXX_STANDARD=23 "
-                                  "-DCMAKE_BUILD_TYPE=\"Release\"";
+  if (const auto make_build_cmd = "make -C build";
       std::system(make_build_cmd)) {
     std::println("make build command \"{}\" failed. falling back "
                  "to ninja",
