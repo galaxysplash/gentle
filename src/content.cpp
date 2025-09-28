@@ -47,7 +47,8 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
   ret += module_name;
   ret += " final {\n"
          "public:\n"
-         "  static auto run() noexcept -> void;\n"
+         "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
+         "std::string>;\n"
          "};\n";
   return ret;
 }
@@ -67,8 +68,9 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
   ret += ".h\"\n\n";
   ret += "auto ";
   ret += module_name;
-  ret += "::run() noexcept -> void {\n"
+  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
          "  // insert code here...\n"
+         "  return {};\n"
          "}\n";
   return ret;
 }
