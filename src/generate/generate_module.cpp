@@ -5,8 +5,10 @@
 #include "content.h"
 #include "core_utils.h"
 
+#include <filesystem>
 #include <format>
 #include <print>
+#include <string>
 
 [[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
     const std::filesystem::path &base_path) noexcept
@@ -61,6 +63,9 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
 
   const auto upper_case_module_name =
       core_utils::CoreUtils::snake_case_to_upper_case(module_name);
+
+  const auto owning_project_name =
+      std::filesystem::current_path().filename().string();
   const auto write_files_result = core_utils::CoreUtils::write_files(
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
@@ -80,7 +85,15 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
               mod_directory,
               content::ModuleGen::get_module_cmake_lists_txt(module_name),
           },
-      });
+          core_utils::File<std::string>{
+              "CMakeLists.txt",
+              lib_directory.parent_path(),
+              std::format("\n\n# {}\n"
+                          "add_subdirectory(lib/{})\n"
+                          "target_link_libraries({} PRIVATE {})\n",
+                          module_name, module_name, owning_project_name,
+                          module_name),
+          }});
 
   if (!write_files_result) {
     return std::unexpected{write_files_result.error()};

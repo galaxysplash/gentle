@@ -2,8 +2,10 @@
 
 #include "generate_project.h"
 #include "content.h"
+#include "core_utils.h"
 
 #include <print>
+#include <string_view>
 
 [[nodiscard]] auto GenerateProject::run(const int argc,
                                         const char *const *const argv) noexcept
@@ -35,8 +37,24 @@
 
   std::println("src_directory: {}", src_directory.string());
 
-  const auto static_files = {core_utils::File<std::string_view>{
-      "main.cpp", src_directory, content::ProjGen::get_main_cpp()}};
+  const auto static_files = {
+      core_utils::File<std::string_view>{
+          "main.cpp",
+          src_directory,
+          content::ProjGen::get_main_cpp(),
+      },
+      core_utils::File<std::string_view>{
+          ".gitignore",
+          directory,
+          "build",
+      },
+      core_utils::File<std::string_view>{
+          ".clang-format",
+          directory,
+          "---\n"
+          "BasedOnStyle: LLVM\n",
+      },
+  };
 
   const auto dynamic_files = {core_utils::File<std::string>{
       "CMakeLists.txt", directory,
