@@ -37,7 +37,6 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
 [[nodiscard]] auto GenerateModule::run(const int argc,
                                        const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
-  std::println("generate module...");
 
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
@@ -45,6 +44,12 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
     return std::unexpected{module_name_result.error()};
   }
   const auto module_name = module_name_result.value();
+
+  if (module_name == std::filesystem::current_path().filename().string()) {
+    return std::unexpected{"Err: same as ${ProjectName}.\nChose another name."};
+  }
+
+  std::println("generate module...");
 
   const auto lib_directory_result = create_or_get_lib_directory(
       std::filesystem::current_path() / LIB_DIRECTORY_NAME);
