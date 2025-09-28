@@ -103,8 +103,9 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
                   std::format(
                       "\n# {}\n"
                       "add_subdirectory(lib/{})\n"
-                      "target_link_libraries(${{PROJECT_NAME}} PRIVATE {})\n",
-                      module_name, module_name, module_name),
+                      "target_link_libraries(${{PROJECT_NAME}} PRIVATE {})\n"
+                      "target_compile_features({} PRIVATE cxx_std_23)",
+                      module_name, module_name, module_name, module_name),
           }});
 
   if (!write_files_result) {
