@@ -70,7 +70,7 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   const auto owning_project_name =
       std::filesystem::current_path().filename().string();
   const auto previous_content_result =
-      get_previous_content(lib_directory / "CMakeLists.txt");
+      get_previous_cmake_lists_txt_content(std::filesystem::current_path());
 
   if (!previous_content_result) {
     return std::unexpected{previous_content_result.error()};
@@ -113,13 +113,13 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   return {};
 }
 
-[[nodiscard]] auto
-GenerateModule::get_previous_content(const std::filesystem::path &path) noexcept
+[[nodiscard]] auto GenerateModule::get_previous_cmake_lists_txt_content(
+    const std::filesystem::path &proj_path) noexcept
     -> std::expected<std::string, std::string> {
   try {
     std::ifstream ifstream;
     std::string ret;
-    ifstream.open(path);
+    ifstream.open(proj_path / "CMakeLists.txt");
     ifstream >> ret;
     return ret;
   } catch (const std::exception &e) {
