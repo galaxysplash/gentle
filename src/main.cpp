@@ -1,5 +1,6 @@
 // main.cpp
 
+#include "content.h"
 #include "generate/generate_module.h"
 #include "generate/generate_project.h"
 #include "generate/generate_sub.h"
@@ -59,6 +60,57 @@ auto main(const int argc, const char *const *const argv) -> int {
               "sub",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return GenerateSub::run(argc, argv);
+              },
+          },
+          KeywordBinding{
+              "class",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                const auto module_name_result =
+                    core_utils::CoreUtils::get_name(argc, argv);
+
+                if (!module_name_result) [[unlikely]] {
+                  return std::unexpected{module_name_result.error()};
+                }
+                const auto header_name = module_name_result.value();
+
+                const auto src_dir =
+                    std::filesystem::current_path() / core_utils::SRC_DIR_NAME;
+
+                const auto class_name =
+                    core_utils::CoreUtils::snake_case_to_upper_case(
+                        header_name);
+                const auto write_result = core_utils::CoreUtils::write_files({
+                    core_utils::File<std::string>{
+                        std::format("{}.cpp", header_name),
+                        src_dir,
+                        std::format( //
+                            "// {}.cpp\n\n"
+                            "#include \"{}.h\"\n\n"
+                            //
+                            ,
+                            header_name, header_name),
+                    },
+                    core_utils::File<std::string>{
+                        std::format("{}.h", header_name),
+                        src_dir,
+                        std::format( //
+                            "//{}.h\n\n"
+                            "#pragma once\n\n"
+                            "class {} {{\n"
+                            "public:\n"
+                            "  //insert here...\n"
+                            "}};\n"
+                            //
+                            ,
+                            header_name, class_name),
+                    },
+                });
+
+                if (!write_result) [[unlikely]] {
+                  return std::unexpected{write_result.error()};
+                }
+
+                return {};
               },
           },
           KeywordBinding{
