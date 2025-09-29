@@ -108,7 +108,7 @@
   return {};
 }
 
-auto create_or_get_include_directory_structure(
+auto GenerateModule::create_or_get_include_directory_structure(
     const std::filesystem::path &base_path,
     const std::string_view &owning_project_name) noexcept
     -> std::expected<std::filesystem::path, std::string> {
