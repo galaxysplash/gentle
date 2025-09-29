@@ -15,6 +15,12 @@ public:
       -> std::expected<void, std::string>;
 
 private:
+  [[nodiscard]] static auto create_or_get_include_directory_structure(
+      const std::filesystem::path &base_path,
+      const std::string_view &owning_project_name,
+      const std::string_view &module_name) noexcept
+      -> std::expected<std::filesystem::path, std::string>;
+
   [[nodiscard]] static auto
   create_or_get_lib_directory(const std::filesystem::path &base_path) noexcept
       -> std::expected<std::filesystem::path, std::string>;

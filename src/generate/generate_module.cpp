@@ -33,7 +33,7 @@
   }
 
   const auto include_directory_result =
-      core_utils::CoreUtils::create_or_get_include_directory_structure(
+      create_or_get_include_directory_structure(
           std::filesystem::current_path(), owning_project_name, module_name);
 
   if (!include_directory_result) {
@@ -106,6 +106,104 @@
     return std::unexpected{write_files_result.error()};
   }
   return {};
+}
+
+auto GenerateModule::create_or_get_include_directory_structure(
+    const std::filesystem::path &base_path,
+    const std::string_view &owning_project_name,
+    const std::string_view &module_name) noexcept
+    -> std::expected<std::filesystem::path, std::string> {
+  auto ret = std::filesystem::path{};
+  if (!std::filesystem::exists(core_utils::INCLUDE_DIRECTORY_NAME))
+      [[unlikely]] /* if there is no 'include' dir */ {
+    {
+      {
+        std::println("creating include dir...");
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, core_utils::INCLUDE_DIRECTORY_NAME);
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        std::println("creating include/{} dir...", owning_project_name);
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path.parent_path(),
+            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+             owning_project_name)
+                .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        std::println("creating include/{}/{} dir...", owning_project_name,
+                     module_name);
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path.parent_path(),
+            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+             owning_project_name / module_name)
+                .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+
+        return result;
+      }
+    }
+  } else if (!std::filesystem::exists(base_path /
+                                      core_utils::INCLUDE_DIRECTORY_NAME /
+                                      owning_project_name)) [[unlikely]]
+    [[unlikely]] /* the include/my_example_proj where my_example proj is
+                    replaced with the folder name where currently in. and be
+                    'we' I mean the user*/
+    {
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path.parent_path(),
+            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+             owning_project_name)
+                .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path.parent_path(),
+            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+             owning_project_name / module_name)
+                .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+
+        return result;
+      }
+    }
+  else if (!std::filesystem::exists(
+               base_path / core_utils::INCLUDE_DIRECTORY_NAME /
+               owning_project_name / module_name)) [[likely]] {
+    auto result = core_utils::CoreUtils::make_directory(
+        base_path.parent_path(),
+        (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+         owning_project_name / module_name)
+            .string());
+
+    if (!result) {
+      return std::unexpected{result.error()};
+    }
+
+    return result;
+  } else [[unlikely]] {
+    return base_path / core_utils::INCLUDE_DIRECTORY_NAME /
+           owning_project_name / module_name;
+  }
 }
 
 auto GenerateModule::get_previous_cmake_lists_txt_content(
