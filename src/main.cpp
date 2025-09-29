@@ -44,6 +44,12 @@ auto main(const int argc, const char *const *const argv) -> int {
               },
           },
           KeywordBinding{
+              "new",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return GenerateProject::run(argc, argv);
+              },
+          },
+          KeywordBinding{
               "mod",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return GenerateModule::run(argc, argv);
