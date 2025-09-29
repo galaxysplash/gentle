@@ -50,8 +50,7 @@ struct ModuleGen {
 };
 struct ClassGen final {
   [[nodiscard]] static auto
-  get_cpp_file(const std::string_view &project_name,
-               const std::string_view &class_name,
+  get_cpp_file(const std::string_view &class_name,
                const std::string_view &header_name) noexcept -> std::string;
   [[nodiscard]] static auto
   get_h_file(const std::string_view &class_name,
