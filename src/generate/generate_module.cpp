@@ -76,7 +76,7 @@
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
               std::format("{}.h", module_name),
-              include_directory / module_name,
+              include_directory,
               content::ModuleGen::get_mod_h(upper_case_module_name,
                                             module_name),
           },
