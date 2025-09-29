@@ -11,4 +11,4 @@ echo ""
 echo ""
 cd test_project
 ./../../build/gentle mod hey
-./../../build/gentle class my_class
+./../../build/gentle sub my_sub
