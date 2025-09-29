@@ -94,7 +94,7 @@ auto main(const int argc, const char *const *const argv) -> int {
                         std::format("{}.h", header_name),
                         src_dir,
                         std::format( //
-                            "//{}.h\n\n"
+                            "// {}.h\n\n"
                             "#pragma once\n\n"
                             "class {} {{\n"
                             "public:\n"
