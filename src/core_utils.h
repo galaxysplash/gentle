@@ -14,7 +14,8 @@
 namespace core_utils {
 constexpr static std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 3;
 constexpr static std::string_view SRC_DIR_NAME = "src";
-
+constexpr static inline auto INCLUDE_DIRECTORY_NAME =
+    std::string_view{"include"};
 template <typename T>
 concept StringLike =
     std::is_same_v<std::string, T> || std::is_same_v<std::string_view, T>;
@@ -40,6 +41,12 @@ public:
   [[nodiscard]] static auto get_name(const int argc,
                                      const char *const *const argv) noexcept
       -> std::expected<std::string, std::string>;
+
+  [[nodiscard]] static auto create_or_get_include_directory_structure(
+      const std::filesystem::path &base_path,
+      const std::string_view &owning_project_name,
+      const std::string_view &module_name = "") noexcept
+      -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto
   make_directory(const std::filesystem::path &base_path,

@@ -27,6 +27,14 @@
   }
   const auto &directory = directory_result.value();
 
+  const auto include_directory_result =
+      core_utils::CoreUtils::create_or_get_include_directory_structure(
+          std::filesystem::current_path(), name);
+
+  if (!include_directory_result) {
+    return std::unexpected{include_directory_result.error()};
+  }
+
   std::println("project_directory: {}", directory.string());
   const auto src_directory_result = make_src_directory(directory);
 
