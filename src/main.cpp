@@ -1,8 +1,8 @@
 // main.cpp
 
-#include "generate/generate_class.h"
 #include "generate/generate_module.h"
 #include "generate/generate_project.h"
+#include "generate/generate_sub.h"
 #include "run/build.h"
 #include "run/run.h"
 
@@ -56,9 +56,9 @@ auto main(const int argc, const char *const *const argv) -> int {
               },
           },
           KeywordBinding{
-              "class",
+              "sub",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
-                return GenerateClass::run(argc, argv);
+                return GenerateSub::run(argc, argv);
               },
           },
           KeywordBinding{

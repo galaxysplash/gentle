@@ -1,13 +1,13 @@
-// generate_class.cpp
+// generate_sub.cpp
 
-#include "generate_class.h"
+#include "generate_sub.h"
 #include "content.h"
 #include "core_utils.h"
 #include <expected>
 #include <filesystem>
 #include <format>
 
-auto GenerateClass::run(const int argc, const char *const *const argv) noexcept
+auto GenerateSub::run(const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
 
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
