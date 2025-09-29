@@ -33,8 +33,8 @@
   }
 
   const auto include_directory_result =
-      create_or_get_include_directory_structure(std::filesystem::current_path(),
-                                                owning_project_name);
+      create_or_get_include_directory_structure(
+          std::filesystem::current_path(), owning_project_name, module_name);
 
   if (!include_directory_result) {
     return std::unexpected{include_directory_result.error()};
@@ -110,15 +110,16 @@
 
 auto GenerateModule::create_or_get_include_directory_structure(
     const std::filesystem::path &base_path,
-    const std::string_view &owning_project_name) noexcept
+    const std::string_view &owning_project_name,
+    const std::string_view &module_name) noexcept
     -> std::expected<std::filesystem::path, std::string> {
   auto ret = std::filesystem::path{};
-  if (!std::filesystem::exists("include"))
+  if (!std::filesystem::exists(INCLUDE_DIRECTORY_NAME))
       [[unlikely]] /* if there is no 'include' dir */ {
     {
       {
-        auto result =
-            core_utils::CoreUtils::make_directory(base_path, "include");
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, INCLUDE_DIRECTORY_NAME);
 
         if (!result) {
           return std::unexpected{result.error()};
@@ -126,7 +127,19 @@ auto GenerateModule::create_or_get_include_directory_structure(
       }
       {
         auto result = core_utils::CoreUtils::make_directory(
-            base_path, std::format("include/{}", owning_project_name));
+            base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
+                        owning_project_name)
+                           .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
+                        owning_project_name / module_name)
+                           .string());
 
         if (!result) {
           return std::unexpected{result.error()};
@@ -135,21 +148,51 @@ auto GenerateModule::create_or_get_include_directory_structure(
         return result;
       }
     }
-  } else if (!std::filesystem::exists(
-                 std::format("include/{}", owning_project_name)))
-      [[unlikely]] /* the include/my_example_proj where my_example proj is
-                      replaced with the folder name where currently in. and be
-                      'we' I mean the user*/
-  {
-    const auto result =
-        core_utils::CoreUtils::make_directory(base_path, owning_project_name);
+  } else if (!std::filesystem::exists(base_path / INCLUDE_DIRECTORY_NAME /
+                                      owning_project_name)) [[unlikely]]
+    [[unlikely]] /* the include/my_example_proj where my_example proj is
+                    replaced with the folder name where currently in. and be
+                    'we' I mean the user*/
+    {
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
+                        owning_project_name)
+                           .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
+                        owning_project_name / module_name)
+                           .string());
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+
+        return result;
+      }
+    }
+  else if (!std::filesystem::exists(base_path / INCLUDE_DIRECTORY_NAME /
+                                    owning_project_name / module_name))
+      [[likely]] {
+    auto result = core_utils::CoreUtils::make_directory(
+        base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
+                    owning_project_name / module_name)
+                       .string());
 
     if (!result) {
       return std::unexpected{result.error()};
     }
-    return result.value();
-  } else {
-    return base_path / "include" / owning_project_name;
+
+    return result;
+  } else [[unlikely]] {
+    return base_path / INCLUDE_DIRECTORY_NAME / owning_project_name /
+           module_name;
   }
 }
 
