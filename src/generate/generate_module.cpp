@@ -118,6 +118,7 @@ auto GenerateModule::create_or_get_include_directory_structure(
       [[unlikely]] /* if there is no 'include' dir */ {
     {
       {
+        std::println("creating include dir...");
         auto result = core_utils::CoreUtils::make_directory(
             base_path, INCLUDE_DIRECTORY_NAME);
 
@@ -126,6 +127,7 @@ auto GenerateModule::create_or_get_include_directory_structure(
         }
       }
       {
+        std::println("creating include/{} dir...", owning_project_name);
         auto result = core_utils::CoreUtils::make_directory(
             base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
                         owning_project_name)
@@ -136,6 +138,8 @@ auto GenerateModule::create_or_get_include_directory_structure(
         }
       }
       {
+        std::println("creating include/{}/{} dir...", owning_project_name,
+                     module_name);
         auto result = core_utils::CoreUtils::make_directory(
             base_path, (base_path.filename() / INCLUDE_DIRECTORY_NAME /
                         owning_project_name / module_name)
