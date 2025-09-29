@@ -58,7 +58,7 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
 }
 
 [[nodiscard]] auto content::ModuleGen::get_mod_cpp(
-    const std::string_view &module_name, const std::string_view &header_name,
+    const std::string_view &module_class_name, const std::string_view &header_name,
     const std::string_view &project_name) noexcept -> std::string {
   std::string ret;
 
@@ -69,12 +69,12 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
   ret += "#include \"";
   ret += project_name;
   ret += "/";
-  ret += module_name;
+  ret += header_name;
   ret += "/";
-  ret += module_name;
+  ret += header_name;
   ret += ".h\"\n\n";
   ret += "auto ";
-  ret += module_name;
+  ret += module_class_name;
   ret += "::run() noexcept -> std::expected<void, std::string> {\n"
          "  // insert code here...\n"
          "  return {};\n"

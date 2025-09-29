@@ -41,7 +41,7 @@ struct ModuleGen {
             const std::string_view &header_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
-  get_mod_cpp(const std::string_view &module_name,
+  get_mod_cpp(const std::string_view &module_class_name,
               const std::string_view &header_name,
               const std::string_view &project_name) noexcept -> std::string;
 
