@@ -25,7 +25,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += ret += "include_directories(include)\n";
+  ret += "include_directories(include)\n";
   ret += "file(GLOB SOURCES src/*.cpp)\n";
   ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
 
