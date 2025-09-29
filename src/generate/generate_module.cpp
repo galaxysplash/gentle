@@ -84,7 +84,7 @@
               std::format("{}.cpp", module_name),
               mod_directory,
               content::ModuleGen::get_mod_cpp(upper_case_module_name,
-                                              module_name),
+                                              module_name, owning_project_name),
           },
           core_utils::File<std::string>{
               "CMakeLists.txt",

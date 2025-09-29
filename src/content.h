@@ -42,7 +42,8 @@ struct ModuleGen {
 
   [[nodiscard]] static auto
   get_mod_cpp(const std::string_view &module_name,
-              const std::string_view &header_name) noexcept -> std::string;
+              const std::string_view &header_name,
+              const std::string_view &project_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
   get_module_cmake_lists_txt(const std::string_view &name) noexcept
