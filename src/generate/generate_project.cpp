@@ -4,6 +4,7 @@
 #include "content.h"
 #include "core_utils.h"
 
+#include <filesystem>
 #include <print>
 #include <string_view>
 
@@ -26,6 +27,11 @@
     return std::unexpected{directory_result.error()};
   }
   const auto &directory = directory_result.value();
+
+  std::filesystem::create_directory(directory /
+                                    core_utils::INCLUDE_DIRECTORY_NAME);
+  std::filesystem::create_directory(directory /
+                                    core_utils::INCLUDE_DIRECTORY_NAME / name);
 
   std::println("project_directory: {}", directory.string());
   const auto src_directory_result = make_src_directory(directory);
