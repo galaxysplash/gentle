@@ -25,6 +25,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
+  ret += "include_directories(include)\n";
   ret += "file(GLOB SOURCES src/*.cpp)\n";
   ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
 
@@ -86,7 +87,6 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += "include_directories(include)\n";
   ret += "file(GLOB SOURCES *.cpp)\n";
   ret += "add_library(${PROJECT_NAME} ${SOURCES})\n";
 
