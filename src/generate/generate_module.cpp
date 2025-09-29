@@ -12,27 +12,7 @@
 #include <fstream>
 #include <print>
 #include <string>
-
-[[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
-    const std::filesystem::path &base_path) noexcept
-    -> std::expected<std::filesystem::path, std::string> {
-
-  if (std::filesystem::exists(base_path)) [[likely]] {
-    std::println("already exists ('{}')", base_path.string());
-    return base_path;
-  }
-
-  std::println("creating directory '{}'", base_path.string());
-  return core_utils::CoreUtils::make_directory(base_path.parent_path(),
-                                               base_path.filename().string());
-}
-
-[[nodiscard]] auto
-GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
-                                     const std::string_view &name)
-    -> std::expected<std::filesystem::path, std::string> {
-  return core_utils::CoreUtils::make_directory(base_path, name);
-}
+#include <string_view>
 
 [[nodiscard]] auto GenerateModule::run(const int argc,
                                        const char *const *const argv) noexcept
@@ -45,9 +25,21 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   }
   const auto module_name = module_name_result.value();
 
+  const auto owning_project_name =
+      std::filesystem::current_path().filename().string();
+
   if (module_name == std::filesystem::current_path().filename().string()) {
     return std::unexpected{"Err: same as ${ProjectName}.\nChose another name."};
   }
+
+  const auto include_directory_result =
+      create_or_get_include_directory_structure(std::filesystem::current_path(),
+                                                owning_project_name);
+
+  if (!include_directory_result) {
+    return std::unexpected{include_directory_result.error()};
+  }
+  const auto include_directory = include_directory_result.value();
 
   std::println("generate module...");
 
@@ -72,8 +64,6 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   const auto upper_case_module_name =
       core_utils::CoreUtils::snake_case_to_upper_case(module_name);
 
-  const auto owning_project_name =
-      std::filesystem::current_path().filename().string();
   const auto previous_content_result =
       get_previous_cmake_lists_txt_content(std::filesystem::current_path());
 
@@ -86,7 +76,7 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
       std::initializer_list<core_utils::File<std::string>>{
           core_utils::File<std::string>{
               std::format("{}.h", module_name),
-              mod_directory,
+              include_directory / module_name,
               content::ModuleGen::get_mod_h(upper_case_module_name,
                                             module_name),
           },
@@ -118,7 +108,52 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   return {};
 }
 
-[[nodiscard]] auto GenerateModule::get_previous_cmake_lists_txt_content(
+auto create_or_get_include_directory_structure(
+    const std::filesystem::path &base_path,
+    const std::string_view &owning_project_name) noexcept
+    -> std::expected<std::filesystem::path, std::string> {
+  auto ret = std::filesystem::path{};
+  if (!std::filesystem::exists("include"))
+      [[unlikely]] /* if there is no 'include' dir */ {
+    {
+      {
+        auto result =
+            core_utils::CoreUtils::make_directory(base_path, "include");
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+      }
+      {
+        auto result = core_utils::CoreUtils::make_directory(
+            base_path, std::format("include/{}", owning_project_name));
+
+        if (!result) {
+          return std::unexpected{result.error()};
+        }
+
+        return result;
+      }
+    }
+  } else if (!std::filesystem::exists(
+                 std::format("include/{}", owning_project_name)))
+      [[unlikely]] /* the include/my_example_proj where my_example proj is
+                      replaced with the folder name where currently in. and be
+                      'we' I mean the user*/
+  {
+    const auto result =
+        core_utils::CoreUtils::make_directory(base_path, owning_project_name);
+
+    if (!result) {
+      return std::unexpected{result.error()};
+    }
+    return result.value();
+  } else {
+    return base_path / "include" / owning_project_name;
+  }
+}
+
+auto GenerateModule::get_previous_cmake_lists_txt_content(
     const std::filesystem::path &proj_path) noexcept
     -> std::expected<std::string, std::string> {
   try {
@@ -138,4 +173,25 @@ GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
   } catch (const std::exception &e) {
     return std::unexpected{e.what()};
   }
+}
+
+[[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
+    const std::filesystem::path &base_path) noexcept
+    -> std::expected<std::filesystem::path, std::string> {
+
+  if (std::filesystem::exists(base_path)) [[likely]] {
+    std::println("already exists ('{}')", base_path.string());
+    return base_path;
+  }
+
+  std::println("creating directory '{}'", base_path.string());
+  return core_utils::CoreUtils::make_directory(base_path.parent_path(),
+                                               base_path.filename().string());
+}
+
+[[nodiscard]] auto
+GenerateModule::create_mod_directory(const std::filesystem::path &base_path,
+                                     const std::string_view &name)
+    -> std::expected<std::filesystem::path, std::string> {
+  return core_utils::CoreUtils::make_directory(base_path, name);
 }

@@ -85,8 +85,6 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
   ret += Base::get_cmake_lists_txt(name);
   ret += "file(GLOB SOURCES *.cpp)\n";
   ret += "add_library(${PROJECT_NAME} ${SOURCES})\n";
-  ret += "target_include_directories(${PROJECT_NAME} PUBLIC "
-         "${CMAKE_CURRENT_SOURCE_DIR})\n";
 
   return ret;
 }
