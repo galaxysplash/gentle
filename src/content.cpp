@@ -91,7 +91,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_name,
 }
 
 auto content::ClassGen::get_cpp_file(
-    const std::string_view &class_name,
+    const std::string_view &project_name, const std::string_view &class_name,
     const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
 
@@ -99,8 +99,12 @@ auto content::ClassGen::get_cpp_file(
   ret += header_name;
   ret += ".cpp\n\n";
   ret += "#include \"";
+  ret += project_name;
+  ret += "/";
   ret += header_name;
-  ret += ".h\"\n\n";
+  ret += "/";
+  ret += header_name;
+  ret += ret += ".h\"\n\n";
   ret += "auto ";
   ret += class_name;
   ret += "::run() noexcept -> std::expected<void, std::string> {\n"
