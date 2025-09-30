@@ -28,10 +28,11 @@ struct ProjGen {
            "auto main(const int argc, const char *const *const argv) -> int "
            "{\n"
            "  for (int i = 0; i < argc; ++i) {\n"
-           "    std::cout << \"argv[\\\"\" << i << \\\"\"] = \" << argv[i] << "
+           "    std::cout << \"argv[\\\"\" << i << \"\"\\\"] = \" << argv[i] "
+           "<< "
            "\"\\n\";\n"
-           "}\n"
-           "std::cout << \"\\nargc = \" << argc << \"\\n\";\n"
+           "  }\n"
+           "  std::cout << \"\\nargc = \" << argc << \"\\n\";\n"
            "}\n";
   }
 
