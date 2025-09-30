@@ -31,7 +31,7 @@ struct ProjGen {
            "    std::cout << \"argv[\" << i << \"] = \" << argv[i] << "
            "\"\\n\";\n"
            "}\n"
-           "std::cout << \"\\nargc = \\n\" << argc << \"\\n\";\n"
+           "std::cout << \"\\nargc = \" << argc << \"\\n\";\n"
            "}\n";
   }
 
