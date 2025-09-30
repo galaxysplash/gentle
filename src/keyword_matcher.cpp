@@ -4,7 +4,6 @@
 #include "content.h"
 #include "core_utils.h"
 
-#include <cstddef>
 #include <format>
 #include <print>
 #include <ranges>
