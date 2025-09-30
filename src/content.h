@@ -25,8 +25,18 @@ struct ProjGen {
            "\n"
            "#include <print>\n"
            "\n"
-           "auto main(const int argc, const char *const *const argv) -> int {\n"
-           "  std::println(\"hello world!\");\n"
+           "auto main(const int argc, const char *const *const argv) -> int "
+           "{\n"
+           "  std::println(\"\");\n"
+           "\n"
+           "  for (int i = 0; i < argc; ++i) {\n"
+           "    std::print(\"argv[{}] = \\\"{}\\\"\", i, argv[i]);\n"
+           "    if (i != argc - 1) {\n"
+           "      std::println(\",\\n\");\n"
+           "    } else {\n"
+           "      std::println(\"\\nargc = {};\", argc);\n"
+           "    }\n"
+           "  }\n"
            "}\n";
   }
 
