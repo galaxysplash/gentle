@@ -23,20 +23,15 @@ struct ProjGen {
       -> std::string_view {
     return "// main.cpp\n"
            "\n"
-           "#include <print>\n"
+           "#include <iostream>\n"
            "\n"
            "auto main(const int argc, const char *const *const argv) -> int "
            "{\n"
-           "  std::println(\"\");\n"
-           "\n"
            "  for (int i = 0; i < argc; ++i) {\n"
-           "    std::print(\"argv[{}] = \\\"{}\\\"\", i, argv[i]);\n"
-           "    if (i == argc - 1) [[unlikely]] {\n"
-           "      std::println(\"\\nargc = {};\", argc);\n"
-           "    } else [[likely]] {\n"
-           "      std::println(\",\\n\");\n"
-           "    }\n"
-           "  }\n"
+           "    std::cout << \"argv[\" << i << \"] = \" << argv[i] << "
+           "\"\\n\";\n"
+           "}\n"
+           "std::cout << \"\nargc = \\n\" << argc << \"\\n\";\n"
            "}\n";
   }
 
