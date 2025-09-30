@@ -50,6 +50,11 @@
           content::ProjGen::get_main_cpp(),
       },
       core_utils::File<std::string_view>{
+          "main.h",
+          directory / core_utils::INCLUDE_DIRECTORY_NAME / name,
+          content::ProjGen::get_main_h(),
+      },
+      core_utils::File<std::string_view>{
           ".gitignore",
           directory,
           "build",

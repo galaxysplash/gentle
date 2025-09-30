@@ -19,22 +19,43 @@ struct Matcher {
   }
 };
 struct ProjGen {
+  [[nodiscard]] consteval static inline auto get_main_h() noexcept
+      -> std::string_view {
+    return R"(// main.h
+
+#pragma once
+
+auto entry(std::span<const char *const> &&args)
+    -> std::expected<void, std::string>;
+
+auto main(const int argc, const char *const *const argv) -> int {
+  const auto entry_result = std::expected<void, std::string_view>{
+      entry({argv, static_cast<std::size_t>(argc)})};
+
+  if (!entry_result) {
+    std::println("{}", entry_result.error());
+  }
+}
+)";
+  }
+
   [[nodiscard]] consteval static inline auto get_main_cpp() noexcept
       -> std::string_view {
-    return "// main.cpp\n"
-           "\n"
-           "#include <iostream>\n"
-           "\n"
-           "auto main(const int argc, const char *const *const argv) -> int "
-           "{\n"
-           "  for (int i = 0; i < argc; ++i) {\n"
-           "    std::cout << \"argv[\\\"\" << i << \"\\\"] = \" << argv[i] "
-           "<< "
-           "\"\\n\";\n"
-           "  }\n"
-           "\n"
-           "  std::cout << \"\\nargc = \" << argc << \"\\n\";\n"
-           "}\n";
+    return R"(// main.cpp
+
+#include <iostream>
+
+auto entry(std::span<const char *const> &&args)
+    -> std::expected<void, std::string> {
+  for (const auto &arg : args) {
+    std::cout << "arg: " << arg << "\n";
+  }
+
+  std::cout << "arg.size() = " << args.size() << "\n";
+
+  return {};
+}
+)";
   }
 
   [[nodiscard]] static auto
