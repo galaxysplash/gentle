@@ -37,7 +37,7 @@
   }
 
   bool one_was_fitting = false;
-  for (std::size_t i = 0; i < argc; ++i) {
+  for (int i = 0; i < argc; ++i) {
     for (const auto &binding : keyword_bindings) {
       if (std::string_view{argv[i]} == binding.keyword_name) {
         one_was_fitting = true;

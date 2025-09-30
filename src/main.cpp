@@ -120,7 +120,7 @@ auto main(const int argc, const char *const *const argv) -> int {
           },
           KeywordBinding{
               "build",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              []() noexcept -> std::expected<void, std::string> {
                 return Build::run();
               },
           },

@@ -10,9 +10,9 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += "cmake_minimum_required(VERSION 3.30)\n"
          "project(";
   ret += name;
-  ret += ")\n"
-         "\n"
+  ret += ")\n\n"
          "set(CMAKE_BUILD_TYPE Release)\n"
+         "add_compile_options(-Wall -Wpedantic -Wextra -Werror)\n"
          "set(CMAKE_CXX_STANDARD 23)\n"
          "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
          "\n";
@@ -57,9 +57,11 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
   return ret;
 }
 
-[[nodiscard]] auto content::ModuleGen::get_mod_cpp(
-    const std::string_view &module_class_name, const std::string_view &header_name,
-    const std::string_view &project_name) noexcept -> std::string {
+[[nodiscard]] auto
+content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
+                                const std::string_view &header_name,
+                                const std::string_view &project_name) noexcept
+    -> std::string {
   std::string ret;
 
   ret = "// ";
