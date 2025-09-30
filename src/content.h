@@ -31,10 +31,10 @@ struct ProjGen {
            "\n"
            "  for (int i = 0; i < argc; ++i) {\n"
            "    std::print(\"argv[{}] = \\\"{}\\\"\", i, argv[i]);\n"
-           "    if (i != argc - 1) {\n"
-           "      std::println(\",\\n\");\n"
-           "    } else {\n"
+           "    if (i == argc - 1) [[unlikely]] {\n"
            "      std::println(\"\\nargc = {};\", argc);\n"
+           "    } else [[likely]] {\n"
+           "      std::println(\",\\n\");\n"
            "    }\n"
            "  }\n"
            "}\n";
