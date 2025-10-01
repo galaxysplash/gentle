@@ -146,27 +146,6 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   return ret;
 }
 
-auto content::SubGen::get_cpp_file(const std::string_view &class_name,
-                                   const std::string_view &header_name) noexcept
-    -> std::string {
-  std::string ret;
-
-  ret += "// ";
-  ret += header_name;
-  ret += ".cpp\n\n";
-  ret += "#include \"";
-  ret += header_name;
-  ret += ".h\"\n\n";
-  ret += "auto ";
-  ret += class_name;
-  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
-         "  // insert code here...\n"
-         "  return {};\n"
-         "}\n";
-
-  return ret;
-}
-
 auto content::SubGen::get_h_file(const std::string_view &class_name,
                                  const std::string_view &header_name) noexcept
     -> std::string {
@@ -192,7 +171,28 @@ auto content::SubGen::get_h_file(const std::string_view &class_name,
   // delete ctor
   ret += "  ";
   ret += class_name;
-  ret += "() = delete;\n";
+  ret += "() = delete;\n};\n";
+
+  return ret;
+}
+
+auto content::SubGen::get_cpp_file(const std::string_view &class_name,
+                                   const std::string_view &header_name) noexcept
+    -> std::string {
+  std::string ret;
+
+  ret += "// ";
+  ret += header_name;
+  ret += ".cpp\n\n";
+  ret += "#include \"";
+  ret += header_name;
+  ret += ".h\"\n\n";
+  ret += "auto ";
+  ret += class_name;
+  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
+         "  // insert code here...\n"
+         "  return {};\n"
+         "}\n";
 
   return ret;
 }
