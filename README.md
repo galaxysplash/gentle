@@ -1,7 +1,7 @@
 # gentle
 
 ## general
-MANPAGE:
+MANPAGE:<br>
   help:
   "gentle --help" or "gentle -h" => to get to this 'help' screen
 
