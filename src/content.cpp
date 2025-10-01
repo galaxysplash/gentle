@@ -2,7 +2,6 @@
 
 #include "content.h"
 #include <filesystem>
-#include <format>
 #include <string_view>
 
 auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
@@ -42,7 +41,7 @@ auto content::ProjGen::get_main_cpp(
 
 #include ")";
   ret += (header_include_path / header_name).string();
-  ret += "\"";
+  ret += "\"\n\n";
 
   ret += R"(#include <print>
 
