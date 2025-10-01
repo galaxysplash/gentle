@@ -21,7 +21,7 @@ auto main(const int argc, const char *const *const argv) -> int {
     if (std::string_view{argv[1]} == "--help" ||
         std::string_view{argv[1]} == "-h" ||
         std::string_view{argv[1]} == "help") [[unlikely]] {
-      std::cout << R"(MANPAGE:
+      std::cout << R"(
 gentle build => to build your project
 
 gentle run => to run your project
