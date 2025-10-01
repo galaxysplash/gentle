@@ -40,6 +40,7 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += R"(// main.cpp
 
 #include ")";
+  // | up and down: #include "project_name/main.h"
   ret += project_name;
   ret += "/";
   ret += header_name;
@@ -50,6 +51,8 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
 auto entry(std::span<const char *const> &&args) noexcept
     -> std::expected<void, std::string> {
   for (const auto &arg : args) {
+    // does flush less than 'std::println', 
+    // therefore less syscalls
     std::print("arg: {}\n", arg);
   }
 

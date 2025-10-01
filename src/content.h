@@ -25,12 +25,6 @@ struct ProjGen {
 
 #pragma once
 
-#include <expected>
-#include <span>
-#include <string>
-
-auto entry(std::span<const char *const> &&args) noexcept
-    -> std::expected<void, std::string>;
 )";
   }
 
