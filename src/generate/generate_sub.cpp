@@ -26,12 +26,12 @@ auto GenerateSub::run(const int argc, const char *const *const argv) noexcept
       core_utils::File<std::string>{
           std::format("{}.cpp", header_name),
           src_dir,
-          content::ClassGen::get_cpp_file(class_name, header_name),
+          content::SubGen::get_cpp_file(class_name, header_name),
       },
       core_utils::File<std::string>{
           std::format("{}.h", header_name),
           src_dir,
-          content::ClassGen::get_h_file(class_name, header_name),
+          content::SubGen::get_h_file(class_name, header_name),
       },
   });
 

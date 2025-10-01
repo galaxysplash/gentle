@@ -57,7 +57,7 @@ struct ModuleGen {
   get_module_cmake_lists_txt(const std::string_view &name) noexcept
       -> std::string;
 };
-struct ClassGen final {
+struct SubGen final {
   [[nodiscard]] static auto
   get_cpp_file(const std::string_view &class_name,
                const std::string_view &header_name) noexcept -> std::string;

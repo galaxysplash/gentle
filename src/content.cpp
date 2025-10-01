@@ -95,6 +95,10 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
          "public:\n"
          "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
          "std::string>;\n"
+         "  ";
+  ret += module_name;
+  ret += "() = delete"
+         "\n"
          "};\n";
   return ret;
 }
@@ -137,9 +141,9 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   return ret;
 }
 
-auto content::ClassGen::get_cpp_file(
-    const std::string_view &class_name,
-    const std::string_view &header_name) noexcept -> std::string {
+auto content::SubGen::get_cpp_file(const std::string_view &class_name,
+                                   const std::string_view &header_name) noexcept
+    -> std::string {
   std::string ret;
 
   ret += "// ";
@@ -158,8 +162,8 @@ auto content::ClassGen::get_cpp_file(
   return ret;
 }
 
-auto content::ClassGen::get_h_file(const std::string_view &class_name,
-                                   const std::string_view &header_name) noexcept
+auto content::SubGen::get_h_file(const std::string_view &class_name,
+                                 const std::string_view &header_name) noexcept
     -> std::string {
   std::string ret;
 
@@ -184,14 +188,6 @@ auto content::ClassGen::get_h_file(const std::string_view &class_name,
   ret += "  ";
   ret += class_name;
   ret += "() = delete;\n";
-
-  // delete copy ctor
-  ret += "  ";
-  ret += class_name;
-  ret += "(const ";
-  ret += class_name;
-  ret += " &) = delete;\n";
-  ret += "};\n";
 
   return ret;
 }
