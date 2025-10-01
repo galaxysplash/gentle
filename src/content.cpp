@@ -46,8 +46,8 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += header_name;
   ret += "\"\n\n";
 
-  ret += R"(#include <print>
-#include <expected>
+  ret += R"(#include <expected>
+#include <print>
 #include <span>
 
 auto entry(std::span<const char *const> &&args) noexcept
