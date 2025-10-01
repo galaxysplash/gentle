@@ -35,26 +35,42 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
 }
 
 auto content::ProjGen::get_main_cpp(
-    const std::filesystem::path &include,
+    const std::filesystem::path &header_include_path,
     const std::string_view &header_name) noexcept -> std::string {
-  return std::format(R"(// main.cpp
+  std::string ret;
+  ret += R"(// main.cpp
 
-#include <iostream>
+#include ")";
+  ret += (header_include_path / header_name).string();
+  ret += "\"";
 
-#include <{}/{}>
+  ret += R"(#include <print>
 
 auto entry(std::span<const char *const> &&args) noexcept
-    -> std::expected<void, std::string> {{
-  for (const auto &arg : args) {{
-    std::cout << "arg: " << arg << "\n";
-  }}
+    -> std::expected<void, std::string> {
+  for (const auto &arg : args) {
+    std::print("arg: {}\n", arg);
+  }
 
-  std::cout << "arg.size() = " << args.size() << "\n";
+  std::print("arg.size() = {{}}\n", args.size());
 
-  return {{}};
-  }}
-)",
-                     include.string(), header_name);
+  return {};
+}
+
+// necessary boilerplate to get 'entry' going
+auto main(const int argc, const char *const *const argv) -> int {
+  auto args = std::span{argv, static_cast<std::size_t>(argc)};
+
+  const auto entry_result =
+      std::expected<void, std::string_view>{entry(std::move(args))};
+
+  if (!entry_result) {
+    std::println("{}", entry_result.error());
+  }
+}
+)";
+
+  return ret;
 }
 
 [[nodiscard]] auto

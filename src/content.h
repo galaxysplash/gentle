@@ -43,7 +43,7 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
 
   [[nodiscard]] static auto
-  get_main_cpp(const std::filesystem::path &include,
+  get_main_cpp(const std::filesystem::path &header_include_path,
                const std::string_view &header_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
