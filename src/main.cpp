@@ -23,19 +23,19 @@ auto main(const int argc, const char *const *const argv) -> int {
         std::string_view{argv[1]} == "help") [[unlikely]] {
       std::cout << R"(gentle build => to build your project
 
-gentle run => to run your project
+"gentle run" => to run your project
 
-gentle my_project => to create a new project, where 'my_project' is the name
+"gentle my_project" => to create a new project, where 'my_project' is the name
 
-gentle-- help => to get to this 'help' screen
+"gentle-- help" => to get to this 'help' screen
 
-gentle class my_class_name => to create a class, where 'my_class_name' is the name
+"gentle class my_class_name" => to create a class, where 'my_class_name' is the name
 
-gentle new my_project_name => to create a project, where 'my_project_name' is the name 
+"gentle new my_project_name" => to create a project, where 'my_project_name' is the name 
 
-gentle mod my_mod_name => to create a class, where 'my_mod_name' is the name
+"gentle mod my_mod_name" => to create a class, where 'my_mod_name' is the name
 
-gentle sub my_sub_name => to create a class, where 'my_sub_name' is the name
+"gentle sub my_sub_name" => to create a class, where 'my_sub_name' is the name
 )";
       return 0;
     } else if (std::string_view{argv[1]} == "run") [[likely]] {
