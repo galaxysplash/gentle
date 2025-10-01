@@ -1,7 +1,7 @@
 // content.cpp
 
 #include "content.h"
-#include <filesystem>
+
 #include <string_view>
 
 auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
@@ -34,14 +34,16 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
 }
 
 auto content::ProjGen::get_main_cpp(
-    const std::filesystem::path &header_include_path,
-    const std::string_view &header_name) noexcept -> std::string {
+    const std::string_view &project_name,
+    const std::string &header_name) noexcept -> std::string {
   std::string ret;
   ret += R"(// main.cpp
 
 #include ")";
-  ret += (header_include_path / header_name).string();
-  ret += "\"\n\n";
+  ret += project_name;
+  ret += "/";
+  ret += header_name;
+  ret += ".h\"\n\n";
 
   ret += R"(#include <print>
 

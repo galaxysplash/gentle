@@ -48,11 +48,6 @@
   const auto main_h_name = std::string_view{"main.h"};
   const auto static_files = {
       core_utils::File<std::string_view>{
-          "main.cpp",
-          src_directory,
-          content::ProjGen::get_main_cpp(include_dir, main_h_name),
-      },
-      core_utils::File<std::string_view>{
           main_h_name,
           include_dir,
           content::ProjGen::get_main_h(),
@@ -70,9 +65,19 @@
       },
   };
 
-  const auto dynamic_files = {core_utils::File<std::string>{
-      "CMakeLists.txt", directory,
-      content::ProjGen::get_proj_cmake_lists_txt(name)}};
+  const auto dynamic_files = {
+      core_utils::File<std::string>{
+          "main.cpp",
+          include_dir,
+          content::ProjGen::get_main_cpp(name,
+                                         std::format("{}.h", main_h_name)),
+      },
+      core_utils::File<std::string>{
+          "CMakeLists.txt",
+          directory,
+          content::ProjGen::get_proj_cmake_lists_txt(name),
+      },
+  };
 
   std::println("\ncreating files...");
 

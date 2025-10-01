@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <filesystem>
 #include <format>
 #include <string>
 #include <string_view>
@@ -43,8 +42,8 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
 
   [[nodiscard]] static auto
-  get_main_cpp(const std::filesystem::path &header_include_path,
-               const std::string_view &header_name) noexcept -> std::string;
+  get_main_cpp(const std::string_view &project_name,
+               const std::string &header_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
   get_proj_cmake_lists_txt(const std::string_view &name) noexcept
