@@ -47,6 +47,8 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += "\"\n\n";
 
   ret += R"(#include <print>
+#include <expected>
+#include <span>
 
 auto entry(std::span<const char *const> &&args) noexcept
     -> std::expected<void, std::string> {
@@ -69,7 +71,7 @@ auto main(const int argc, const char *const *const argv) -> int {
       std::expected<void, std::string>{entry(std::move(args))};
 
   if (!entry_result) {
-    std::println("{}", entry_result.error());
+    std::print("{}\n", entry_result.error());
   }
 }
 )";
