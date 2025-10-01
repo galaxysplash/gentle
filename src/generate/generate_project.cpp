@@ -68,7 +68,7 @@
   const auto dynamic_files = {
       core_utils::File<std::string>{
           "main.cpp",
-          include_dir,
+          src_directory,
           content::ProjGen::get_main_cpp(name, main_h_name.data()),
       },
       core_utils::File<std::string>{
