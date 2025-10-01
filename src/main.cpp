@@ -64,6 +64,7 @@ sub:
       const auto generation_result = GenerateProject::run(FAKE_ARGC, fake_argv);
 
       if (!generation_result) {
+        std::println("{}", generation_result.error());
         return -1;
       }
 
