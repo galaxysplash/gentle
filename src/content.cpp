@@ -1,6 +1,8 @@
 // content.cpp
 
 #include "content.h"
+#include <filesystem>
+#include <format>
 #include <string_view>
 
 auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
@@ -30,6 +32,29 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
 
   return ret;
+}
+
+auto content::ProjGen::get_main_cpp(
+    const std::filesystem::path &include,
+    const std::string_view &header_name) noexcept -> std::string {
+  return std::format(R"(// main.cpp
+
+#include <iostream>
+
+#include <{}/{}>
+
+auto entry(std::span<const char *const> &&args) noexcept
+    -> std::expected<void, std::string> {{
+  for (const auto &arg : args) {{
+    std::cout << "arg: " << arg << "\n";
+  }}
+
+  std::cout << "arg.size() = " << args.size() << "\n";
+
+  return {{}};
+  }}
+)",
+                     include.string(), header_name);
 }
 
 [[nodiscard]] auto

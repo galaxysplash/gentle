@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <filesystem>
 #include <format>
 #include <string>
 #include <string_view>
@@ -25,7 +26,9 @@ struct ProjGen {
 
 #pragma once
 
-auto entry(std::span<const char *const> &&args)
+#include <expected>
+
+auto entry(std::span<const char *const> &&args) noexcept
     -> std::expected<void, std::string>;
 
 auto main(const int argc, const char *const *const argv) -> int {
@@ -39,24 +42,9 @@ auto main(const int argc, const char *const *const argv) -> int {
 )";
   }
 
-  [[nodiscard]] consteval static inline auto get_main_cpp() noexcept
-      -> std::string_view {
-    return R"(// main.cpp
-
-#include <iostream>
-
-auto entry(std::span<const char *const> &&args)
-    -> std::expected<void, std::string> {
-  for (const auto &arg : args) {
-    std::cout << "arg: " << arg << "\n";
-  }
-
-  std::cout << "arg.size() = " << args.size() << "\n";
-
-  return {};
-}
-)";
-  }
+  [[nodiscard]] static auto
+  get_main_cpp(const std::filesystem::path &include,
+               const std::string_view &header_name) noexcept -> std::string;
 
   [[nodiscard]] static auto
   get_proj_cmake_lists_txt(const std::string_view &name) noexcept

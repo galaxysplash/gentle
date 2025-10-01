@@ -43,15 +43,18 @@
 
   std::println("src_directory: {}", src_directory.string());
 
+  const auto include_dir =
+      directory / core_utils::INCLUDE_DIRECTORY_NAME / name;
+  const auto main_h_name = std::string_view{"main.h"};
   const auto static_files = {
       core_utils::File<std::string_view>{
           "main.cpp",
           src_directory,
-          content::ProjGen::get_main_cpp(),
+          content::ProjGen::get_main_cpp(include_dir, main_h_name),
       },
       core_utils::File<std::string_view>{
-          "main.h",
-          directory / core_utils::INCLUDE_DIRECTORY_NAME / name,
+          main_h_name,
+          include_dir,
           content::ProjGen::get_main_h(),
       },
       core_utils::File<std::string_view>{
