@@ -29,6 +29,18 @@ auto main(const int argc, const char *const *const argv) -> int {
         std::println("{}", result.error());
         return -1;
       } else {
+        constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
+        const char *fake_argv[FAKE_ARGC];
+        fake_argv[0] = argv[0];
+        fake_argv[1] = "new";
+        fake_argv[2] = argv[1];
+        const auto generation_result =
+            GenerateProject::run(FAKE_ARGC, fake_argv);
+
+        if (!generation_result) {
+          return -1;
+        }
+
         return 0;
       }
     }
