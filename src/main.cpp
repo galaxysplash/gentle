@@ -29,7 +29,7 @@ projects:
 
 "gentle new my_project_name" => to create a project, where 'my_project_name' is the name 
 
-gentle build => to build your cmake project
+"gentle build" => to build your cmake project
 
 "gentle run" => to run your cmake project
 
