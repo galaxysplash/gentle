@@ -8,7 +8,7 @@ gentle run => to run your project
 
 gentle my_project => to create a new project, where 'my_project' is the name
 
-gentle-- help => to get to this 'help' screen
+gentle --help => to get to this 'help' screen
 
 gentle class my_class_name => to create a class, where 'my_class_name' is the name
 

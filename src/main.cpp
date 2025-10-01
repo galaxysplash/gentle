@@ -21,20 +21,25 @@ auto main(const int argc, const char *const *const argv) -> int {
     if (std::string_view{argv[1]} == "--help" ||
         std::string_view{argv[1]} == "-h" ||
         std::string_view{argv[1]} == "help") [[unlikely]] {
-      std::cout << R"(gentle build => to build your project
+      std::cout << R"(help:
+"gentle --help" or "gentle -h" => to get to this 'help' screen
 
-"gentle run" => to run your project
-
+projects:
 "gentle my_project" => to create a new project, where 'my_project' is the name
-
-"gentle-- help" => to get to this 'help' screen
-
-"gentle class my_class_name" => to create a class, where 'my_class_name' is the name
 
 "gentle new my_project_name" => to create a project, where 'my_project_name' is the name 
 
+gentle build => to build your cmake project
+
+"gentle run" => to run your cmake project
+
+class:
+"gentle class my_class_name" => to create a class, where 'my_class_name' is the name
+
+mod:
 "gentle mod my_mod_name" => to create a class, where 'my_mod_name' is the name
 
+sub:
 "gentle sub my_sub_name" => to create a class, where 'my_sub_name' is the name
 )";
       return 0;
