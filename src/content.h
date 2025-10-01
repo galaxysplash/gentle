@@ -26,18 +26,11 @@ struct ProjGen {
 #pragma once
 
 #include <expected>
+#include <span>
+#include <string>
 
 auto entry(std::span<const char *const> &&args) noexcept
     -> std::expected<void, std::string>;
-
-auto main(const int argc, const char *const *const argv) -> int {
-  const auto entry_result = std::expected<void, std::string_view>{
-      entry({argv, static_cast<std::size_t>(argc)})};
-
-  if (!entry_result) {
-    std::println("{}", entry_result.error());
-  }
-}
 )";
   }
 
