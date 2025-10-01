@@ -27,7 +27,7 @@ auto main(const int argc, const char *const *const argv) -> int {
 projects:
 "gentle my_project" => to create a new project, where 'my_project' is the name
 
-"gentle new my_project_name" => to create a project, where 'my_project_name' is the name 
+"gentle new my_project_name" or "gentle proj my_project_name" => to create a project, where 'my_project_name' is the name 
 
 "gentle build" => to build your cmake project
 
