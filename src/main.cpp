@@ -54,6 +54,8 @@ sub:
       if (const auto result = Build::run(); !result) {
         std::println("{}", result.error());
         return -1;
+      } else {
+        return 0;
       }
     } else {
       constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
