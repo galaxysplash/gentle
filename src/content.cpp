@@ -53,7 +53,7 @@ auto entry(std::span<const char *const> &&args) noexcept
     std::print("arg: {}\n", arg);
   }
 
-  std::print("arg.size() = {{}}\n", args.size());
+  std::print("arg.size() = {}\n", args.size());
 
   return {};
 }
@@ -63,7 +63,7 @@ auto main(const int argc, const char *const *const argv) -> int {
   auto args = std::span{argv, static_cast<std::size_t>(argc)};
 
   const auto entry_result =
-      std::expected<void, std::string_view>{entry(std::move(args))};
+      std::expected<void, std::string>{entry(std::move(args))};
 
   if (!entry_result) {
     std::println("{}", entry_result.error());
