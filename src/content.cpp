@@ -102,7 +102,7 @@ content::ModuleGen::get_mod_h(const std::string_view &module_name,
          "std::string>;\n"
          "  ";
   ret += module_name;
-  ret += "() = delete"
+  ret += "() = delete;"
          "\n"
          "};\n";
   return ret;
