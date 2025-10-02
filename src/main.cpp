@@ -108,13 +108,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_SOURCE_DIR src)
 include_directories(include)
-file(GLOB SOURCES ${{
-              CMAKE_SOURCE_DIR}}/*.cpp)
+file(GLOB SOURCES ${{CMAKE_SOURCE_DIR}}/*.cpp)
 file(GLOB ASM_FILES ${{CMAKE_SOURCE_DIR}}/*.asm)
 set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
 
-add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}})
-                            )",
+add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
                       project_name),
       },
   });
