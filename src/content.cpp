@@ -40,11 +40,11 @@ auto content::ProjGen::get_entry_main_cpp(
   ret += get_custom_main_cpp(
       project_name, header_name,
       R"(auto main(const int argc, const char *const *const argv) -> int {
-std::cout << "arguments:\n";
+  std::cout << "arguments:\n";
 
-for (int i = 0; i < argc; ++i) {
-  std::cout << argv[argc] << "\n";
-}
+  for (int i = 0; i < argc; ++i) {
+    std::cout << argv[argc] << "\n";
+  }
 })");
 
   return ret;
@@ -57,7 +57,7 @@ auto content::ProjGen::get_custom_main_cpp(
 
   ret += R"(// main.cpp
   
-  #include ")";
+#include ")";
   // | up and down: #include "project_name/main.h"
   ret += project_name;
   ret += "/";
