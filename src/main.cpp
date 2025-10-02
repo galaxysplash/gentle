@@ -93,11 +93,12 @@ sub:
 
   const auto project_path = std::filesystem::current_path() / project_name;
 
-  const auto write_dynamic_files_result = core_utils::CoreUtils::write_files({
-      core_utils::File<std::string>{
-          "CMakeLists.txt",
-          project_path,
-          std::format(R"(cmake_minimum_required(VERSION 3.30)
+  const auto src_path = project_path / core_utils::SRC_DIR_NAME;
+  const auto write_dynamic_files_result = core_utils::CoreUtils::write_files(
+      {core_utils::File<std::string>{
+           "CMakeLists.txt",
+           project_path,
+           std::format(R"(cmake_minimum_required(VERSION 3.30)
 project({} CXX ASM)
 
 enable_language(ASM_NASM)
@@ -114,27 +115,34 @@ file(GLOB ASM_FILES ${{CMAKE_SOURCE_DIR}}/*.asm)
 set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
 
 add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
-                      project_name),
-      },
-      core_utils::File<std::string>{
-          "main.cpp",
-          project_path / core_utils::SRC_DIR_NAME,
-          content::ProjGen::get_custom_main_cpp(project_name, "main.h", R"(
+                       project_name),
+       },
+       core_utils::File<std::string>{
+           "main.cpp",
+           src_path,
+           content::ProjGen::get_custom_main_cpp(project_name, "main.h", R"(
 auto main() -> int {
   constexpr auto N1 = 1, N2 = 1;
   std::cout << "result: " << asm_add(N1, N2) << "\n";
 })"),
-      },
-      core_utils::File<std::string>{
-          "main.h",
-          project_path / core_utils::INCLUDE_DIRECTORY_NAME / project_name,
-          content::ProjGen::get_custom_main_h(R"(#include <cstdint>
+       },
+       core_utils::File<std::string>{
+           "main.h",
+           project_path / core_utils::INCLUDE_DIRECTORY_NAME / project_name,
+           content::ProjGen::get_custom_main_h(R"(#include <cstdint>
 
 extern "C" auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexcept 
     -> std::uint8_t;
 )"),
-      },
-  });
+       },
+       core_utils::File<std::string>{"main.asm", src_path, R"(global add
+
+add:
+  mov r8, rdi
+  mov r9, rsi
+  add r9, r8
+  mov rax, r9
+  ret)"}});
 
   if (!write_dynamic_files_result) {
     return std::unexpected{"writing 'CMakeLists.txt' failed."};
