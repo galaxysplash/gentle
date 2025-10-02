@@ -46,32 +46,11 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += header_name;
   ret += "\"\n\n";
 
-  ret += R"(#include <expected>
-#include <print>
-#include <span>
+  ret += R"(auto main(const int argc, const char *const *const argv) -> int {
+  std::cout << "arguments:\n";
 
-auto entry(std::span<const char *const> &&args) noexcept
-    -> std::expected<void, std::string> {
-  for (const auto &arg : args) {
-    // does flush less than 'std::println', 
-    // therefore less syscalls
-    std::print("arg: {}\n", arg);
-  }
-
-  std::print("arg.size() = {}\n", args.size());
-
-  return {};
-}
-
-// necessary boilerplate to get 'entry' going
-auto main(const int argc, const char *const *const argv) -> int {
-  auto args = std::span{argv, static_cast<std::size_t>(argc)};
-
-  const auto entry_result =
-      std::expected<void, std::string>{entry(std::move(args))};
-
-  if (!entry_result) {
-    std::print("{}\n", entry_result.error());
+  for (int i = 0; i < argc; ++i) {
+    std::cout << argv[argc];
   }
 }
 )";
