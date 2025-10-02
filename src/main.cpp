@@ -1,5 +1,6 @@
 // main.cpp
 
+#include "core_utils.h"
 #include "generate/generate_module.h"
 #include "generate/generate_project.h"
 #include "generate/generate_sub.h"
@@ -9,14 +10,17 @@
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
+#include <exception>
 #include <expected>
+#include <filesystem>
 #include <format>
 #include <iostream>
 #include <print>
 #include <string>
 #include <string_view>
 
-auto main(const int argc, const char *const *const argv) -> int {
+[[noreturn]] auto handle2args(const int argc,
+                              const char *const *const argv) noexcept -> void {
   if (argc == 2) { // a welded on if chain
     if (std::string_view{argv[1]} == "--help" ||
         std::string_view{argv[1]} == "-h" ||
@@ -42,20 +46,13 @@ mod:
 sub:
 "gentle sub my_sub_name" => to create a class, where 'my_sub_name' is the name
 )";
-      return 0;
     } else if (std::string_view{argv[1]} == "run") [[likely]] {
       if (const auto result = Run::run(argc, argv); !result) {
         std::println("{}", result.error());
-        return -1;
-      } else {
-        return 0;
       }
     } else if (std::string_view{argv[1]} == "build") [[unlikely]] {
       if (const auto result = Build::run(); !result) {
         std::println("{}", result.error());
-        return -1;
-      } else {
-        return 0;
       }
     } else {
       constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
@@ -67,12 +64,66 @@ sub:
 
       if (!generation_result) {
         std::println("{}", generation_result.error());
-        return -1;
       }
-
-      return 0;
     }
   }
+
+  std::terminate();
+}
+
+[[nodiscard]] auto generate_asm_project(const int argc,
+                                        const char *const *const argv) noexcept
+    -> std::expected<void, std::string> {
+  const auto gen_result = GenerateProject::run(argc, argv);
+
+  if (!gen_result) {
+    return gen_result;
+  }
+
+  const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
+
+  if (!project_name_result) {
+    std::println("{}", project_name_result.value());
+  }
+  const auto project_name = project_name_result.value();
+
+  const auto project_path = std::filesystem::current_path() / project_name;
+
+  const auto write_files_result = core_utils::CoreUtils::write_files({
+      core_utils::File<std::string>{
+          "CMakeLists.txt",
+          project_path,
+          std::format(R"(cmake_minimum_required(VERSION 3.30)
+project({} CXX ASM)
+
+enable_language(ASM_NASM)
+
+set(CMAKE_BUILD_TYPE Release)
+add_compile_options(-Wall -Wpedantic -Wextra -Werror)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_SOURCE_DIR src)
+include_directories(include)
+file(GLOB SOURCES ${{
+              CMAKE_SOURCE_DIR}}/*.cpp)
+file(GLOB ASM_FILES ${{CMAKE_SOURCE_DIR}}/*.asm)
+set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
+
+add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}})
+                            )",
+                      project_name),
+      },
+  });
+
+  if (!write_files_result) {
+    return std::unexpected{"writing 'CMakeLists.txt' failed."};
+  }
+  return {};
+}
+
+auto main(const int argc, const char *const *const argv) -> int {
+  handle2args(argc, argv);
 
   const auto match_keyword_result = KeywordMatcher::run(
       argc, argv,
@@ -89,6 +140,11 @@ sub:
                 return GenerateProject::run(argc, argv);
               },
           },
+          KeywordBinding{
+              "asm_proj",
+              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+                return generate_asm_project(argc, argv);
+              }},
           KeywordBinding{
               "new",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
