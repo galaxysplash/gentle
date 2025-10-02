@@ -52,7 +52,7 @@ auto main(const int argc, const char *const *const argv) -> int {
   std::cout << "arguments:\n";
 
   for (int i = 0; i < argc; ++i) {
-    std::cout << argv[argc];
+    std::cout << argv[argc] << "\n;
   }
 }
 )";
