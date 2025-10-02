@@ -10,6 +10,7 @@
 #include "keyword_binding.h"
 #include "keyword_matcher.h"
 
+#include <cstdlib>
 #include <exception>
 #include <expected>
 #include <filesystem>
@@ -70,7 +71,7 @@ sub:
     }
   }
 
-  std::terminate();
+  exit(0);
 }
 
 [[nodiscard]] auto generate_asm_project(const int argc,
