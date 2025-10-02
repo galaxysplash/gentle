@@ -46,14 +46,15 @@ auto content::ProjGen::get_main_cpp(
   ret += header_name;
   ret += "\"\n\n";
 
-  ret += get_custom_main_cpp(project_name, header_name,
-                             R"(
-      std::cout << "arguments:\n";
-      
-      for (int i = 0; i < argc; ++i) {
-        std::cout << argv[argc] << "\n";
-      }
-    )");
+  ret += get_custom_main_cpp(
+      project_name, header_name,
+      R"(auto main(const int argc, const char *const *const argv) -> int {
+std::cout << "arguments:\n";
+
+for (int i = 0; i < argc; ++i) {
+  std::cout << argv[argc] << "\n";
+}
+})");
 
   return ret;
 }
@@ -74,18 +75,26 @@ auto content::ProjGen::get_custom_main_cpp(
 
 #include <iostream>
   
-auto main(const int argc, const char *const *const argv) -> int {)";
+)";
 
   ret += custom_content;
-
-  ret += "\n}";
 
   return ret;
 }
 
-[[nodiscard]] auto
-content::ModuleGen::get_mod_h(const std::string_view &module_name,
-                              const std::string_view &header_name) noexcept
+auto content::ProjGen::get_custom_main_h(
+    const std::string_view &content) noexcept -> std::string {
+  std::string ret;
+
+  ret += get_main_h();
+
+  ret += content;
+
+  return ret;
+}
+
+auto content::ModuleGen::get_mod_h(const std::string_view &module_name,
+                                   const std::string_view &header_name) noexcept
     -> std::string {
   std::string ret;
 

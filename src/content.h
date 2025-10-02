@@ -29,6 +29,9 @@ struct ProjGen {
   }
 
   [[nodiscard]] static auto
+  get_custom_main_h(const std::string_view &content) noexcept -> std::string;
+
+  [[nodiscard]] static auto
   get_main_cpp(const std::string_view &project_name,
                const std::string_view &header_name) noexcept -> std::string;
 

@@ -20,7 +20,8 @@
   }
   const auto &name = name_result.value();
 
-  if (std::filesystem::exists(std::filesystem::current_path() / name)) {
+  if (std::filesystem::exists(std::filesystem::current_path() / name))
+      [[unlikely]] {
     return std::unexpected{"a directory with this name already exits.\nso I "
                            "will not create a new one. skipping...\n\nHINT: "
                            "PLEASE chose another project_name, ok!?!?!"};

@@ -1,5 +1,6 @@
 // main.cpp
 
+#include "content.h"
 #include "core_utils.h"
 #include "generate/generate_module.h"
 #include "generate/generate_project.h"
@@ -118,7 +119,21 @@ add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
       core_utils::File<std::string>{
           "main.cpp",
           project_path / core_utils::SRC_DIR_NAME,
-          std::format(""),
+          content::ProjGen::get_custom_main_cpp(project_name, project_name,
+                                                R"(#include <cstdint>
+
+auto main() -> int {
+  constexpr auto N1 = 1, N2 = 1;
+  std::cout << "result: " << asm_add(N1, N2) << "\n";
+})"),
+      },
+      core_utils::File<std::string>{
+          "main.h",
+          project_path / core_utils::INCLUDE_DIRECTORY_NAME / project_name,
+          content::ProjGen::get_custom_main_h(R"(
+extern "C" auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexcept 
+    -> std::uint8_t;
+)"),
       },
   });
 
@@ -177,7 +192,7 @@ auto generate_class(const int argc, const char *const *const argv) noexcept
   return {};
 }
 auto main(const int argc, const char *const *const argv) -> int {
-  if (argc == 2) {
+  if (argc == 2) [[unlikely]] {
     handle2args(argc, argv);
   }
 
