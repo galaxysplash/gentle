@@ -119,7 +119,7 @@ add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
       core_utils::File<std::string>{
           "main.cpp",
           project_path / core_utils::SRC_DIR_NAME,
-          content::ProjGen::get_custom_main_cpp(project_name, project_name, R"(
+          content::ProjGen::get_custom_main_cpp(project_name, "main.h", R"(
 auto main() -> int {
   constexpr auto N1 = 1, N2 = 1;
   std::cout << "result: " << asm_add(N1, N2) << "\n";
