@@ -1,4 +1,4 @@
 git add *
 git commit -a -m "..."
-git push -f
+git push
 ./inst.sh
