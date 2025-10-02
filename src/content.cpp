@@ -46,7 +46,9 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += header_name;
   ret += "\"\n\n";
 
-  ret += R"(auto main(const int argc, const char *const *const argv) -> int {
+  ret += R"(#include <iostrean>
+
+auto main(const int argc, const char *const *const argv) -> int {
   std::cout << "arguments:\n";
 
   for (int i = 0; i < argc; ++i) {
