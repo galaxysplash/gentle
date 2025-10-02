@@ -33,19 +33,10 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   return ret;
 }
 
-auto content::ProjGen::get_main_cpp(
+auto content::ProjGen::get_entry_main_cpp(
     const std::string_view &project_name,
     const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
-  ret += R"(// main.cpp
-
-#include ")";
-  // | up and down: #include "project_name/main.h"
-  ret += project_name;
-  ret += "/";
-  ret += header_name;
-  ret += "\"\n\n";
-
   ret += get_custom_main_cpp(
       project_name, header_name,
       R"(auto main(const int argc, const char *const *const argv) -> int {

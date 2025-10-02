@@ -77,7 +77,7 @@
       core_utils::File<std::string>{
           "main.cpp",
           src_directory,
-          content::ProjGen::get_main_cpp(name, main_h_name.data()),
+          content::ProjGen::get_entry_main_cpp(name, main_h_name.data()),
       },
       core_utils::File<std::string>{
           "CMakeLists.txt",
