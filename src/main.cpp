@@ -133,7 +133,7 @@ auto main() -> int {
 
 extern "C" {
 auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexcept
-    -> std::uint8_t;
+    -> std::uint64_t;
 }
 )"),
        },
