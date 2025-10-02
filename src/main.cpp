@@ -21,11 +21,14 @@
 
 [[noreturn]] auto handle2args(const int argc,
                               const char *const *const argv) noexcept -> void {
-  if (argc == 2) { // a welded on if chain
-    if (std::string_view{argv[1]} == "--help" ||
-        std::string_view{argv[1]} == "-h" ||
-        std::string_view{argv[1]} == "help") [[unlikely]] {
-      std::cout << R"(help:
+  if (argc != 2) [[unlikely]] {
+    std::println("called with NOT 2 arguments");
+    std::terminate();
+  }
+  if (std::string_view{argv[1]} == "--help" ||
+      std::string_view{argv[1]} == "-h" || std::string_view{argv[1]} == "help")
+      [[unlikely]] {
+    std::cout << R"(help:
 "gentle --help" or "gentle -h" => to get to this 'help' screen
 
 projects:
@@ -46,25 +49,24 @@ mod:
 sub:
 "gentle sub my_sub_name" => to create a class, where 'my_sub_name' is the name
 )";
-    } else if (std::string_view{argv[1]} == "run") [[likely]] {
-      if (const auto result = Run::run(argc, argv); !result) {
-        std::println("{}", result.error());
-      }
-    } else if (std::string_view{argv[1]} == "build") [[unlikely]] {
-      if (const auto result = Build::run(); !result) {
-        std::println("{}", result.error());
-      }
-    } else {
-      constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
-      const char *fake_argv[FAKE_ARGC];
-      fake_argv[0] = argv[0];
-      fake_argv[1] = "new";
-      fake_argv[2] = argv[1];
-      const auto generation_result = GenerateProject::run(FAKE_ARGC, fake_argv);
+  } else if (std::string_view{argv[1]} == "run") [[likely]] {
+    if (const auto result = Run::run(argc, argv); !result) {
+      std::println("{}", result.error());
+    }
+  } else if (std::string_view{argv[1]} == "build") [[unlikely]] {
+    if (const auto result = Build::run(); !result) {
+      std::println("{}", result.error());
+    }
+  } else {
+    constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
+    const char *fake_argv[FAKE_ARGC];
+    fake_argv[0] = argv[0];
+    fake_argv[1] = "new";
+    fake_argv[2] = argv[1];
+    const auto generation_result = GenerateProject::run(FAKE_ARGC, fake_argv);
 
-      if (!generation_result) {
-        std::println("{}", generation_result.error());
-      }
+    if (!generation_result) {
+      std::println("{}", generation_result.error());
     }
   }
 
@@ -123,7 +125,9 @@ add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}})
 }
 
 auto main(const int argc, const char *const *const argv) -> int {
-  handle2args(argc, argv);
+  if (argc == 2) {
+    handle2args(argc, argv);
+  }
 
   const auto match_keyword_result = KeywordMatcher::run(
       argc, argv,
