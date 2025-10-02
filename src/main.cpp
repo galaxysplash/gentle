@@ -135,9 +135,9 @@ extern "C" auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexce
     -> std::uint8_t;
 )"),
        },
-       core_utils::File<std::string>{"main.asm", src_path, R"(global add
+       core_utils::File<std::string>{"main.asm", src_path, R"(global asm_add
 
-add:
+asm_add:
   mov r8, rdi
   mov r9, rsi
   add r9, r8
