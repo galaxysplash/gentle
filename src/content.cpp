@@ -77,7 +77,7 @@ auto content::ProjGen::get_custom_main_h(
     const std::string_view &content) noexcept -> std::string {
   std::string ret;
 
-  ret += get_main_h();
+  ret += get_main_h_base();
 
   ret += content;
 

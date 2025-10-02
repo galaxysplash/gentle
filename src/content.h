@@ -19,7 +19,7 @@ struct Matcher {
   }
 };
 struct ProjGen {
-  [[nodiscard]] consteval static inline auto get_main_h() noexcept
+  [[nodiscard]] consteval static inline auto get_main_h_base() noexcept
       -> std::string_view {
     return R"(// main.h
 

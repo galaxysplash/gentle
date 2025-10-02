@@ -58,7 +58,7 @@
       core_utils::File<std::string_view>{
           main_h_name,
           include_dir,
-          content::ProjGen::get_main_h(),
+          content::ProjGen::get_main_h_base(),
       },
       core_utils::File<std::string_view>{
           ".gitignore",
