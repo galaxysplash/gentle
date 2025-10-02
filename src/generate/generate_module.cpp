@@ -156,39 +156,38 @@ auto GenerateModule::create_or_get_include_directory_structure(
     }
   } else if (!std::filesystem::exists(base_path /
                                       core_utils::INCLUDE_DIRECTORY_NAME /
-                                      owning_project_name)) [[unlikely]]
-    [[unlikely]] /* the include/my_example_proj where my_example proj is
-                    replaced with the folder name where currently in. and be
-                    'we' I mean the user*/
+                                      owning_project_name))
+      [[unlikely]] /* the include/my_example_proj where my_example proj is
+                      replaced with the folder name where currently in. and be
+                      'we' I mean the user*/
+  {
     {
-      {
-        auto result = core_utils::CoreUtils::make_directory(
-            base_path.parent_path(),
-            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
-             owning_project_name)
-                .string());
+      auto result = core_utils::CoreUtils::make_directory(
+          base_path.parent_path(),
+          (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+           owning_project_name)
+              .string());
 
-        if (!result) {
-          return std::unexpected{result.error()};
-        }
-      }
-      {
-        auto result = core_utils::CoreUtils::make_directory(
-            base_path.parent_path(),
-            (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
-             owning_project_name / module_name)
-                .string());
-
-        if (!result) {
-          return std::unexpected{result.error()};
-        }
-
-        return result;
+      if (!result) {
+        return std::unexpected{result.error()};
       }
     }
-  else if (!std::filesystem::exists(
-               base_path / core_utils::INCLUDE_DIRECTORY_NAME /
-               owning_project_name / module_name)) [[likely]] {
+    {
+      auto result = core_utils::CoreUtils::make_directory(
+          base_path.parent_path(),
+          (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /
+           owning_project_name / module_name)
+              .string());
+
+      if (!result) {
+        return std::unexpected{result.error()};
+      }
+
+      return result;
+    }
+  } else if (!std::filesystem::exists(
+                 base_path / core_utils::INCLUDE_DIRECTORY_NAME /
+                 owning_project_name / module_name)) [[likely]] {
     auto result = core_utils::CoreUtils::make_directory(
         base_path.parent_path(),
         (base_path.filename() / core_utils::INCLUDE_DIRECTORY_NAME /

@@ -14,8 +14,8 @@
 namespace core_utils {
 constexpr static std::uint8_t MIN_ARGS_TO_GENERATE_PROJECT_NAME = 3;
 constexpr static std::string_view SRC_DIR_NAME = "src";
-  constexpr static inline auto INCLUDE_DIRECTORY_NAME =
-      std::string_view{"include"};
+constexpr static inline auto INCLUDE_DIRECTORY_NAME =
+    std::string_view{"include"};
 template <typename T>
 concept StringLike =
     std::is_same_v<std::string, T> || std::is_same_v<std::string_view, T>;
@@ -23,13 +23,13 @@ concept StringLike =
 template <typename ContentType>
   requires StringLike<ContentType>
 struct File {
-  explicit inline File<ContentType>(const std::string_view &name,
-                                    const std::filesystem::path &path,
-                                    ContentType &&content) noexcept
+  explicit inline File(const std::string_view &name,
+                       const std::filesystem::path &path,
+                       ContentType &&content) noexcept
       : name(name), path(path), content(content) {}
 
-  File<ContentType>(const File<ContentType> &) = delete;
-  explicit inline File<ContentType>(File<ContentType> &&) noexcept = default;
+  File(const File &) = delete;
+  explicit inline File(File &&) noexcept = default;
 
   std::string_view name;
   std::filesystem::path path;
