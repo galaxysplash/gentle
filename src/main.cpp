@@ -92,7 +92,7 @@ sub:
 
   const auto project_path = std::filesystem::current_path() / project_name;
 
-  const auto write_files_result = core_utils::CoreUtils::write_files({
+  const auto write_dynamic_files_result = core_utils::CoreUtils::write_files({
       core_utils::File<std::string>{
           "CMakeLists.txt",
           project_path,
@@ -115,11 +115,17 @@ set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
 add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
                       project_name),
       },
+      core_utils::File<std::string>{
+          "main.cpp",
+          project_path / core_utils::SRC_DIR_NAME,
+          std::format(""),
+      },
   });
 
-  if (!write_files_result) {
+  if (!write_dynamic_files_result) {
     return std::unexpected{"writing 'CMakeLists.txt' failed."};
   }
+
   return {};
 }
 

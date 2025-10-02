@@ -30,7 +30,11 @@ struct ProjGen {
 
   [[nodiscard]] static auto
   get_main_cpp(const std::string_view &project_name,
-               const std::string &header_name) noexcept -> std::string;
+               const std::string_view &header_name) noexcept -> std::string;
+
+  [[nodiscard]] static auto get_custom_main_cpp(
+      const std::string_view &project_name, const std::string_view &header_name,
+      const std::string_view &custom_content) noexcept -> std::string;
 
   [[nodiscard]] static auto
   get_proj_cmake_lists_txt(const std::string_view &name) noexcept

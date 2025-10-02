@@ -33,9 +33,9 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   return ret;
 }
 
-auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
-                                    const std::string &header_name) noexcept
-    -> std::string {
+auto content::ProjGen::get_main_cpp(
+    const std::string_view &project_name,
+    const std::string_view &header_name) noexcept -> std::string {
   std::string ret;
   ret += R"(// main.cpp
 
@@ -46,16 +46,39 @@ auto content::ProjGen::get_main_cpp(const std::string_view &project_name,
   ret += header_name;
   ret += "\"\n\n";
 
-  ret += R"(#include <iostream>
+  ret += get_custom_main_cpp(project_name, header_name,
+                             R"(
+      std::cout << "arguments:\n";
+      
+      for (int i = 0; i < argc; ++i) {
+        std::cout << argv[argc] << "\n";
+      }
+    )");
 
-auto main(const int argc, const char *const *const argv) -> int {
-  std::cout << "arguments:\n";
-
-  for (int i = 0; i < argc; ++i) {
-    std::cout << argv[argc] << "\n";
-  }
+  return ret;
 }
-)";
+
+auto content::ProjGen::get_custom_main_cpp(
+    const std::string_view &project_name, const std::string_view &header_name,
+    const std::string_view &custom_content) noexcept -> std::string {
+  std::string ret;
+
+  ret += R"(// main.cpp
+  
+  #include ")";
+  // | up and down: #include "project_name/main.h"
+  ret += project_name;
+  ret += "/";
+  ret += header_name;
+  ret += R"("
+
+#include <iostream>
+  
+auto main(const int argc, const char *const *const argv) -> int {)";
+
+  ret += custom_content;
+
+  ret += "\n}";
 
   return ret;
 }
