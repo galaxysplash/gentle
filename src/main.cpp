@@ -127,7 +127,7 @@ auto main() -> int {
       },
       core_utils::File<std::string>{
           "main.h",
-          project_path / core_utils::INCLUDE_DIRECTORY_NAME,
+          project_path / core_utils::INCLUDE_DIRECTORY_NAME / project_name,
           content::ProjGen::get_custom_main_h(R"(#include <cstdint>
 
 extern "C" auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexcept 
