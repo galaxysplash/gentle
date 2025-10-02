@@ -195,7 +195,8 @@ auto main(const int argc, const char *const *const argv) -> int {
               "asm_proj",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
                 return generate_asm_project(argc, argv);
-              }},
+              },
+          },
           KeywordBinding{
               "new",
               [&argc, &argv]() noexcept -> std::expected<void, std::string> {
