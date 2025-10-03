@@ -290,8 +290,9 @@ auto main(const int argc, const char *const *const argv) -> int {
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!project_name_result) {
-    return 0; // this failure is really unimportent, cuz we have already done
-              // the big sir work
+    std::print("some thing is really fishy here, cuz I can no longer get the "
+               "project name, but ANYWAY your project is generated.\n");
+    return -5;
   }
   const auto project_name = project_name_result.value();
 
