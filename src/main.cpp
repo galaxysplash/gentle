@@ -24,7 +24,7 @@
 [[noreturn]] auto handle2args(const int argc, const char *const *const argv)
     -> void {
   if (argc != 2) [[unlikely]] {
-    std::println("called with NOT 2 arguments");
+    std::print("called with NOT 2 arguments\n");
     std::terminate();
   }
   if (std::string_view{argv[1]} == "--help" ||
@@ -53,11 +53,11 @@ sub:
 )";
   } else if (std::string_view{argv[1]} == "run") [[likely]] {
     if (const auto result = Run::run(argc, argv); !result) {
-      std::println("{}", result.error());
+      std::print("{}\n", result.error());
     }
   } else if (std::string_view{argv[1]} == "build") [[unlikely]] {
     if (const auto result = Build::run(); !result) {
-      std::println("{}", result.error());
+      std::print("{}\n", result.error());
     }
   } else {
     constexpr int FAKE_ARGC = 3; // HAS TO BE EXACTLY 3
@@ -115,13 +115,18 @@ add_compile_options(-fno-exceptions -Wall -Wpedantic -Wextra -Werror)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_SOURCE_DIR src)
-include_directories(include)
-file(GLOB SOURCES ${{CMAKE_SOURCE_DIR}}/*.cpp)
-file(GLOB ASM_FILES ${{CMAKE_SOURCE_DIR}}/*.asm)
+
+set(SRC_FILES 
+src/main.cpp
+)
+set(ASM_FILES 
+src/main.asm
+)
+
 set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
 
-add_executable(${{PROJECT_NAME}} ${{SOURCES}} ${{ASM_FILES}}))",
+add_executable(${{PROJECT_NAME}} ${{SRC_FILES}} ${{ASM_FILES}})
+target_include_directories(${{PROJECT_NAME}} PRIVATE include))",
                        project_name),
        },
        core_utils::File<std::string>{
