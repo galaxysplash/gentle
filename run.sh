@@ -17,6 +17,6 @@ test_gentle() {
   ./../../build/gentle run
 }
 
-test_gentle(proj test_project)
-test_gentle(asm asm_proj)
+test_gentle proj test_project
+test_gentle asm asm_proj
 
