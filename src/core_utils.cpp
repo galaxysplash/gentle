@@ -4,6 +4,7 @@
 #include <cctype>
 #include <exception>
 #include <expected>
+#include <filesystem>
 #include <format>
 #include <string_view>
 
@@ -22,22 +23,22 @@ core_utils::CoreUtils::get_name(const int argc,
 core_utils::CoreUtils::make_directory(const std::filesystem::path &base_path,
                                       const std::string_view &name) noexcept
     -> std::expected<std::filesystem::path, std::string> {
-  constexpr auto ERR_MSG = std::string_view{
-      "Failed to create project directory '{}' in path '{}'.\n\n"
-      "Hint: Ensure your Operating System gives the proper permissions so "
-      "it is allowed to create files and folders. OR You're in the right "
-      "directory."};
-  try {
-    const auto new_path = base_path / name;
-    if (!std::filesystem::create_directory(new_path)) {
-      return std::unexpected{std::format(ERR_MSG, name, base_path.string())};
-    }
-    return new_path;
-  } catch (const std::exception &e) {
-    return std::unexpected{
-        std::format("C++ err: {}.\n\n{}", e.what(),
-                    std::format(ERR_MSG, name, base_path.string()))};
+
+  const auto new_path = base_path / name;
+
+  if (std::filesystem::exists(new_path)) {
+    return std::unexpected{"path already exists."};
   }
+
+  if (!std::filesystem::create_directory(new_path)) {
+    return std::unexpected{std::format(
+        "Failed to create project directory '{}' in path '{}'.\n\n"
+        "Hint: Ensure your Operating System gives the proper permissions so "
+        "it is allowed to create files and folders. OR You're in the right "
+        "directory.",
+        name, base_path.string())};
+  }
+  return new_path;
 }
 
 [[nodiscard]] auto core_utils::CoreUtils::snake_case_to_upper_case(
