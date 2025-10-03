@@ -54,7 +54,7 @@ auto content::ProjGen::get_entry_main_cpp(
   std::cout << "arguments:\n";
 
   for (int i = 0; i < argc; ++i) {
-    std::cout << argv[argc] << "\n";
+    std::cout << argv[i] << "\n";
   }
 })");
 
