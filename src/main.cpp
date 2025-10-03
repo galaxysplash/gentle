@@ -277,8 +277,19 @@ auto main(const int argc, const char *const *const argv) -> int {
           },
       });
 
-  if (!match_keyword_result) {
+  if (!match_keyword_result) [[unlikely]] {
     std::print("{}\n", match_keyword_result.error());
     return -1;
+  }
+
+  if (system("git init") != 0) {
+    std::print("program created successfully, but 'git init' failed.\n");
+    return -2;
+  }
+
+  if (system("git add *") != 0) {
+    std::print("program created successfully and 'git init' succeeded, but "
+               "'git add *' failed.\n");
+    return -3;
   }
 }
