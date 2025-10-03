@@ -282,7 +282,7 @@ auto main(const int argc, const char *const *const argv) -> int {
           },
       });
 
-  std::cout << "FINISHED!\n";
+  std::cout << "FINISHED!\n\n\n";
   if (!match_keyword_result) [[unlikely]] {
     std::cout << "ERR!\n";
     std::print("{}\n", match_keyword_result.error());
