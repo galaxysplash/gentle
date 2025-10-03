@@ -285,20 +285,15 @@ auto main(const int argc, const char *const *const argv) -> int {
   if (!match_keyword_result) [[unlikely]] {
     std::print("{}\n", match_keyword_result.error());
     return -1;
-  } else [[likely]] {
-    const auto project_name_result =
-        core_utils::CoreUtils::get_name(argc, argv);
-
-    if (!project_name_result) {
-      std::print("could not get the project name planed,\n"
-                 "for using in teh 'cd' instruction\n");
-      return -5;
-    }
-    const auto project_name = project_name_result.value();
-    if (const auto instruction = std::format("cd {}", project_name);
-        system(instruction.c_str()) != 0) {
-      std::print("'{}' din't work.\n", instruction);
-      return -10;
-    }
   }
+
+  const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
+
+  if (!project_name_result) {
+    return 0; // this failure is really unimportent, cuz we have already done
+              // the big sir work
+  }
+  const auto project_name = project_name_result.value();
+
+  std::print("now do 'cd {}', than 'gentle run'.\n", project_name);
 }
