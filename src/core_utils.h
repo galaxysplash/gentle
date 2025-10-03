@@ -56,15 +56,11 @@ public:
   [[nodiscard]] static inline auto
   write_files(const std::initializer_list<core_utils::File<ContentType>> &
                   files) noexcept -> std::expected<std::ofstream, std::string> {
-    try {
-      for (const core_utils::File<ContentType> &file : files) {
-        std::println("creating file '{}' in '{}'...", file.name,
-                     file.path.string());
-        std::ofstream ofstream{file.path / file.name};
-        ofstream << file.content;
-      }
-    } catch (const std::exception &e) {
-      return std::unexpected{e.what()};
+    for (const core_utils::File<ContentType> &file : files) {
+      std::println("creating file '{}' in '{}'...", file.name,
+                   file.path.string());
+      std::ofstream ofstream{file.path / file.name};
+      ofstream << file.content; // if throw than terminate
     }
 
     return {};
