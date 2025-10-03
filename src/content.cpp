@@ -155,7 +155,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += std::format("add_library(${{PROJECT_NAME}} src/{}.cpp)\n", name);
+  ret += std::format("add_library(${{PROJECT_NAME}} {}.cpp)\n", name);
   ret += "target_include_directories(${PROJECT_NAME} PRIVATE "
          "${CMAKE_SOURCE_DIR}include)\n";
 
