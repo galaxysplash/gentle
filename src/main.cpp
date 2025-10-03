@@ -287,6 +287,7 @@ auto main(const int argc, const char *const *const argv) -> int {
     return -1;
   }
 
+  std::cout << "TEST!\n";
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!project_name_result) {
