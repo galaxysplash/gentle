@@ -7,7 +7,7 @@
 
 class Build final {
 public:
-  [[nodiscard]] static auto run() noexcept -> std::expected<void, std::string>;
+  [[nodiscard]] static auto run() -> std::expected<void, std::string>;
 
   Build() = delete;
   Build(const Build &) = delete;

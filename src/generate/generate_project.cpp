@@ -10,7 +10,7 @@
 #include <string_view>
 
 [[nodiscard]] auto GenerateProject::run(const int argc,
-                                        const char *const *const argv) noexcept
+                                        const char *const *const argv)
     -> std::expected<void, std::string> {
   std::println("generate project...");
   const auto name_result = CoreUtils::get_name(argc, argv);
@@ -86,7 +86,7 @@
       },
   };
 
-  std::println("\ncreating files...");
+  std::print("\ncreating files...\n");
 
   const auto write_static_files_result =
       core_utils::CoreUtils::write_files<std::string_view>(
@@ -106,15 +106,15 @@
   return {};
 }
 
-[[nodiscard]] auto GenerateProject::make_project_directory(
-    const std::string_view &project_name) noexcept
+[[nodiscard]] auto
+GenerateProject::make_project_directory(const std::string_view &project_name)
     -> std::expected<std::filesystem::path, std::string> {
   return CoreUtils::make_directory(std::filesystem::current_path(),
                                    project_name);
 }
 
-[[nodiscard]] auto GenerateProject::make_src_directory(
-    const std::filesystem::path &project_path) noexcept
+[[nodiscard]] auto
+GenerateProject::make_src_directory(const std::filesystem::path &project_path)
     -> std::expected<std::filesystem::path, std::string> {
   return CoreUtils::make_directory(project_path, core_utils::SRC_DIR_NAME);
 }

@@ -11,12 +11,12 @@ class KeywordMatcher final {
 public:
   [[nodiscard]] static auto
   run(const int argc, const char *const *const argv,
-      std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
+      std::initializer_list<KeywordBinding> &&keyword_bindings)
       -> std::expected<void, std::string>;
 
 private:
   [[nodiscard]] static auto get_modifier_argument(
       const int argc, const char *const *const argv,
-      const std::initializer_list<KeywordBinding> &keyword_bindings) noexcept
+      const std::initializer_list<KeywordBinding> &keyword_bindings)
       -> std::expected<std::string, std::string>;
 };

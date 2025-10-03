@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <format>
 
-auto GenerateSub::run(const int argc, const char *const *const argv) noexcept
+auto GenerateSub::run(const int argc, const char *const *const argv)
     -> std::expected<void, std::string> {
 
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);

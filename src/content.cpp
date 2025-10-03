@@ -113,7 +113,7 @@ auto content::ModuleGen::get_mod_h(const std::string_view &module_name,
   ret += module_name;
   ret += " final {\n"
          "public:\n"
-         "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
+         "  [[nodiscard]] static auto run() -> std::expected<void, "
          "std::string>;\n"
          "  ";
   ret += module_name;
@@ -143,7 +143,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   ret += ".h\"\n\n";
   ret += "auto ";
   ret += module_class_name;
-  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
+  ret += "::run() -> std::expected<void, std::string> {\n"
          "  // insert code here...\n"
          "  return {};\n"
          "}\n";
@@ -179,7 +179,7 @@ auto content::SubGen::get_h_file(const std::string_view &class_name,
   ret += class_name;
   ret += " final {\n"
          "public:\n"
-         "  [[nodiscard]] static auto run() noexcept -> std::expected<void, "
+         "  [[nodiscard]] static auto run() -> std::expected<void, "
          "std::string>;\n"
          "  \n";
 
@@ -204,7 +204,7 @@ auto content::SubGen::get_cpp_file(const std::string_view &class_name,
   ret += ".h\"\n\n";
   ret += "auto ";
   ret += class_name;
-  ret += "::run() noexcept -> std::expected<void, std::string> {\n"
+  ret += "::run() -> std::expected<void, std::string> {\n"
          "  // insert code here...\n"
          "  return {};\n"
          "}\n";

@@ -11,16 +11,15 @@ using core_utils::CoreUtils;
 
 class GenerateProject final {
 public:
-  [[nodiscard]] static auto run(const int argc,
-                                const char *const *const argv) noexcept
+  [[nodiscard]] static auto run(const int argc, const char *const *const argv)
       -> std::expected<void, std::string>;
 
 private:
   [[nodiscard]] static auto
-  make_project_directory(const std::string_view &project_name) noexcept
+  make_project_directory(const std::string_view &project_name)
       -> std::expected<std::filesystem::path, std::string>;
 
   [[nodiscard]] static auto
-  make_src_directory(const std::filesystem::path &project_path) noexcept
+  make_src_directory(const std::filesystem::path &project_path)
       -> std::expected<std::filesystem::path, std::string>;
 };

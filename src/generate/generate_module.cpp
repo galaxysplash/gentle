@@ -5,7 +5,6 @@
 #include "content.h"
 #include "core_utils.h"
 
-#include <exception>
 #include <expected>
 #include <filesystem>
 #include <format>
@@ -15,7 +14,7 @@
 #include <string_view>
 
 [[nodiscard]] auto GenerateModule::run(const int argc,
-                                       const char *const *const argv) noexcept
+                                       const char *const *const argv)
     -> std::expected<void, std::string> {
 
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
@@ -111,14 +110,14 @@
 auto GenerateModule::create_or_get_include_directory_structure(
     const std::filesystem::path &base_path,
     const std::string_view &owning_project_name,
-    const std::string_view &module_name) noexcept
+    const std::string_view &module_name)
     -> std::expected<std::filesystem::path, std::string> {
   auto ret = std::filesystem::path{};
   if (!std::filesystem::exists(core_utils::INCLUDE_DIRECTORY_NAME))
       [[unlikely]] /* if there is no 'include' dir */ {
     {
       {
-        std::println("creating include dir...");
+        std::print("creating include dir...\n");
         auto result = core_utils::CoreUtils::make_directory(
             base_path, core_utils::INCLUDE_DIRECTORY_NAME);
 
@@ -206,7 +205,7 @@ auto GenerateModule::create_or_get_include_directory_structure(
 }
 
 auto GenerateModule::get_previous_cmake_lists_txt_content(
-    const std::filesystem::path &proj_path) noexcept
+    const std::filesystem::path &proj_path)
     -> std::expected<std::string, std::string> {
   std::ifstream ifstream;
   std::string ret;
@@ -224,15 +223,15 @@ auto GenerateModule::get_previous_cmake_lists_txt_content(
 }
 
 [[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
-    const std::filesystem::path &base_path) noexcept
+    const std::filesystem::path &base_path)
     -> std::expected<std::filesystem::path, std::string> {
 
   if (std::filesystem::exists(base_path)) [[likely]] {
-    std::println("already exists ('{}')", base_path.string());
+    std::print("already exists ('{}')\n", base_path.string());
     return base_path;
   }
 
-  std::println("creating directory '{}'", base_path.string());
+  std::print("creating directory '{}'\n", base_path.string());
   return core_utils::CoreUtils::make_directory(base_path.parent_path(),
                                                base_path.filename().string());
 }

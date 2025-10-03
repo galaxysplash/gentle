@@ -2,7 +2,6 @@
 
 #include "core_utils.h"
 #include <cctype>
-#include <exception>
 #include <expected>
 #include <filesystem>
 #include <format>

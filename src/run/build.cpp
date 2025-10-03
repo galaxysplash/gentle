@@ -2,11 +2,10 @@
 
 #include "build.h"
 
-#include <filesystem>
 #include <format>
 #include <print>
 
-auto Build::run() noexcept -> std::expected<void, std::string> {
+auto Build::run() -> std::expected<void, std::string> {
   if (std::system("cmake . -B build")) {
     return std::unexpected{"cmake generation command failed."};
   }

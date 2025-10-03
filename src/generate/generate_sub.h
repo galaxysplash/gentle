@@ -7,6 +7,6 @@
 
 class GenerateSub final {
 public:
-  static auto run(const int argc, const char *const *const argv) noexcept
+  static auto run(const int argc, const char *const *const argv)
       -> std::expected<void, std::string>;
 };

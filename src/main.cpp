@@ -21,8 +21,8 @@
 #include <string>
 #include <string_view>
 
-[[noreturn]] auto handle2args(const int argc,
-                              const char *const *const argv) noexcept -> void {
+[[noreturn]] auto handle2args(const int argc, const char *const *const argv)
+    -> void {
   if (argc != 2) [[unlikely]] {
     std::println("called with NOT 2 arguments");
     std::terminate();
@@ -161,7 +161,7 @@ asm_add:
 }
 
 // TODO! put in generate_class
-auto generate_class(const int argc, const char *const *const argv) noexcept
+auto generate_class(const int argc, const char *const *const argv)
     -> std::expected<void, std::string> {
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
@@ -219,68 +219,66 @@ auto main(const int argc, const char *const *const argv) -> int {
       {
           KeywordBinding{
               "proj",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return GenerateProject::run(argc, argv);
               },
           },
           KeywordBinding{
               "project",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return GenerateProject::run(argc, argv);
               },
           },
           KeywordBinding{
               "asm_proj",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return generate_asm_project(argc, argv);
               },
           },
           KeywordBinding{
               "asm",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return generate_asm_project(argc, argv);
               },
           },
           KeywordBinding{
               "new",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return GenerateProject::run(argc, argv);
               },
           },
           KeywordBinding{
               "mod",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return GenerateModule::run(argc, argv);
               },
           },
           KeywordBinding{
               "sub",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return GenerateSub::run(argc, argv);
               },
           },
           KeywordBinding{
               "class",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return generate_class(argc, argv);
               },
           },
           KeywordBinding{
               "run",
-              [&argc, &argv]() noexcept -> std::expected<void, std::string> {
+              [&argc, &argv]() -> std::expected<void, std::string> {
                 return Run::run(argc, argv);
               },
           },
           KeywordBinding{
               "build",
-              []() noexcept -> std::expected<void, std::string> {
-                return Build::run();
-              },
+              []() -> std::expected<void, std::string> { return Build::run(); },
           },
       });
 
   if (!match_keyword_result) {
-    std::println("{}", match_keyword_result.error());
+    std::print("{}\n", match_keyword_result.error());
     return -1;
   }
 }

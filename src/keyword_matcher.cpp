@@ -11,7 +11,7 @@
 
 [[nodiscard]] auto KeywordMatcher::get_modifier_argument(
     const int argc, const char *const *const argv,
-    const std::initializer_list<KeywordBinding> &keyword_bindings) noexcept
+    const std::initializer_list<KeywordBinding> &keyword_bindings)
     -> std::expected<std::string, std::string> {
   const auto f = [&]() {
     auto unexpected_ret = std::string{};
@@ -54,9 +54,9 @@
   return argv[1];
 }
 
-[[nodiscard]] auto KeywordMatcher::run(
-    const int argc, const char *const *const argv,
-    std::initializer_list<KeywordBinding> &&keyword_bindings) noexcept
+[[nodiscard]] auto
+KeywordMatcher::run(const int argc, const char *const *const argv,
+                    std::initializer_list<KeywordBinding> &&keyword_bindings)
     -> std::expected<void, std::string> {
   const auto get_modifier_argument_result =
       get_modifier_argument(argc, argv, keyword_bindings);
