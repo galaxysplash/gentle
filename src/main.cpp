@@ -75,6 +75,7 @@ sub:
   exit(0);
 }
 
+// TODO! put in generate_asm
 [[nodiscard]] auto generate_asm_project(const int argc,
                                         const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
@@ -159,6 +160,7 @@ asm_add:
   return {};
 }
 
+// TODO! put in generate_class
 auto generate_class(const int argc, const char *const *const argv) noexcept
     -> std::expected<void, std::string> {
   const auto module_name_result = core_utils::CoreUtils::get_name(argc, argv);
@@ -206,6 +208,7 @@ auto generate_class(const int argc, const char *const *const argv) noexcept
 
   return {};
 }
+
 auto main(const int argc, const char *const *const argv) -> int {
   if (argc == 2) [[unlikely]] {
     handle2args(argc, argv);
