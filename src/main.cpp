@@ -287,6 +287,8 @@ auto main(const int argc, const char *const *const argv) -> int {
     return -1;
   }
 
+  std::cout << "TEST!\n";
+
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!project_name_result) {
@@ -296,7 +298,6 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
   const auto project_name = project_name_result.value();
 
-  std::cout << std::endl; // flush the buffer
   std::cout << "\n\n\nNow do 'cd " << project_name
             << "', than 'gentle run'.\n\nHERE just for you to "
                "copy paste if you want:\n\n\ncd "
