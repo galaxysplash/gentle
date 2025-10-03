@@ -12,10 +12,19 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "project(";
   ret += name;
   ret += ")\n\n"
-         "set(CMAKE_BUILD_TYPE Release)\n"
-         "add_compile_options(-Wall -Wpedantic -Wextra -Werror)\n"
-         "set(CMAKE_CXX_STANDARD 23)\n"
-         "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
+         "if(MSVC)"
+         "  message(\"DUMB MSVC is EXCLUDED. USE Clang or GCC\")"
+         "else()"
+         "set(CMAKE_BUILD_TYPE "
+         "Release)\n"
+         "add_compile_options(-"
+         "fno-exceptions -Wall "
+         "-Wpedantic -Wextra "
+         "-Werror)\n"
+         "set(CMAKE_CXX_STANDARD "
+         "23)\n"
+         "set(CMAKE_CXX_STANDARD_"
+         "REQUIRED ON)\n"
          "\n";
 
   return ret;

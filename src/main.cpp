@@ -87,7 +87,7 @@ sub:
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!project_name_result) {
-    std::println("{}", project_name_result.value());
+    std::println("{}", project_name_result.error());
   }
   const auto project_name = project_name_result.value();
 
@@ -132,7 +132,7 @@ auto main() -> int {
            content::ProjGen::get_custom_main_h(R"(#include <cstdint>
 
 extern "C" {
-auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs) noexcept
+auto asm_add(const std::uint64_t lhs, const std::uint64_t rhs)
     -> std::uint64_t;
 }
 )"),
