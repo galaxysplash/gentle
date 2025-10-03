@@ -296,7 +296,8 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
   const auto project_name = project_name_result.value();
 
-  std::cerr << "\n\n\nNow do 'cd" << project_name
+  std::cout << std::endl; // flush the buffer
+  std::cout << "\n\n\nNow do 'cd " << project_name
             << "', than 'gentle run'.\n\nHERE just for you to "
                "copy paste if you want:\n\n\ncd "
             << project_name << "\ngentle run\n";
