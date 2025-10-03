@@ -186,7 +186,7 @@ auto generate_class(const int argc, const char *const *const argv) noexcept
               "#pragma once\n\n"
               "class {} {{\n"
               "public:\n"
-              "  //insert here...\n"
+              "  // insert here...\n"
               "}};\n"
               //
               ,
