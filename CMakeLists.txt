@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.30)
 project(gentle)
 
-add_compile_options(-Wall -Wpedantic -Wextra -Werror)
+add_compile_options(-fno-except -Wall -Wpedantic -Wextra -Werror)
 
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 23)
