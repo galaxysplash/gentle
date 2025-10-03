@@ -282,12 +282,14 @@ auto main(const int argc, const char *const *const argv) -> int {
           },
       });
 
+  std::cout << "FINISHED!\n";
   if (!match_keyword_result) [[unlikely]] {
+    std::cout << "ERR!\n";
     std::print("{}\n", match_keyword_result.error());
     return -1;
   }
 
-  std::cout << "TEST!\n";
+  std::cout << "TIPS!\n";
 
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
