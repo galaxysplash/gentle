@@ -39,7 +39,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += Base::get_cmake_lists_txt(name);
   ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n"
          "target_include_directories(${PROJECT_NAME} PRIVATE "
-         "${CMAKE_SOURCE_DIR}include)\n";
+         "include)\n";
 
   return ret;
 }
@@ -157,7 +157,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   ret += Base::get_cmake_lists_txt(name);
   ret += std::format("add_library(${{PROJECT_NAME}} {}.cpp)\n", name);
   ret += "target_include_directories(${PROJECT_NAME} PRIVATE "
-         "${CMAKE_SOURCE_DIR}include)\n";
+         "${CMAKE_SOURCE_DIR}/include)\n";
 
   return ret;
 }
