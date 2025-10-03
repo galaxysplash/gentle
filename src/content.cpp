@@ -2,6 +2,7 @@
 
 #include "content.h"
 
+#include <format>
 #include <string_view>
 
 auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
@@ -26,8 +27,9 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "set(CMAKE_CXX_STANDARD "
          "23)\n"
          "set(CMAKE_CXX_STANDARD_"
-         "REQUIRED ON)\n"
-         "\n";
+         "REQUIRED ON)\n\n"
+         "target_include_directories(${PROJECT_NAME} PRIVATE "
+         "${CMAKE_SOURCE_DIR}include)\n";
 
   return ret;
 }
@@ -37,9 +39,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += "include_directories(include)\n";
-  ret += "file(GLOB SOURCES src/*.cpp)\n";
-  ret += "add_executable(${PROJECT_NAME} ${SOURCES})\n";
+  ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n";
 
   return ret;
 }
@@ -155,8 +155,7 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += "file(GLOB SOURCES *.cpp)\n";
-  ret += "add_library(${PROJECT_NAME} ${SOURCES})\n";
+  ret += std::format("add_library(${{PROJECT_NAME}} src/{}.cpp)\n", name);
 
   return ret;
 }
@@ -166,9 +165,7 @@ auto content::SubGen::get_h_file(const std::string_view &class_name,
     -> std::string {
   std::string ret;
 
-  ret += "// ";
-  ret += header_name;
-  ret += ".h\n\n";
+  ret += std::format("// {}.h\n\n", header_name);
 
   ret += "#pragma once\n\n";
 
@@ -196,9 +193,8 @@ auto content::SubGen::get_cpp_file(const std::string_view &class_name,
     -> std::string {
   std::string ret;
 
-  ret += "// ";
-  ret += header_name;
-  ret += ".cpp\n\n";
+  ret += std::format("// {}.cpp\n\n", header_name);
+
   ret += "#include \"";
   ret += header_name;
   ret += ".h\"\n\n";

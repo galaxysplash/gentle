@@ -68,7 +68,7 @@ sub:
     const auto generation_result = GenerateProject::run(FAKE_ARGC, fake_argv);
 
     if (!generation_result) {
-      std::println("{}", generation_result.error());
+      std::print("{}\n", generation_result.error());
     }
   }
 
@@ -88,7 +88,7 @@ sub:
   const auto project_name_result = core_utils::CoreUtils::get_name(argc, argv);
 
   if (!project_name_result) {
-    std::println("{}", project_name_result.error());
+    std::print("{}\n", project_name_result.error());
   }
   const auto project_name = project_name_result.value();
 
