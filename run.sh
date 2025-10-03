@@ -15,6 +15,7 @@ test_gentle() {
   ./../../build/gentle mod hey
   ./../../build/gentle sub my_sub
   ./../../build/gentle run
+  cd ..
 }
 
 test_gentle proj test_project
