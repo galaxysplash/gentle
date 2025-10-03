@@ -27,9 +27,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "set(CMAKE_CXX_STANDARD "
          "23)\n"
          "set(CMAKE_CXX_STANDARD_"
-         "REQUIRED ON)\n\n"
-         "target_include_directories(${PROJECT_NAME} PRIVATE "
-         "${CMAKE_SOURCE_DIR}include)\n";
+         "REQUIRED ON)\n\n";
 
   return ret;
 }
@@ -39,7 +37,9 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   std::string ret;
 
   ret += Base::get_cmake_lists_txt(name);
-  ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n";
+  ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n"
+         "target_include_directories(${PROJECT_NAME} PRIVATE "
+         "${CMAKE_SOURCE_DIR}include)\n";
 
   return ret;
 }
@@ -156,6 +156,8 @@ content::ModuleGen::get_mod_cpp(const std::string_view &module_class_name,
 
   ret += Base::get_cmake_lists_txt(name);
   ret += std::format("add_library(${{PROJECT_NAME}} src/{}.cpp)\n", name);
+  ret += "target_include_directories(${PROJECT_NAME} PRIVATE "
+         "${CMAKE_SOURCE_DIR}include)\n";
 
   return ret;
 }
