@@ -296,7 +296,8 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
   const auto project_name = project_name_result.value();
 
-  std::print("\n\n\nNow do 'cd {}', than 'gentle run'.\n\nHERE just for you to "
-             "copy paste if you want:\n\n\ncd {}\ngentle run",
-             project_name, project_name);
+  std::println(
+      "\n\n\nNow do 'cd {}', than 'gentle run'.\n\nHERE just for you to "
+      "copy paste if you want:\n\n\ncd {}\ngentle run",
+      project_name, project_name);
 }
