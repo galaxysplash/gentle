@@ -11,22 +11,22 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += "cmake_minimum_required(VERSION 3.30)\n"
          "project(";
   ret += name;
-  ret +=
-      ")\n\n"
-      "if(MSVC)"
-      "  message(\"DUMB MSVC is EXCLUDED. USE Clang or GCC. MSVC SUCKS ASS!\")"
-      "else()"
-      "set(CMAKE_BUILD_TYPE "
-      "Release)\n"
-      "add_compile_options(-"
-      "fno-exceptions -Wall "
-      "-Wpedantic -Wextra "
-      "-Werror)\n"
-      "set(CMAKE_CXX_STANDARD "
-      "23)\n"
-      "set(CMAKE_CXX_STANDARD_"
-      "REQUIRED ON)\n"
-      "\n";
+  ret += ")\n\n"
+         "if(MSVC)\n"
+         "  message(\"DUMB MSVC is EXCLUDED. USE Clang or GCC. MSVC SUCKS "
+         "ASS!\")\n"
+         "else()\n"
+         "set(CMAKE_BUILD_TYPE "
+         "Release)\n"
+         "add_compile_options(-"
+         "fno-exceptions -Wall "
+         "-Wpedantic -Wextra "
+         "-Werror)\n"
+         "set(CMAKE_CXX_STANDARD "
+         "23)\n"
+         "set(CMAKE_CXX_STANDARD_"
+         "REQUIRED ON)\n"
+         "\n";
 
   return ret;
 }
