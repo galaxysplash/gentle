@@ -296,5 +296,5 @@ auto main(const int argc, const char *const *const argv) -> int {
   }
   const auto project_name = project_name_result.value();
 
-  std::print("now do 'cd {}', than 'gentle run'.\n", project_name);
+  std::print("\n\n\nNow do 'cd {}', than 'gentle run'.\n", project_name);
 }
