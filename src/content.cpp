@@ -13,9 +13,10 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += name;
   ret += ")\n\n"
          "if(MSVC)\n"
-         "  message(\"DUMB MSVC is EXCLUDED. USE Clang or GCC. MSVC SUCKS "
+         "  message(FATAL_ERROR \"DUMB MSVC is EXCLUDED. USE Clang or GCC. "
+         "MSVC SUCKS "
          "ASS!\")\n"
-         "else()\n"
+         "endif()\n"
          "set(CMAKE_BUILD_TYPE "
          "Release)\n"
          "add_compile_options(-"
