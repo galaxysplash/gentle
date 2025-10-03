@@ -99,12 +99,18 @@ sub:
            "CMakeLists.txt",
            project_path,
            std::format(R"(cmake_minimum_required(VERSION 3.30)
+
+if(MSVC)
+  message(FATAL_ERROR \"DUMB MSVC is EXCLUDED. USE Clang or GCC. MSVC SUCKS ASS!\")
+endif()
+
+
 project({} CXX ASM)
 
 enable_language(ASM_NASM)
 
 set(CMAKE_BUILD_TYPE Release)
-add_compile_options(-Wall -Wpedantic -Wextra -Werror)
+add_compile_options(-fno-exceptions -Wall -Wpedantic -Wextra -Werror)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
