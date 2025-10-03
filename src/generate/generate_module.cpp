@@ -208,23 +208,19 @@ auto GenerateModule::create_or_get_include_directory_structure(
 auto GenerateModule::get_previous_cmake_lists_txt_content(
     const std::filesystem::path &proj_path) noexcept
     -> std::expected<std::string, std::string> {
-  try {
-    std::ifstream ifstream;
-    std::string ret;
-    ret.reserve(40);
-    ifstream.open(proj_path / "CMakeLists.txt");
-    while (true) {
-      const char c = ifstream.get();
-      if (ifstream.eof()) [[unlikely]] {
-        break;
-      }
-
-      ret += c;
+  std::ifstream ifstream;
+  std::string ret;
+  ret.reserve(40);
+  ifstream.open(proj_path / "CMakeLists.txt");
+  while (true) {
+    const char c = ifstream.get();
+    if (ifstream.eof()) [[unlikely]] {
+      break;
     }
-    return ret;
-  } catch (const std::exception &e) {
-    return std::unexpected{e.what()};
+
+    ret += c;
   }
+  return ret;
 }
 
 [[nodiscard]] auto GenerateModule::create_or_get_lib_directory(
