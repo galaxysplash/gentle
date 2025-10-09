@@ -30,7 +30,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
 
   ret += Base::get_cmake_lists_txt(name);
   ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n"
-         "target_compile_options(${PROJECT_NAME} PUBLIC -"
+         "target_compile_options(${PROJECT_NAME} PUBLIC "
          "-Wall "
          "-Wpedantic -Wextra "
          "-Werror)\n"
