@@ -13,7 +13,6 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "project(";
   ret += name;
   ret += ")\n\n"
-         "endif()\n\n"
          "set(CMAKE_BUILD_TYPE "
          "Release)\n"
          "target_compile_options(-"
