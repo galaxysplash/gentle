@@ -13,15 +13,11 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "project(";
   ret += name;
   ret += ")\n\n"
-         "if(MSVC)\n"
-         "  message(FATAL_ERROR \"DUMB MSVC is EXCLUDED. USE Clang or GCC. "
-         "MSVC SUCKS "
-         "ASS!\")\n"
          "endif()\n\n"
          "set(CMAKE_BUILD_TYPE "
          "Release)\n"
          "add_compile_options(-"
-         "fno-exceptions -Wall "
+         "-Wall "
          "-Wpedantic -Wextra "
          "-Werror)\n"
          "set(CMAKE_CXX_STANDARD "
