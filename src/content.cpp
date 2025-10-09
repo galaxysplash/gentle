@@ -15,10 +15,6 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
   ret += ")\n\n"
          "set(CMAKE_BUILD_TYPE "
          "Release)\n"
-         "target_compile_options(-"
-         "-Wall "
-         "-Wpedantic -Wextra "
-         "-Werror)\n"
          "set(CMAKE_CXX_STANDARD "
          "23)\n"
          "set(CMAKE_CXX_STANDARD_"
@@ -34,6 +30,10 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
 
   ret += Base::get_cmake_lists_txt(name);
   ret += "add_executable(${PROJECT_NAME} src/main.cpp)\n"
+         "target_compile_options(${PROJECT_NAME} -"
+         "-Wall "
+         "-Wpedantic -Wextra "
+         "-Werror)\n"
          "target_include_directories(${PROJECT_NAME} PRIVATE "
          "include)\n";
 
