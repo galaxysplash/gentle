@@ -16,7 +16,7 @@ auto content::Base::get_cmake_lists_txt(const std::string_view &name) noexcept
          "endif()\n\n"
          "set(CMAKE_BUILD_TYPE "
          "Release)\n"
-         "add_compile_options(-"
+         "target_compile_options(-"
          "-Wall "
          "-Wpedantic -Wextra "
          "-Werror)\n"

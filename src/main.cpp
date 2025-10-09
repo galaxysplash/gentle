@@ -113,9 +113,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SRC_DIR src)
 file(GLOB SRC_FILES ${{SRC_DIR}}/*.cpp)
-set(ASM_FILES 
-src/main.asm
-)
+file(GLOB ASM_FILES src/*.asm)
 
 set_source_files_properties(${{ASM_FILES}} PROPERTIES LANGUAGE ASM_NASM)
 
