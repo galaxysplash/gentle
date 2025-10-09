@@ -40,7 +40,7 @@
   }
   const auto include_directory = include_directory_result.value();
 
-  std::println("generate module...");
+  std::print("generate module...\n");
 
   const auto lib_directory_result = create_or_get_lib_directory(
       std::filesystem::current_path() / LIB_DIRECTORY_NAME);
@@ -49,7 +49,7 @@
     return std::unexpected{lib_directory_result.error()};
   }
   const auto lib_directory = lib_directory_result.value();
-  std::println("created lib directory.");
+  std::print("created lib directory.\n");
 
   const auto mod_directory_result =
       create_mod_directory(lib_directory, module_name);
@@ -58,7 +58,7 @@
   }
   const auto &mod_directory = mod_directory_result.value();
 
-  std::println("creating mod_directory...");
+  std::print("creating mod_directory...\n");
 
   const auto upper_case_module_name =
       core_utils::CoreUtils::snake_case_to_upper_case(module_name);
@@ -97,7 +97,7 @@
                   std::format(
                       "\n# {}\n"
                       "add_subdirectory(lib/{})\n"
-                      "target_link_libraries(${{PROJECT_NAME}} PRIVATE {})\n",
+                      "target_link_libraries(${{PROJECT_NAME}} PUBLIC {})\n",
                       module_name, module_name, module_name, module_name),
           }});
 
